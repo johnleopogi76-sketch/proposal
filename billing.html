@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="RentEase billing management"
+    >
+
+    <title>RentEase | Billing</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                R
+            </div>
+
+            <div>
+                <h1>RentEase</h1>
+                <span>Management System</span>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="index.html" class="nav-link">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="rooms.html" class="nav-link">
+                <span>▤</span>
+                Rooms
+            </a>
+
+            <a href="tenants.html" class="nav-link">
+                <span>♙</span>
+                Customers
+            </a>
+
+            <a href="billing.html" class="nav-link active">
+                <span>₱</span>
+                Billing
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <strong>RentEase</strong>
+
+            <small>
+                Web-based prototype
+            </small>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <div>
+
+                <p class="eyebrow">
+                    Finance
+                </p>
+
+                <h2>
+                    Billing Ledger
+                </h2>
+
+                <p class="subtitle">
+                    Track customer payments and outstanding balances.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                id="openPaymentModal"
+            >
+                + Record Payment
+            </button>
+
+        </header>
+
+
+        <!-- Billing Summary -->
+
+        <section class="metrics-grid">
+
+            <article class="metric-card">
+
+                <div class="metric-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span>
+                        Paid
+                    </span>
+
+                    <strong id="paidTotal">
+                        ₱0.00
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-icon warning">
+                    …
+                </div>
+
+                <div>
+
+                    <span>
+                        Pending
+                    </span>
+
+                    <strong id="pendingTotal">
+                        ₱0.00
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-icon danger">
+                    !
+                </div>
+
+                <div>
+
+                    <span>
+                        Overdue
+                    </span>
+
+                    <strong id="overdueTotal">
+                        ₱0.00
+                    </strong>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- Ledger -->
+
+        <section class="card">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>
+                        Payment Ledger
+                    </h3>
+
+                    <p>
+                        All payment transactions recorded in RentEase.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Customer</th>
+                            <th>Room</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Payment Date</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="paymentTable">
+
+                        <tr>
+
+                            <td
+                                colspan="5"
+                                class="empty-state"
+                            >
+                                Loading payments...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- Payment Modal -->
+
+<div
+    class="modal"
+    id="paymentModal"
+    aria-hidden="true"
+>
+
+    <div class="modal-overlay" id="modalOverlay"></div>
+
+
+    <div
+        class="modal-content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="paymentModalTitle"
+    >
+
+        <div class="modal-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    Billing
+                </p>
+
+                <h3 id="paymentModalTitle">
+                    Record Payment
+                </h3>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closePaymentModal"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="paymentForm">
+
+            <div class="form-group">
+
+                <label
+                    class="form-label"
+                    for="payTenant"
+                >
+                    Customer
+                </label>
+
+                <select
+                    class="form-control"
+                    id="payTenant"
+                    required
+                >
+
+                    <option value="">
+                        Select customer
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label
+                    class="form-label"
+                    for="payAmount"
+                >
+                    Amount
+                </label>
+
+                <input
+                    class="form-control"
+                    type="number"
+                    id="payAmount"
+                    min="0"
+                    step="0.01"
+                    placeholder="0.00"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label
+                        class="form-label"
+                        for="payStatus"
+                    >
+                        Status
+                    </label>
+
+                    <select
+                        class="form-control"
+                        id="payStatus"
+                        required
+                    >
+
+                        <option value="Paid">
+                            Paid
+                        </option>
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                        <option value="Overdue">
+                            Overdue
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label
+                        class="form-label"
+                        for="payDate"
+                    >
+                        Payment Date
+                    </label>
+
+                    <input
+                        class="form-control"
+                        type="date"
+                        id="payDate"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="cancelPayment"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="savePayment"
+                >
+                    Save Payment
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="assets/js/supabase.js"></script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const modal =
+        document.getElementById("paymentModal");
+
+    const form =
+        document.getElementById("paymentForm");
+
+    const paymentTable =
+        document.getElementById("paymentTable");
+
+    const tenantSelect =
+        document.getElementById("payTenant");
+
+    const amountInput =
+        document.getElementById("payAmount");
+
+    const statusSelect =
+        document.getElementById("payStatus");
+
+    const dateInput =
+        document.getElementById("payDate");
+
+    const paidTotal =
+        document.getElementById("paidTotal");
+
+    const pendingTotal =
+        document.getElementById("pendingTotal");
+
+    const overdueTotal =
+        document.getElementById("overdueTotal");
+
+    const saveButton =
+        document.getElementById("savePayment");
+
+
+    dateInput.value =
+        new Date().toISOString().split("T")[0];
+
+
+    function openModal() {
+
+        modal.classList.add("show");
+
+        modal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        tenantSelect.focus();
+
+    }
+
+
+    function closeModal() {
+
+        modal.classList.remove("show");
+
+        modal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        form.reset();
+
+        dateInput.value =
+            new Date().toISOString().split("T")[0];
+
+    }
+
+
+    document
+        .getElementById("openPaymentModal")
+        .addEventListener(
+            "click",
+            openModal
+        );
+
+
+    document
+        .getElementById("closePaymentModal")
+        .addEventListener(
+            "click",
+            closeModal
+        );
+
+
+    document
+        .getElementById("cancelPayment")
+        .addEventListener(
+            "click",
+            closeModal
+        );
+
+
+    document
+        .getElementById("modalOverlay")
+        .addEventListener(
+            "click",
+            closeModal
+        );
+
+
+    async function loadCustomers() {
+
+        try {
+
+            const customers =
+                await fetchActiveTenants();
+
+            tenantSelect.innerHTML = `
+                <option value="">
+                    Select customer
+                </option>
+            `;
+
+
+            customers.forEach(customer => {
+
+                const room =
+                    customer.rooms?.room_number || "No room";
+
+                const option =
+                    document.createElement("option");
+
+                option.value =
+                    customer.id;
+
+                option.textContent =
+                    `${customer.full_name} — Room ${room}`;
+
+                tenantSelect.appendChild(option);
+
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+    }
+
+
+    function renderPayments(payments) {
+
+        let paid = 0;
+        let pending = 0;
+        let overdue = 0;
+
+
+        payments.forEach(payment => {
+
+            const amount =
+                Number(payment.amount || 0);
+
+            if (payment.status === "Paid") {
+                paid += amount;
+            }
+
+            if (payment.status === "Pending") {
+                pending += amount;
+            }
+
+            if (payment.status === "Overdue") {
+                overdue += amount;
+            }
+
+        });
+
+
+        paidTotal.textContent =
+            money(paid);
+
+        pendingTotal.textContent =
+            money(pending);
+
+        overdueTotal.textContent =
+            money(overdue);
+
+
+        if (!payments.length) {
+
+            paymentTable.innerHTML = `
+                <tr>
+                    <td
+                        colspan="5"
+                        class="empty-state"
+                    >
+                        No payment records found.
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+
+        paymentTable.innerHTML =
+            payments.map(payment => {
+
+                const customer =
+                    payment.tenants?.full_name ||
+                    "Unknown Customer";
+
+                const room =
+                    payment.tenants?.rooms?.room_number ||
+                    "—";
+
+
+                return `
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                ${esc(customer)}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${esc(room)}
+                        </td>
+
+                        <td>
+                            ${money(payment.amount)}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="badge ${statusClass(payment.status)}"
+                            >
+                                ${esc(payment.status)}
+                            </span>
+
+                        </td>
+
+                        <td>
+                            ${date(payment.payment_date)}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    async function loadPayments() {
+
+        try {
+
+            const payments =
+                await fetchPayments();
+
+            renderPayments(payments);
+
+        } catch (error) {
+
+            console.error(error);
+
+            paymentTable.innerHTML = `
+                <tr>
+                    <td
+                        colspan="5"
+                        class="empty-state error"
+                    >
+                        Unable to load payment data.
+                    </td>
+                </tr>
+            `;
+
+        }
+
+    }
+
+
+    form.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            const tenantId =
+                tenantSelect.value;
+
+            const amount =
+                Number(amountInput.value);
+
+            const status =
+                statusSelect.value;
+
+            const paymentDate =
+                dateInput.value;
+
+
+            if (!tenantId || amount <= 0) {
+
+                alert(
+                    "Please select a customer and enter a valid amount."
+                );
+
+                return;
+
+            }
+
+
+            saveButton.disabled = true;
+
+            saveButton.textContent =
+                "Saving...";
+
+
+            try {
+
+                await recordPayment({
+
+                    tenant_id: tenantId,
+
+                    amount: amount,
+
+                    status: status,
+
+                    payment_date: paymentDate
+
+                });
+
+
+                closeModal();
+
+                await loadPayments();
+
+                alert(
+                    "Payment recorded successfully."
+                );
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Unable to record payment."
+                );
+
+            } finally {
+
+                saveButton.disabled = false;
+
+                saveButton.textContent =
+                    "Save Payment";
+
+            }
+
+        }
+    );
+
+
+    await loadCustomers();
+
+    await loadPayments();
+
+    subscribeToPayments(loadPayments);
+
+});
+
+</script>
+
+</body>
+</html>

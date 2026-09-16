@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="RentEase customer directory"
+    >
+
+    <title>RentEase | Customers</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">R</div>
+
+            <div>
+                <h1>RentEase</h1>
+                <span>Management System</span>
+            </div>
+
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="index.html" class="nav-link">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="rooms.html" class="nav-link">
+                <span>▤</span>
+                Rooms
+            </a>
+
+            <a href="tenants.html" class="nav-link active">
+                <span>♙</span>
+                Customers
+            </a>
+
+            <a href="billing.html" class="nav-link">
+                <span>₱</span>
+                Billing
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <strong>RentEase</strong>
+            <small>Web-based prototype</small>
+        </div>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <div>
+
+                <p class="eyebrow">
+                    Directory
+                </p>
+
+                <h2>
+                    Customer Directory
+                </h2>
+
+                <p class="subtitle">
+                    Search and manage boarding house customers.
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <section class="card">
+
+            <div class="directory-toolbar">
+
+                <div class="search-box">
+
+                    <span>⌕</span>
+
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Search customers, rooms, contact..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <div
+                    id="customerCount"
+                    class="result-count"
+                >
+                    Loading...
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Customer</th>
+                            <th>Contact</th>
+                            <th>Room</th>
+                            <th>Type</th>
+                            <th>Move-in Date</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tenantTable">
+
+                        <tr>
+                            <td
+                                colspan="6"
+                                class="empty-state"
+                            >
+                                Loading customers...
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="assets/js/supabase.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    const tenantTable =
+        document.getElementById("tenantTable");
+
+    const customerCount =
+        document.getElementById("customerCount");
+
+    let tenants = [];
+
+
+    function renderTenants(list) {
+
+        customerCount.textContent =
+            `${list.length} customer${list.length !== 1 ? "s" : ""}`;
+
+
+        if (!list.length) {
+
+            tenantTable.innerHTML = `
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        No customers match your search.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        tenantTable.innerHTML = list.map(tenant => {
+
+            const room =
+                tenant.rooms?.room_number || "—";
+
+            const roomType =
+                tenant.rooms?.room_type || "—";
+
+
+            return `
+
+                <tr>
+
+                    <td>
+
+                        <div class="customer-cell">
+
+                            <div class="avatar">
+                                ${esc(
+                                    (tenant.full_name || "?")
+                                    .charAt(0)
+                                    .toUpperCase()
+                                )}
+                            </div>
+
+                            <div>
+                                <strong>
+                                    ${esc(tenant.full_name)}
+                                </strong>
+
+                                <small>
+                                    Customer #${tenant.id}
+                                </small>
+                            </div>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+                        ${esc(tenant.contact_number || "—")}
+                    </td>
+
+
+                    <td>
+                        <strong>
+                            ${esc(room)}
+                        </strong>
+                    </td>
+
+
+                    <td>
+                        ${esc(roomType)}
+                    </td>
+
+
+                    <td>
+                        ${date(tenant.move_in_date)}
+                    </td>
+
+
+                    <td>
+
+                        <span class="badge ${statusClass(tenant.status)}">
+                            ${esc(tenant.status)}
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join("");
+
+    }
+
+
+    function filterTenants() {
+
+        const query =
+            searchInput.value.trim().toLowerCase();
+
+
+        if (!query) {
+
+            renderTenants(tenants);
+
+            return;
+        }
+
+
+        const filtered =
+            tenants.filter(tenant => {
+
+                const values = [
+
+                    tenant.full_name,
+
+                    tenant.contact_number,
+
+                    tenant.status,
+
+                    tenant.rooms?.room_number,
+
+                    tenant.rooms?.room_type
+
+                ];
+
+                return values
+                    .filter(Boolean)
+                    .some(value =>
+                        String(value)
+                            .toLowerCase()
+                            .includes(query)
+                    );
+
+            });
+
+
+        renderTenants(filtered);
+
+    }
+
+
+    async function loadTenants() {
+
+        try {
+
+            tenants = await fetchTenants();
+
+            renderTenants(tenants);
+
+        } catch (error) {
+
+            console.error(error);
+
+            customerCount.textContent =
+                "Unable to load";
+
+            tenantTable.innerHTML = `
+                <tr>
+                    <td
+                        colspan="6"
+                        class="empty-state error"
+                    >
+                        Unable to load customer data.
+                    </td>
+                </tr>
+            `;
+
+        }
+
+    }
+
+
+    searchInput.addEventListener(
+        "input",
+        filterTenants
+    );
+
+
+    await loadTenants();
+
+    subscribeToTenants(loadTenants);
+
+});
+
+</script>
+
+</body>
+</html>
