@@ -1,8 +1,8 @@
 /* RentEase shared Supabase module.
    Replace the two constants below with your project credentials.
    Never put a service_role/secret key in browser code. */
-const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_OR_PUBLISHABLE_KEY";
+const SUPABASE_URL = "https://uqobghmfkhdyfuivxyqw.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_KnMLuq1iF2zMjJGi_psJHw_CKMYfjnP";
 
 const supabaseScript = document.createElement("script");
 supabaseScript.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
