@@ -95,35 +95,65 @@ a {
     padding: 4px 8px 28px;
 }
 
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .brand-icon {
-    width: 42px;
-    height: 42px;
+    position: relative;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
 
-    display: grid;
-    place-items: center;
-
-    border-radius: 12px;
-
-    background: #10b981;
+/* Large C */
+.logo-c {
+    position: absolute;
+    left: 2px;
+    top: -8px;
+    
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 45px;
+    font-weight: 700;
+    line-height: 1;
+    
     color: #ffffff;
+    
+    z-index: 1;
+}
 
-    font-size: 20px;
-    font-weight: 800;
+/* H */
+.logo-h {
+    position: absolute;
+    right: -4px;
+    bottom: -8px;
+    
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 45px;
+    font-weight: 700;
+    line-height: 1;
+    
+    color: #ffffff;
+    
+    z-index: 2;
 }
 
 .brand h1 {
-    font-size: 18px;
-    line-height: 1.1;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
 }
 
-.brand span {
-    display: block;
-
-    margin-top: 3px;
-
-    color: #94a3b8;
-
+.brand span:not(.logo-c):not(.logo-h) {
     font-size: 11px;
+    color: #94a3b8;
 }
 
 
