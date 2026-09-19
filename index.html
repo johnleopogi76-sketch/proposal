@@ -8,15 +8,12 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    /* CasaHome CH logo */
     .ch-logo {
       position: relative;
       width: 76px;
@@ -46,53 +43,16 @@
       letter-spacing: -8px;
     }
 
-    .ch-logo-small {
-      position: relative;
-      width: 58px;
-      height: 62px;
-      flex-shrink: 0;
-      font-family: Georgia, "Times New Roman", serif;
-      color: #ffffff;
-    }
-
-    .ch-logo-small .c {
-      position: absolute;
-      top: -5px;
-      left: 0;
-      font-size: 55px;
-      line-height: 1;
-      font-weight: 700;
-      letter-spacing: -7px;
-    }
-
-    .ch-logo-small .h {
-      position: absolute;
-      bottom: -5px;
-      right: 0;
-      font-size: 55px;
-      line-height: 1;
-      font-weight: 700;
-      letter-spacing: -6px;
-    }
-
     .glass {
       background: rgba(255, 255, 255, 0.97);
       box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12);
     }
 
-    .fade-in {
-      animation: fadeIn .25s ease-out;
-    }
+    .fade-in { animation: fadeIn .25s ease-out; }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(6px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .spinner {
@@ -104,9 +64,91 @@
       animation: spin .7s linear infinite;
     }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Mobile: keep the same left branding instead of hiding it. */
+    @media (max-width: 1023px) {
+      body {
+        background: #020617;
+      }
+
+      main {
+        display: block !important;
+        min-height: 100vh;
+      }
+
+      .brand-panel {
+        min-height: auto;
+        padding: 36px 24px 30px;
+      }
+
+      .brand-content {
+        max-width: 680px;
+        margin: 0 auto;
+      }
+
+      .brand-heading {
+        font-size: 2.25rem;
+        line-height: 1.15;
+      }
+
+      .brand-description {
+        font-size: 0.98rem;
+        line-height: 1.6;
+      }
+
+      .feature-grid {
+        margin-top: 24px;
+      }
+
+      .login-area {
+        min-height: auto;
+        background: #f8fafc;
+        padding: 28px 18px 40px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .brand-panel {
+        padding: 28px 18px 24px;
+      }
+
+      .brand-content {
+        width: 100%;
+      }
+
+      .brand-logo-row {
+        gap: 14px;
+        margin-bottom: 28px;
+      }
+
+      .brand-heading {
+        font-size: 2rem;
+      }
+
+      .brand-description {
+        font-size: 0.92rem;
+      }
+
+      .feature-grid {
+        gap: 10px;
+      }
+
+      .feature-card {
+        padding: 14px;
+      }
+
+      .feature-card-title {
+        font-size: 1.1rem;
+      }
+
+      .login-area {
+        padding: 24px 14px 34px;
+      }
+
+      .login-card {
+        padding: 22px;
+        border-radius: 22px;
       }
     }
   </style>
@@ -116,112 +158,60 @@
 
   <main class="min-h-screen grid lg:grid-cols-2">
 
-    <!-- =========================================================
-         LEFT BRAND PANEL
-         ========================================================= -->
-    <section class="hidden lg:flex bg-slate-950 relative overflow-hidden items-center justify-center p-12">
+    <!-- LEFT BRAND PANEL: visible on BOTH desktop and mobile -->
+    <section class="brand-panel bg-slate-950 relative overflow-hidden flex items-center justify-center p-12">
 
       <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl"></div>
       <div class="absolute -bottom-40 -right-32 w-[30rem] h-[30rem] rounded-full bg-emerald-400/10 blur-3xl"></div>
 
-      <div class="relative max-w-lg text-white">
+      <div class="brand-content relative max-w-lg text-white">
 
-        <!-- LOGO + BRAND -->
-        <div class="flex items-center gap-5 mb-12">
-
+        <div class="brand-logo-row flex items-center gap-5 mb-12">
           <div class="ch-logo" aria-label="CasaHome logo">
             <span class="c">C</span>
             <span class="h">H</span>
           </div>
 
           <div>
-            <h1 class="text-3xl font-bold tracking-tight">
-              CasaHome
-            </h1>
-            <p class="mt-1 text-base text-slate-400">
-              Management System
-            </p>
+            <h1 class="text-3xl font-bold tracking-tight">CasaHome</h1>
+            <p class="mt-1 text-base text-slate-400">Management System</p>
           </div>
-
         </div>
 
-        <h2 class="text-5xl font-bold leading-tight tracking-tight">
+        <h2 class="brand-heading text-5xl font-bold leading-tight tracking-tight">
           Simple management.<br>
           Better living.
         </h2>
 
-        <p class="mt-6 text-lg leading-8 text-slate-400">
+        <p class="brand-description mt-6 text-lg leading-8 text-slate-400">
           A simple digital platform for managing rooms, tenants,
           billing, and boarding house information.
         </p>
 
-        <!-- FEATURE CARDS -->
-        <div class="mt-10 grid grid-cols-2 gap-4">
-
-          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
-            <p class="text-2xl font-bold text-emerald-400">
-              Rooms
-            </p>
-            <p class="mt-1 text-sm text-slate-400">
-              Easy room management
-            </p>
+        <div class="feature-grid mt-10 grid grid-cols-2 gap-4">
+          <div class="feature-card rounded-2xl border border-white/10 bg-white/5 p-5">
+            <p class="feature-card-title text-2xl font-bold text-emerald-400">Rooms</p>
+            <p class="mt-1 text-sm text-slate-400">Easy room management</p>
           </div>
 
-          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
-            <p class="text-2xl font-bold text-emerald-400">
-              Billing
-            </p>
-            <p class="mt-1 text-sm text-slate-400">
-              Track payments
-            </p>
+          <div class="feature-card rounded-2xl border border-white/10 bg-white/5 p-5">
+            <p class="feature-card-title text-2xl font-bold text-emerald-400">Billing</p>
+            <p class="mt-1 text-sm text-slate-400">Track payments</p>
           </div>
-
         </div>
       </div>
     </section>
 
-
-    <!-- =========================================================
-         RIGHT LOGIN AREA
-         ========================================================= -->
-    <section class="flex items-center justify-center p-5 sm:p-8">
+    <!-- RIGHT LOGIN AREA -->
+    <section class="login-area flex items-center justify-center p-5 sm:p-8">
 
       <div class="w-full max-w-md">
 
-        <!-- MOBILE BRAND -->
-        <div class="lg:hidden text-center mb-8">
-
-          <div class="mx-auto w-20 h-20 rounded-2xl bg-slate-950 flex items-center justify-center shadow-lg">
-            <div class="ch-logo-small" aria-label="CasaHome logo">
-              <span class="c">C</span>
-              <span class="h">H</span>
-            </div>
-          </div>
-
-          <h1 class="mt-4 text-2xl font-bold">
-            CasaHome
-          </h1>
-
-          <p class="text-sm text-slate-500">
-            Management System
-          </p>
-
-        </div>
-
-
-        <!-- =====================================================
-             ROLE SELECTION
-             ===================================================== -->
-        <div
-          id="roleScreen"
-          class="glass rounded-3xl border border-slate-200 p-6 sm:p-8 fade-in"
-        >
+        <!-- ROLE SELECTION -->
+        <div id="roleScreen" class="login-card glass rounded-3xl border border-slate-200 p-6 sm:p-8 fade-in">
 
           <div class="text-center">
-
-            <p class="text-sm font-semibold uppercase tracking-wider text-emerald-600">
-              Welcome
-            </p>
+            <p class="text-sm font-semibold uppercase tracking-wider text-emerald-600">Welcome</p>
 
             <h2 class="mt-2 text-3xl font-bold tracking-tight">
               Sign in to CasaHome
@@ -230,11 +220,8 @@
             <p class="mt-2 text-sm leading-6 text-slate-500">
               Select how you want to access the system.
             </p>
-
           </div>
 
-
-          <!-- ADMIN LOGIN BUTTON -->
           <div class="mt-8 space-y-4">
 
             <button
@@ -242,168 +229,81 @@
               onclick="showLogin('admin')"
               class="w-full rounded-2xl border border-slate-200 bg-white p-5 text-left transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
             >
-
               <div class="flex items-center gap-4">
-
                 <div class="w-12 h-12 shrink-0 rounded-xl bg-slate-950 text-white flex items-center justify-center">
-
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                    <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.8 1.8-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20H10.97v-.1a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34L8 18.74l-1.8-1.8.06-.06A1.7 1.7 0 0 0 6.6 15a1.7 1.7 0 0 0-1.56-1.03H4.96v-2.55h.08A1.7 1.7 0 0 0 6.6 10.4a1.7 1.7 0 0 0-.34-1.88L6.2 8.46 8 6.66l.06.06a1.7 1.7 0 0 0 1.88.34 1.7 1.7 0 0 0 1.03-1.56v-.08h2.55v.08a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.8 1.8-.06.06a1.7 1.7 0 0 0-.34 1.88 1.7 1.7 0 0 0-.34 1.88 1.7 1.7 0 0 0 1.56 1.03h.08v2.55h-.08A1.7 1.7 0 0 0 19.4 15Z"/>
+                    <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.8 1.8-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20H10.97v-.1a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34L8 18.74l-1.8-1.8.06-.06A1.7 1.7 0 0 0 6.6 15a1.7 1.7 0 0 0-1.56-1.03H4.96v-2.55h.08A1.7 1.7 0 0 0 6.6 10.4a1.7 1.7 0 0 0-.34-1.88L6.2 8.46 8 6.66l.06.06a1.7 1.7 0 0 0 1.88.34 1.7 1.7 0 0 0 1.03-1.56v-.08h2.55v.08a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.8 1.8-.06.06a1.7 1.7 0 0 0-.34 1.88 1.7 1.7 0 0 0 1.56 1.03h.08v2.55h-.08A1.7 1.7 0 0 0 19.4 15Z"/>
                   </svg>
-
                 </div>
 
                 <div class="flex-1">
-                  <h3 class="font-bold text-slate-900">
-                    Admin Login
-                  </h3>
-
-                  <p class="mt-1 text-sm text-slate-500">
-                    Manage rooms, customers, and billing.
-                  </p>
+                  <h3 class="font-bold text-slate-900">Admin Login</h3>
+                  <p class="mt-1 text-sm text-slate-500">Manage rooms, customers, and billing.</p>
                 </div>
 
-                <span class="text-slate-300 text-xl">
-                  ›
-                </span>
-
+                <span class="text-slate-300 text-xl">›</span>
               </div>
-
             </button>
 
-
-            <!-- USER LOGIN BUTTON -->
             <button
               type="button"
               onclick="showLogin('user')"
               class="w-full rounded-2xl border border-slate-200 bg-white p-5 text-left transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
             >
-
               <div class="flex items-center gap-4">
-
                 <div class="w-12 h-12 shrink-0 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
-
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <circle cx="12" cy="8" r="3.2"/>
                     <path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>
                   </svg>
-
                 </div>
 
                 <div class="flex-1">
-                  <h3 class="font-bold text-slate-900">
-                    User Login
-                  </h3>
-
-                  <p class="mt-1 text-sm text-slate-500">
-                    View your room and payment information.
-                  </p>
+                  <h3 class="font-bold text-slate-900">User Login</h3>
+                  <p class="mt-1 text-sm text-slate-500">View your room and payment information.</p>
                 </div>
 
-                <span class="text-slate-300 text-xl">
-                  ›
-                </span>
-
+                <span class="text-slate-300 text-xl">›</span>
               </div>
-
             </button>
 
           </div>
 
-
           <p class="mt-8 text-center text-xs text-slate-400">
             CasaHome Web-Based Boarding House Management System
           </p>
-
         </div>
 
+        <!-- LOGIN FORM -->
+        <div id="loginScreen" class="hidden login-card glass rounded-3xl border border-slate-200 p-6 sm:p-8 fade-in">
 
-        <!-- =====================================================
-             LOGIN FORM
-             ===================================================== -->
-        <div
-          id="loginScreen"
-          class="hidden glass rounded-3xl border border-slate-200 p-6 sm:p-8 fade-in"
-        >
-
-          <!-- BACK BUTTON -->
           <button
             type="button"
             onclick="showRoles()"
             class="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900"
           >
-            <span>←</span>
-            Back
+            <span>←</span> Back
           </button>
 
-
-          <!-- LOGIN HEADER -->
           <div class="mt-7">
-
-            <div
-              id="loginIcon"
-              class="w-12 h-12 rounded-xl bg-slate-950 text-white flex items-center justify-center"
-            >
-              <span
-                id="loginIconText"
-                class="font-bold"
-              >
-                A
-              </span>
+            <div id="loginIcon" class="w-12 h-12 rounded-xl bg-slate-950 text-white flex items-center justify-center">
+              <span id="loginIconText" class="font-bold">A</span>
             </div>
 
-            <p
-              id="loginTypeLabel"
-              class="mt-6 text-sm font-semibold text-emerald-600"
-            >
-              ADMIN ACCESS
-            </p>
+            <p id="loginTypeLabel" class="mt-6 text-sm font-semibold text-emerald-600">ADMIN ACCESS</p>
 
-            <h2
-              id="loginTitle"
-              class="mt-1 text-3xl font-bold tracking-tight"
-            >
-              Admin Login
-            </h2>
+            <h2 id="loginTitle" class="mt-1 text-3xl font-bold tracking-tight">Admin Login</h2>
 
-            <p
-              id="loginDescription"
-              class="mt-2 text-sm leading-6 text-slate-500"
-            >
+            <p id="loginDescription" class="mt-2 text-sm leading-6 text-slate-500">
               Sign in with your administrator account.
             </p>
-
           </div>
 
+          <form id="loginForm" class="mt-8 space-y-5">
 
-          <!-- FORM -->
-          <form
-            id="loginForm"
-            class="mt-8 space-y-5"
-          >
-
-            <!-- EMAIL -->
             <div>
-
-              <label
-                for="email"
-                class="block text-sm font-semibold text-slate-700 mb-2"
-              >
+              <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">
                 Email address
               </label>
 
@@ -415,22 +315,14 @@
                 placeholder="you@example.com"
                 class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
               >
-
             </div>
 
-
-            <!-- PASSWORD -->
             <div>
-
-              <label
-                for="password"
-                class="block text-sm font-semibold text-slate-700 mb-2"
-              >
+              <label for="password" class="block text-sm font-semibold text-slate-700 mb-2">
                 Password
               </label>
 
               <div class="relative">
-
                 <input
                   id="password"
                   type="password"
@@ -446,486 +338,223 @@
                   class="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 hover:text-slate-700"
                   aria-label="Show or hide password"
                 >
-
-                  <svg
-                    id="eyeIcon"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/>
                     <circle cx="12" cy="12" r="2.5"/>
                   </svg>
-
                 </button>
-
               </div>
-
             </div>
 
+            <div id="errorBox" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"></div>
 
-            <!-- ERROR -->
-            <div
-              id="errorBox"
-              class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"
-            ></div>
-
-
-            <!-- SUBMIT -->
             <button
               id="loginButton"
               type="submit"
               class="w-full rounded-xl bg-emerald-500 px-4 py-3.5 font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-600 focus:outline-none focus:ring-4 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-60"
             >
-
-              <span
-                id="loginButtonContent"
-                class="flex items-center justify-center gap-2"
-              >
+              <span id="loginButtonContent" class="flex items-center justify-center gap-2">
                 Sign in
               </span>
-
             </button>
-
           </form>
 
-
-          <!-- HINT -->
-          <p
-            id="loginHint"
-            class="mt-6 text-center text-xs leading-5 text-slate-400"
-          >
+          <p id="loginHint" class="mt-6 text-center text-xs leading-5 text-slate-400">
             Admin accounts must have <b>role = admin</b> in the profiles table.
           </p>
-
         </div>
-
       </div>
     </section>
-
   </main>
 
-
-  <!-- =========================================================
-       SUPABASE
-       ========================================================= -->
   <script src="assets/js/supabase.js"></script>
 
-
-  <!-- =========================================================
-       LOGIN JAVASCRIPT
-       ========================================================= -->
   <script>
-
     let selectedRole = null;
 
-
-    /* ---------------------------------------------------------
-       SHOW LOGIN SCREEN
-       --------------------------------------------------------- */
     function showLogin(role) {
-
       selectedRole = role;
 
-      document
-        .getElementById("roleScreen")
-        .classList
-        .add("hidden");
-
-      document
-        .getElementById("loginScreen")
-        .classList
-        .remove("hidden");
+      document.getElementById("roleScreen").classList.add("hidden");
+      document.getElementById("loginScreen").classList.remove("hidden");
 
       const admin = role === "admin";
-
 
       document.getElementById("loginTypeLabel").textContent =
         admin ? "ADMIN ACCESS" : "TENANT ACCESS";
 
-
       document.getElementById("loginTitle").textContent =
         admin ? "Admin Login" : "User Login";
-
 
       document.getElementById("loginDescription").textContent =
         admin
           ? "Sign in with your administrator account."
           : "Sign in with your CasaHome user account.";
 
-
       document.getElementById("loginIcon").className =
         admin
           ? "w-12 h-12 rounded-xl bg-slate-950 text-white flex items-center justify-center"
           : "w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center";
 
-
-      document.getElementById("loginIconText").textContent =
-        admin ? "A" : "U";
-
+      document.getElementById("loginIconText").textContent = admin ? "A" : "U";
 
       document.getElementById("loginHint").innerHTML =
         admin
           ? 'Admin accounts must have <b>role = admin</b> in the profiles table.'
           : 'User accounts must have <b>role = user</b> and a linked <b>tenant_id</b> in the profiles table.';
 
-
       clearError();
-
       document.getElementById("email").focus();
-
     }
 
-
-    /* ---------------------------------------------------------
-       BACK TO ROLE SELECTION
-       --------------------------------------------------------- */
     function showRoles() {
-
       selectedRole = null;
 
-      document
-        .getElementById("loginScreen")
-        .classList
-        .add("hidden");
-
-      document
-        .getElementById("roleScreen")
-        .classList
-        .remove("hidden");
+      document.getElementById("loginScreen").classList.add("hidden");
+      document.getElementById("roleScreen").classList.remove("hidden");
 
       document.getElementById("loginForm").reset();
-
       clearError();
-
     }
 
-
-    /* ---------------------------------------------------------
-       ERROR
-       --------------------------------------------------------- */
     function clearError() {
-
       const box = document.getElementById("errorBox");
-
       box.textContent = "";
-
       box.classList.add("hidden");
-
     }
-
 
     function showError(message) {
-
       const box = document.getElementById("errorBox");
-
       box.textContent = message;
-
       box.classList.remove("hidden");
-
     }
 
-
-    /* ---------------------------------------------------------
-       PASSWORD VISIBILITY
-       --------------------------------------------------------- */
     function togglePassword() {
-
       const input = document.getElementById("password");
-
-      input.type =
-        input.type === "password"
-          ? "text"
-          : "password";
-
+      input.type = input.type === "password" ? "text" : "password";
     }
 
-
-    /* ---------------------------------------------------------
-       LOADING STATE
-       --------------------------------------------------------- */
     function setLoading(loading) {
-
-      const button =
-        document.getElementById("loginButton");
-
-      const content =
-        document.getElementById("loginButtonContent");
-
+      const button = document.getElementById("loginButton");
+      const content = document.getElementById("loginButtonContent");
 
       button.disabled = loading;
 
-
       if (loading) {
-
-        content.innerHTML =
-          '<span class="spinner"></span><span>Signing in...</span>';
-
+        content.innerHTML = '<span class="spinner"></span><span>Signing in...</span>';
       } else {
-
         content.textContent = "Sign in";
-
       }
-
     }
 
-
-    /* ---------------------------------------------------------
-       CHECK EXISTING SESSION
-       --------------------------------------------------------- */
     async function redirectIfAlreadyLoggedIn() {
-
       try {
-
         const client = await getClient();
 
         const {
           data: { user }
         } = await client.auth.getUser();
 
+        if (!user) return;
 
-        if (!user) {
-          return;
-        }
-
-
-        const {
-          data: profile
-        } = await client
+        const { data: profile } = await client
           .from("profiles")
           .select("role,tenant_id")
           .eq("id", user.id)
           .maybeSingle();
 
-
         if (profile?.role === "admin") {
-
-          window.location.replace(
-            "admin-index.html"
-          );
-
+          window.location.replace("admin-index.html");
         } else if (profile?.role === "user") {
-
-          window.location.replace(
-            "user-dashboard.html"
-          );
-
+          window.location.replace("user-dashboard.html");
         }
-
       } catch (error) {
-
-        console.warn(
-          "Session check skipped:",
-          error
-        );
-
+        console.warn("Session check skipped:", error);
       }
-
     }
 
-
-    /* ---------------------------------------------------------
-       LOGIN
-       --------------------------------------------------------- */
     async function handleLogin(event) {
-
       event.preventDefault();
-
       clearError();
 
-
       if (!selectedRole) {
-
-        showError(
-          "Please select a login type first."
-        );
-
+        showError("Please select a login type first.");
         return;
-
       }
 
-
-      const email =
-        document
-          .getElementById("email")
-          .value
-          .trim();
-
-
-      const password =
-        document
-          .getElementById("password")
-          .value;
-
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
 
       if (!email || !password) {
-
-        showError(
-          "Please enter your email and password."
-        );
-
+        showError("Please enter your email and password.");
         return;
-
       }
-
 
       setLoading(true);
 
-
       try {
+        const client = await getClient();
 
-        const client =
-          await getClient();
-
-
-        /* SIGN IN */
-        const {
-          data,
-          error
-        } = await client.auth.signInWithPassword({
-
+        const { data, error } = await client.auth.signInWithPassword({
           email,
           password
-
         });
 
-
-        if (error) {
-          throw error;
-        }
-
+        if (error) throw error;
 
         const user = data.user;
 
-
-        /* GET PROFILE */
-        const {
-          data: profile,
-          error: profileError
-        } = await client
+        const { data: profile, error: profileError } = await client
           .from("profiles")
           .select("role,tenant_id")
           .eq("id", user.id)
           .maybeSingle();
 
+        if (profileError) throw profileError;
 
-        if (profileError) {
-          throw profileError;
-        }
-
-
-        /* PROFILE DOES NOT EXIST */
         if (!profile) {
-
           await client.auth.signOut();
-
-          throw new Error(
-            "Your account does not have a profile record yet."
-          );
-
+          throw new Error("Your account does not have a profile record yet.");
         }
 
-
-        /* ADMIN CHECK */
-        if (
-          selectedRole === "admin" &&
-          profile.role !== "admin"
-        ) {
-
+        if (selectedRole === "admin" && profile.role !== "admin") {
           await client.auth.signOut();
-
-          throw new Error(
-            "This account is not registered as an administrator."
-          );
-
+          throw new Error("This account is not registered as an administrator.");
         }
 
-
-        /* USER CHECK */
-        if (
-          selectedRole === "user" &&
-          profile.role !== "user"
-        ) {
-
+        if (selectedRole === "user" && profile.role !== "user") {
           await client.auth.signOut();
-
-          throw new Error(
-            "This account is not registered as a user."
-          );
-
+          throw new Error("This account is not registered as a user.");
         }
 
-
-        /* USER TENANT CHECK */
-        if (
-          selectedRole === "user" &&
-          !profile.tenant_id
-        ) {
-
+        if (selectedRole === "user" && !profile.tenant_id) {
           await client.auth.signOut();
-
-          throw new Error(
-            "Your account is not linked to a tenant record yet."
-          );
-
+          throw new Error("Your account is not linked to a tenant record yet.");
         }
 
-
-        /* REDIRECT */
         if (selectedRole === "admin") {
-
-          window.location.replace(
-            "admin-index.html"
-          );
-
+          window.location.replace("admin-index.html");
         } else {
-
-          window.location.replace(
-            "user-dashboard.html"
-          );
-
+          window.location.replace("user-dashboard.html");
         }
 
       } catch (error) {
-
-        console.error(
-          "Login error:",
-          error
-        );
-
+        console.error("Login error:", error);
 
         showError(
           error?.message ||
           "Login failed. Please check your credentials."
         );
 
-
         setLoading(false);
-
       }
-
     }
 
-
-    /* ---------------------------------------------------------
-       FORM EVENT
-       --------------------------------------------------------- */
     document
       .getElementById("loginForm")
-      .addEventListener(
-        "submit",
-        handleLogin
-      );
+      .addEventListener("submit", handleLogin);
 
-
-    /* ---------------------------------------------------------
-       INITIAL SESSION CHECK
-       --------------------------------------------------------- */
     redirectIfAlreadyLoggedIn();
-
   </script>
 
 </body>
