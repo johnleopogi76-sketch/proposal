@@ -12,6 +12,39 @@
     <title>Customers</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Admin mode indicator */
+        .admin-context {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-left: 12px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+            font-size: 12px;
+            font-weight: 700;
+            vertical-align: middle;
+        }
+
+        .admin-context-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        @media (max-width: 650px) {
+            .admin-context {
+                display: inline-flex;
+                margin-left: 0;
+                margin-top: 8px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -36,24 +69,35 @@
 
         <nav class="sidebar-nav">
 
-            <a href="index.html" class="nav-link">
+            <!-- Automatically changes to admin-index.html for admins -->
+            <a href="index.html"
+               id="dashboardLink"
+               class="nav-link">
+
                 <span>▦</span>
                 Dashboard
+
             </a>
 
             <a href="rooms.html" class="nav-link">
+
                 <span>▤</span>
                 Rooms
+
             </a>
 
             <a href="tenants.html" class="nav-link active">
+
                 <span>♙</span>
                 Customers
+
             </a>
 
             <a href="billing.html" class="nav-link">
+
                 <span>₱</span>
                 Billing
+
             </a>
 
         </nav>
@@ -77,7 +121,18 @@
                 </p>
 
                 <h2>
+
                     Customer Directory
+
+                    <span
+                        id="adminContext"
+                        class="admin-context"
+                        style="display:none;"
+                    >
+                        <span class="admin-context-dot"></span>
+                        Admin Mode
+                    </span>
+
                 </h2>
 
                 <p class="subtitle">
@@ -136,12 +191,14 @@
                     <tbody id="tenantTable">
 
                         <tr>
+
                             <td
                                 colspan="6"
                                 class="empty-state"
                             >
                                 Loading customers...
                             </td>
+
                         </tr>
 
                     </tbody>
@@ -172,7 +229,105 @@ document.addEventListener("DOMContentLoaded", async () => {
     const customerCount =
         document.getElementById("customerCount");
 
+    const dashboardLink =
+        document.getElementById("dashboardLink");
+
+    const adminContext =
+        document.getElementById("adminContext");
+
     let tenants = [];
+
+
+    /*
+     * Detect whether the current browser session
+     * belongs to an administrator.
+     */
+    async function setupNavigation() {
+
+        try {
+
+            const client =
+                await getClient();
+
+
+            const {
+                data: {
+                    session
+                }
+            } = await client.auth.getSession();
+
+
+            /*
+             * No logged-in user.
+             * Keep the normal public dashboard.
+             */
+            if (!session) {
+
+                dashboardLink.href =
+                    "index.html";
+
+                return;
+            }
+
+
+            /*
+             * Check the user's role
+             * from the profiles table.
+             */
+            const {
+                data: profile,
+                error
+            } = await client
+                .from("profiles")
+                .select("role")
+                .eq("id", session.user.id)
+                .maybeSingle();
+
+
+            if (error) {
+
+                console.error(
+                    "Unable to check user role:",
+                    error
+                );
+
+                dashboardLink.href =
+                    "index.html";
+
+                return;
+            }
+
+
+            /*
+             * Admin detected.
+             */
+            if (profile?.role === "admin") {
+
+                dashboardLink.href =
+                    "admin-index.html";
+
+                adminContext.style.display =
+                    "inline-flex";
+
+            } else {
+
+                dashboardLink.href =
+                    "index.html";
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Navigation setup error:",
+                error
+            );
+
+            dashboardLink.href =
+                "index.html";
+        }
+
+    }
 
 
     function renderTenants(list) {
@@ -185,7 +340,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             tenantTable.innerHTML = `
                 <tr>
-                    <td colspan="6" class="empty-state">
+                    <td
+                        colspan="6"
+                        class="empty-state"
+                    >
                         No customers match your search.
                     </td>
                 </tr>
@@ -213,14 +371,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <div class="customer-cell">
 
                             <div class="avatar">
+
                                 ${esc(
                                     (tenant.full_name || "?")
                                     .charAt(0)
                                     .toUpperCase()
                                 )}
+
                             </div>
 
                             <div>
+
                                 <strong>
                                     ${esc(tenant.full_name)}
                                 </strong>
@@ -228,6 +389,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 <small>
                                     Customer #${tenant.id}
                                 </small>
+
                             </div>
 
                         </div>
@@ -236,14 +398,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
                     <td>
-                        ${esc(tenant.contact_number || "—")}
+                        ${esc(
+                            tenant.contact_number || "—"
+                        )}
                     </td>
 
 
                     <td>
+
                         <strong>
                             ${esc(room)}
                         </strong>
+
                     </td>
 
 
@@ -259,7 +425,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     <td>
 
-                        <span class="badge ${statusClass(tenant.status)}">
+                        <span
+                            class="badge ${statusClass(tenant.status)}"
+                        >
                             ${esc(tenant.status)}
                         </span>
 
@@ -277,7 +445,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     function filterTenants() {
 
         const query =
-            searchInput.value.trim().toLowerCase();
+            searchInput.value
+                .trim()
+                .toLowerCase();
 
 
         if (!query) {
@@ -305,6 +475,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 ];
 
+
                 return values
                     .filter(Boolean)
                     .some(value =>
@@ -325,7 +496,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         try {
 
-            tenants = await fetchTenants();
+            tenants =
+                await fetchTenants();
 
             renderTenants(tenants);
 
@@ -336,15 +508,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             customerCount.textContent =
                 "Unable to load";
 
+
             tenantTable.innerHTML = `
+
                 <tr>
+
                     <td
                         colspan="6"
                         class="empty-state error"
                     >
                         Unable to load customer data.
                     </td>
+
                 </tr>
+
             `;
 
         }
@@ -358,8 +535,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
 
 
+    /*
+     * Detect admin first.
+     */
+    await setupNavigation();
+
+
+    /*
+     * Then load customers.
+     */
     await loadTenants();
 
+
+    /*
+     * Keep customers updated in realtime.
+     */
     subscribeToTenants(loadTenants);
 
 });
