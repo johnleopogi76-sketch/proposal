@@ -1,393 +1,433 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CasaHome Boarding House Management System">
-    <title>Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
 
-    <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <style>
-        .btn-admin {
-            background: #0f172a;
-            color: #ffffff;
-            border: 1px solid #0f172a;
-        }
+  <style>
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-        .btn-admin:hover {
-            background: #1e293b;
-            border-color: #1e293b;
-        }
+    .logo-mark {
+      font-family: Georgia, "Times New Roman", serif;
+      letter-spacing: -0.12em;
+    }
 
-        .dashboard-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+    .glass {
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12);
+    }
 
-        @media (max-width: 640px) {
-            .dashboard-actions {
-                width: 100%;
-            }
+    .fade-in {
+      animation: fadeIn .25s ease-out;
+    }
 
-            .dashboard-actions .btn {
-                flex: 1;
-                text-align: center;
-            }
-        }
-    </style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,.45);
+      border-top-color: white;
+      border-radius: 999px;
+      animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 
-<body>
+<body class="min-h-screen bg-slate-50 text-slate-900">
+  <main class="min-h-screen grid lg:grid-cols-2">
 
-<div class="app">
+    <!-- LEFT BRAND PANEL -->
+    <section class="hidden lg:flex bg-slate-950 relative overflow-hidden items-center justify-center p-12">
+      <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl"></div>
+      <div class="absolute -bottom-40 -right-32 w-[30rem] h-[30rem] rounded-full bg-emerald-400/10 blur-3xl"></div>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
+      <div class="relative max-w-lg text-white">
+        <div class="flex items-center gap-4 mb-12">
+          <div class="w-16 h-16 rounded-2xl bg-emerald-500 flex items-center justify-center shadow-xl shadow-emerald-500/20">
+            <span class="logo-mark text-4xl font-bold leading-none">CH</span>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold tracking-tight">CasaHome</h1>
+            <p class="text-sm text-slate-400">Boarding House Management</p>
+          </div>
+        </div>
 
-        <div class="brand">
-            <div class="brand-icon">
-                <span class="logo-c">C</span>
-                <span class="logo-h">H</span>
+        <h2 class="text-5xl font-bold leading-tight tracking-tight">
+          Simple management.<br>
+          Better living.
+        </h2>
+
+        <p class="mt-6 text-lg leading-8 text-slate-400">
+          A simple digital platform for managing rooms, tenants, billing,
+          and boarding house information.
+        </p>
+
+        <div class="mt-10 grid grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+            <p class="text-2xl font-bold text-emerald-400">Rooms</p>
+            <p class="mt-1 text-sm text-slate-400">Easy room management</p>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+            <p class="text-2xl font-bold text-emerald-400">Billing</p>
+            <p class="mt-1 text-sm text-slate-400">Track payments</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT LOGIN -->
+    <section class="flex items-center justify-center p-5 sm:p-8">
+      <div class="w-full max-w-md">
+
+        <!-- MOBILE BRAND -->
+        <div class="lg:hidden text-center mb-8">
+          <div class="mx-auto w-16 h-16 rounded-2xl bg-slate-950 flex items-center justify-center shadow-lg">
+            <span class="logo-mark text-4xl font-bold text-white">CH</span>
+          </div>
+          <h1 class="mt-4 text-2xl font-bold">CasaHome</h1>
+          <p class="text-sm text-slate-500">Boarding House Management</p>
+        </div>
+
+        <!-- ROLE SELECT -->
+        <div id="roleScreen" class="glass rounded-3xl border border-slate-200 p-6 sm:p-8 fade-in">
+          <div class="text-center">
+            <p class="text-sm font-semibold uppercase tracking-wider text-emerald-600">
+              Welcome
+            </p>
+            <h2 class="mt-2 text-3xl font-bold tracking-tight">Sign in to CasaHome</h2>
+            <p class="mt-2 text-sm leading-6 text-slate-500">
+              Select how you want to access the system.
+            </p>
+          </div>
+
+          <div class="mt-8 space-y-4">
+            <button
+              type="button"
+              onclick="showLogin('admin')"
+              class="w-full rounded-2xl border border-slate-200 bg-white p-5 text-left transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+            >
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 shrink-0 rounded-xl bg-slate-950 text-white flex items-center justify-center">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                    <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.8 1.8-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20H10.97v-.1a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34L8 18.74l-1.8-1.8.06-.06A1.7 1.7 0 0 0 6.6 15a1.7 1.7 0 0 0-1.56-1.03H4.96v-2.55h.08A1.7 1.7 0 0 0 6.6 10.4a1.7 1.7 0 0 0-.34-1.88L6.2 8.46 8 6.66l.06.06a1.7 1.7 0 0 0 1.88.34 1.7 1.7 0 0 0 1.03-1.56v-.08h2.55v.08a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.8 1.8-.06.06a1.7 1.7 0 0 0-.34 1.88 1.7 1.7 0 0 0 1.56 1.03h.08v2.55h-.08A1.7 1.7 0 0 0 19.4 15Z"/>
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <h3 class="font-bold text-slate-900">Admin Login</h3>
+                  <p class="mt-1 text-sm text-slate-500">Manage rooms, customers, and billing.</p>
+                </div>
+                <span class="text-slate-300 text-xl">›</span>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onclick="showLogin('user')"
+              class="w-full rounded-2xl border border-slate-200 bg-white p-5 text-left transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+            >
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 shrink-0 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="8" r="3.2"/>
+                    <path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <h3 class="font-bold text-slate-900">User Login</h3>
+                  <p class="mt-1 text-sm text-slate-500">View your room and payment information.</p>
+                </div>
+                <span class="text-slate-300 text-xl">›</span>
+              </div>
+            </button>
+          </div>
+
+          <p class="mt-8 text-center text-xs text-slate-400">
+            CasaHome Web-Based Boarding House Management System
+          </p>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <div id="loginScreen" class="hidden glass rounded-3xl border border-slate-200 p-6 sm:p-8 fade-in">
+          <button
+            type="button"
+            onclick="showRoles()"
+            class="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900"
+          >
+            <span>←</span> Back
+          </button>
+
+          <div class="mt-7">
+            <div id="loginIcon" class="w-12 h-12 rounded-xl bg-slate-950 text-white flex items-center justify-center">
+              <span id="loginIconText" class="font-bold">A</span>
+            </div>
+
+            <p id="loginTypeLabel" class="mt-6 text-sm font-semibold text-emerald-600">
+              ADMIN ACCESS
+            </p>
+            <h2 id="loginTitle" class="mt-1 text-3xl font-bold tracking-tight">
+              Admin Login
+            </h2>
+            <p id="loginDescription" class="mt-2 text-sm leading-6 text-slate-500">
+              Sign in with your administrator account.
+            </p>
+          </div>
+
+          <form id="loginForm" class="mt-8 space-y-5">
+            <div>
+              <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">
+                Email address
+              </label>
+              <input
+                id="email"
+                type="email"
+                autocomplete="email"
+                required
+                placeholder="you@example.com"
+                class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+              >
             </div>
 
             <div>
-                <h1>CasaHome</h1>
-                <span>Management System</span>
+              <div class="flex items-center justify-between mb-2">
+                <label for="password" class="block text-sm font-semibold text-slate-700">
+                  Password
+                </label>
+              </div>
+
+              <div class="relative">
+                <input
+                  id="password"
+                  type="password"
+                  autocomplete="current-password"
+                  required
+                  placeholder="Enter your password"
+                  class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 pr-12 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+                >
+                <button
+                  type="button"
+                  onclick="togglePassword()"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 hover:text-slate-700"
+                  aria-label="Show or hide password"
+                >
+                  <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/>
+                    <circle cx="12" cy="12" r="2.5"/>
+                  </svg>
+                </button>
+              </div>
             </div>
+
+            <div id="errorBox" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"></div>
+
+            <button
+              id="loginButton"
+              type="submit"
+              class="w-full rounded-xl bg-emerald-500 px-4 py-3.5 font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-600 focus:outline-none focus:ring-4 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <span id="loginButtonContent" class="flex items-center justify-center gap-2">
+                Sign in
+              </span>
+            </button>
+          </form>
+
+          <p id="loginHint" class="mt-6 text-center text-xs leading-5 text-slate-400">
+            Admin accounts must have <b>role = admin</b> in the profiles table.
+          </p>
         </div>
 
-        <nav class="sidebar-nav">
+      </div>
+    </section>
+  </main>
 
-            <a href="index.html" class="nav-link active">
-                <span>▦</span>
-                Dashboard
-            </a>
+  <script src="assets/js/supabase.js"></script>
 
-            <a href="rooms.html" class="nav-link">
-                <span>▤</span>
-                Rooms
-            </a>
+  <script>
+    let selectedRole = null;
 
-            <a href="tenants.html" class="nav-link">
-                <span>♙</span>
-                Customers
-            </a>
+    function showLogin(role) {
+      selectedRole = role;
 
-            <a href="billing.html" class="nav-link">
-                <span>₱</span>
-                Billing
-            </a>
+      document.getElementById("roleScreen").classList.add("hidden");
+      document.getElementById("loginScreen").classList.remove("hidden");
 
-        </nav>
+      const admin = role === "admin";
 
-        <div class="sidebar-footer">
-            <strong>CasaHome</strong>
-            <small>Web-based prototype</small>
-        </div>
+      document.getElementById("loginTypeLabel").textContent =
+        admin ? "ADMIN ACCESS" : "TENANT ACCESS";
 
-    </aside>
+      document.getElementById("loginTitle").textContent =
+        admin ? "Admin Login" : "User Login";
 
+      document.getElementById("loginDescription").textContent =
+        admin
+          ? "Sign in with your administrator account."
+          : "Sign in with your CasaHome user account.";
 
-    <!-- Main -->
-    <main class="main-content">
+      document.getElementById("loginIcon").className =
+        admin
+          ? "w-12 h-12 rounded-xl bg-slate-950 text-white flex items-center justify-center"
+          : "w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center";
 
-        <!-- Header -->
-        <header class="topbar">
+      document.getElementById("loginIconText").textContent = admin ? "A" : "U";
 
-            <div>
-                <p class="eyebrow">Overview</p>
+      document.getElementById("loginHint").innerHTML =
+        admin
+          ? 'Admin accounts must have <b>role = admin</b> in the profiles table.'
+          : 'User accounts must have <b>role = user</b> and a linked <b>tenant_id</b> in the profiles table.';
 
-                <h2>Executive Dashboard</h2>
-
-                <p class="subtitle">
-                    Monitor rooms, customers, payments, and overall occupancy.
-                </p>
-            </div>
-
-            <div class="dashboard-actions">
-
-                <a href="tenants.html" class="btn btn-primary">
-                    View Customers
-                </a>
-
-                <a href="admin-login.html" class="btn btn-admin">
-                    🔐 Admin Login
-                </a>
-
-            </div>
-
-        </header>
-
-
-        <!-- Metrics -->
-        <section class="metrics-grid">
-
-            <article class="metric-card">
-
-                <div class="metric-icon">
-                    ▤
-                </div>
-
-                <div>
-                    <span>Total Rooms</span>
-                    <strong id="totalRooms">0</strong>
-                </div>
-
-            </article>
-
-
-            <article class="metric-card">
-
-                <div class="metric-icon">
-                    ◉
-                </div>
-
-                <div>
-                    <span>Occupancy Rate</span>
-                    <strong id="occupancy">0%</strong>
-                </div>
-
-            </article>
-
-
-            <article class="metric-card">
-
-                <div class="metric-icon">
-                    ₱
-                </div>
-
-                <div>
-                    <span>Total Revenue</span>
-                    <strong id="revenue">₱0.00</strong>
-                </div>
-
-            </article>
-
-
-            <article class="metric-card">
-
-                <div class="metric-icon warning">
-                    !
-                </div>
-
-                <div>
-                    <span>Pending Balances</span>
-                    <strong id="pending">₱0.00</strong>
-                </div>
-
-            </article>
-
-        </section>
-
-
-        <!-- Transactions -->
-        <section class="card">
-
-            <div class="section-header">
-
-                <div>
-                    <h3>Recent Transactions</h3>
-
-                    <p>
-                        Latest payment activity recorded in the system.
-                    </p>
-                </div>
-
-                <a href="billing.html" class="text-link">
-                    View billing →
-                </a>
-
-            </div>
-
-
-            <div class="table-wrapper">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-                            <th>Customer</th>
-                            <th>Room</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody id="transactions">
-
-                        <tr>
-
-                            <td colspan="5" class="empty-state">
-                                Loading transactions...
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </section>
-
-    </main>
-
-</div>
-
-
-<script src="assets/js/supabase.js"></script>
-
-
-<script>
-
-document.addEventListener("DOMContentLoaded", async () => {
-
-    const totalRooms =
-        document.getElementById("totalRooms");
-
-    const occupancy =
-        document.getElementById("occupancy");
-
-    const revenue =
-        document.getElementById("revenue");
-
-    const pending =
-        document.getElementById("pending");
-
-    const transactions =
-        document.getElementById("transactions");
-
-
-    function renderTransactions(payments) {
-
-        if (!payments || !payments.length) {
-
-            transactions.innerHTML = `
-                <tr>
-                    <td colspan="5" class="empty-state">
-                        No transactions found.
-                    </td>
-                </tr>
-            `;
-
-            return;
-        }
-
-
-        transactions.innerHTML = payments
-            .slice(0, 10)
-            .map(payment => {
-
-                const customer =
-                    payment.tenants?.full_name ||
-                    "Unknown Customer";
-
-                const room =
-                    payment.tenants?.rooms?.room_number ||
-                    "—";
-
-                return `
-                    <tr>
-
-                        <td>
-                            <strong>
-                                ${esc(customer)}
-                            </strong>
-                        </td>
-
-                        <td>
-                            ${esc(room)}
-                        </td>
-
-                        <td>
-                            ${money(payment.amount)}
-                        </td>
-
-                        <td>
-                            <span class="badge ${statusClass(payment.status)}">
-                                ${esc(payment.status)}
-                            </span>
-                        </td>
-
-                        <td>
-                            ${date(payment.payment_date)}
-                        </td>
-
-                    </tr>
-                `;
-
-            })
-            .join("");
-
+      document.getElementById("email").focus();
+      clearError();
     }
 
-
-    async function loadDashboard() {
-
-        try {
-
-            const data =
-                await fetchDashboardData();
-
-            totalRooms.textContent =
-                data.metrics.totalRooms;
-
-            occupancy.textContent =
-                `${data.metrics.occupancyRate.toFixed(1)}%`;
-
-            revenue.textContent =
-                money(data.metrics.revenue);
-
-            pending.textContent =
-                money(data.metrics.pending);
-
-            renderTransactions(
-                data.payments
-            );
-
-        } catch (error) {
-
-            console.error(
-                "Dashboard error:",
-                error
-            );
-
-            transactions.innerHTML = `
-                <tr>
-                    <td colspan="5" class="empty-state error">
-                        Unable to load dashboard data.
-                    </td>
-                </tr>
-            `;
-
-        }
-
+    function showRoles() {
+      selectedRole = null;
+      document.getElementById("loginScreen").classList.add("hidden");
+      document.getElementById("roleScreen").classList.remove("hidden");
+      clearError();
     }
 
+    function clearError() {
+      const box = document.getElementById("errorBox");
+      box.textContent = "";
+      box.classList.add("hidden");
+    }
 
-    await loadDashboard();
+    function showError(message) {
+      const box = document.getElementById("errorBox");
+      box.textContent = message;
+      box.classList.remove("hidden");
+    }
 
+    function togglePassword() {
+      const input = document.getElementById("password");
+      input.type = input.type === "password" ? "text" : "password";
+    }
 
-    subscribeToPayments(
-        loadDashboard
-    );
+    function setLoading(loading) {
+      const button = document.getElementById("loginButton");
+      const content = document.getElementById("loginButtonContent");
 
+      button.disabled = loading;
 
-    subscribeToRooms(
-        loadDashboard
-    );
+      if (loading) {
+        content.innerHTML = '<span class="spinner"></span><span>Signing in...</span>';
+      } else {
+        content.textContent = "Sign in";
+      }
+    }
 
-});
+    async function redirectIfAlreadyLoggedIn() {
+      try {
+        const client = await getClient();
+        const { data: { user } } = await client.auth.getUser();
 
-</script>
+        if (!user) return;
 
+        const { data: profile } = await client
+          .from("profiles")
+          .select("role,tenant_id")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (profile?.role === "admin") {
+          window.location.replace("admin-index.html");
+        } else if (profile?.role === "user") {
+          window.location.replace("user-dashboard.html");
+        }
+      } catch (error) {
+        console.warn("Session check skipped:", error);
+      }
+    }
+
+    async function handleLogin(event) {
+      event.preventDefault();
+      clearError();
+
+      if (!selectedRole) {
+        showError("Please select a login type first.");
+        return;
+      }
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        showError("Please enter your email and password.");
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const client = await getClient();
+
+        const { data, error } = await client.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) throw error;
+
+        const user = data.user;
+
+        const { data: profile, error: profileError } = await client
+          .from("profiles")
+          .select("role,tenant_id")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (profileError) throw profileError;
+
+        if (!profile) {
+          await client.auth.signOut();
+          throw new Error("Your account does not have a profile record yet.");
+        }
+
+        if (selectedRole === "admin" && profile.role !== "admin") {
+          await client.auth.signOut();
+          throw new Error("This account is not registered as an administrator.");
+        }
+
+        if (selectedRole === "user" && profile.role !== "user") {
+          await client.auth.signOut();
+          throw new Error("This account is not registered as a user.");
+        }
+
+        if (selectedRole === "user" && !profile.tenant_id) {
+          await client.auth.signOut();
+          throw new Error("Your account is not linked to a tenant record yet.");
+        }
+
+        window.location.replace(
+          selectedRole === "admin"
+            ? "admin-index.html"
+            : "user-dashboard.html"
+        );
+
+      } catch (error) {
+        console.error(error);
+        showError(error?.message || "Login failed. Please check your credentials.");
+        setLoading(false);
+      }
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", handleLogin);
+
+    redirectIfAlreadyLoggedIn();
+  </script>
 </body>
 </html>
