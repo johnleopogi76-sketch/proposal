@@ -1,1305 +1,911 @@
-<!DOCTYPE html>    <html lang="en">    
-<head>    
-    <meta charset="UTF-8">    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
-    <meta name="description" content="CasaHome Tenant Dashboard">    
-    <title>CasaHome — Tenant Dashboard</title>    <link rel="stylesheet" href="style.css">    
-
-<style>    
-    .btn-user {    
-        background: #10b981;    
-        color: #ffffff;    
-        border: 1px solid #10b981;    
-    }    
-
-    .btn-user:hover {    
-        background: #059669;    
-        border-color: #059669;    
-    }    
-
-    .dashboard-actions {    
-        display: flex;    
-        gap: 10px;    
-        align-items: center;    
-        flex-wrap: wrap;    
-    }    
-
-    .user-badge {    
-        display: inline-flex;    
-        align-items: center;    
-        gap: 6px;    
-        padding: 6px 10px;    
-        border-radius: 999px;    
-        background: #ecfdf5;    
-        color: #047857;    
-        font-size: 12px;    
-        font-weight: 800;    
-        margin-bottom: 8px;    
-    }    
-
-    .info-grid {    
-        display: grid;    
-        grid-template-columns: repeat(2, minmax(0, 1fr));    
-        gap: 16px;    
-        margin-top: 16px;    
-    }    
-
-    .info-item {    
-        background: #f8fafc;    
-        border: 1px solid #e2e8f0;    
-        border-radius: 12px;    
-        padding: 14px 16px;    
-    }    
-
-    .info-item span {    
-        display: block;    
-        color: #64748b;    
-        font-size: 12px;    
-        font-weight: 700;    
-        margin-bottom: 5px;    
-    }    
-
-    .info-item strong {    
-        display: block;    
-        color: #0f172a;    
-        font-size: 15px;    
-    }    
-
-    .welcome-card {    
-        background: linear-gradient(    
-            135deg,    
-            #0f172a 0%,    
-            #172033 100%    
-        );    
-        color: white;    
-        border-radius: 16px;    
-        padding: 22px;    
-        margin-bottom: 20px;    
-    }    
-
-    .welcome-card h3 {    
-        color: white;    
-        margin: 0;    
-    }    
-
-    .welcome-card p {    
-        color: #94a3b8;    
-        margin-top: 6px;    
-    }    
-
-    @media (max-width: 640px) {    
-
-        .dashboard-actions {    
-            width: 100%;    
-        }    
-
-        .dashboard-actions .btn {    
-            flex: 1;    
-            text-align: center;    
-        }    
-
-        .info-grid {    
-            grid-template-columns: 1fr;    
-        }    
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>CasaHome — Login</title>    <script src="https://cdn.tailwindcss.com"></script>    <style>  
+    * {  
+      box-sizing: border-box;  
+    }  
+  
+    body {  
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;  
+    }  
+  
+    /* CasaHome CH logo */  
+    .ch-logo {  
+      position: relative;  
+      width: 76px;  
+      height: 82px;  
+      flex-shrink: 0;  
+      font-family: Georgia, "Times New Roman", serif;  
+      color: #ffffff;  
+    }  
+  
+    .ch-logo .c {  
+      position: absolute;  
+      top: -7px;  
+      left: 0;  
+      font-size: 72px;  
+      line-height: 1;  
+      font-weight: 700;  
+      letter-spacing: -9px;  
+    }  
+  
+    .ch-logo .h {  
+      position: absolute;  
+      bottom: -7px;  
+      right: 0;  
+      font-size: 72px;  
+      line-height: 1;  
+      font-weight: 700;  
+      letter-spacing: -8px;  
+    }  
+  
+    .ch-logo-small {  
+      position: relative;  
+      width: 58px;  
+      height: 62px;  
+      flex-shrink: 0;  
+      font-family: Georgia, "Times New Roman", serif;  
+      color: #ffffff;  
+    }  
+  
+    .ch-logo-small .c {  
+      position: absolute;  
+      top: -5px;  
+      left: 0;  
+      font-size: 55px;  
+      line-height: 1;  
+      font-weight: 700;  
+      letter-spacing: -7px;  
+    }  
+  
+    .ch-logo-small .h {  
+      position: absolute;  
+      bottom: -5px;  
+      right: 0;  
+      font-size: 55px;  
+      line-height: 1;  
+      font-weight: 700;  
+      letter-spacing: -6px;  
+    }  
+  
+    .glass {  
+      background: rgba(255, 255, 255, 0.97);  
+      box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12);  
+    }  
+  
+    .fade-in {  
+      animation: fadeIn .25s ease-out;  
+    }  
+  
+    @keyframes fadeIn {  
+      from {  
+        opacity: 0;  
+        transform: translateY(6px);  
+      }  
+      to {  
+        opacity: 1;  
+        transform: translateY(0);  
+      }  
+    }  
+  
+    .spinner {  
+      width: 18px;  
+      height: 18px;  
+      border: 2px solid rgba(255,255,255,.45);  
+      border-top-color: white;  
+      border-radius: 999px;  
+      animation: spin .7s linear infinite;  
+    }  
+  
+    @keyframes spin {  
+      to {  
+        transform: rotate(360deg);  
+      }  
+    }  
+  </style>  </head>  <body class="min-h-screen bg-slate-50 text-slate-900">    <main class="min-h-screen grid lg:grid-cols-2">  <!-- =========================================================  
+     LEFT BRAND PANEL  
+     ========================================================= -->  
+<section class="hidden lg:flex bg-slate-950 relative overflow-hidden items-center justify-center p-12">  
+
+  <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl"></div>  
+  <div class="absolute -bottom-40 -right-32 w-[30rem] h-[30rem] rounded-full bg-emerald-400/10 blur-3xl"></div>  
+
+  <div class="relative max-w-lg text-white">  
+
+    <!-- LOGO + BRAND -->  
+    <div class="flex items-center gap-5 mb-12">  
+
+      <div class="ch-logo" aria-label="CasaHome logo">  
+        <span class="c">C</span>  
+        <span class="h">H</span>  
+      </div>  
+
+      <div>  
+        <h1 class="text-3xl font-bold tracking-tight">  
+          CasaHome  
+        </h1>  
+        <p class="mt-1 text-base text-slate-400">  
+          Management System  
+        </p>  
+      </div>  
+
+    </div>  
+
+    <h2 class="text-5xl font-bold leading-tight tracking-tight">  
+      Simple management.<br>  
+      Better living.  
+    </h2>  
+
+    <p class="mt-6 text-lg leading-8 text-slate-400">  
+      A simple digital platform for managing rooms, tenants,  
+      billing, and boarding house information.  
+    </p>  
+
+    <!-- FEATURE CARDS -->  
+    <div class="mt-10 grid grid-cols-2 gap-4">  
+
+      <div class="rounded-2xl border border-white/10 bg-white/5 p-5">  
+        <p class="text-2xl font-bold text-emerald-400">  
+          Rooms  
+        </p>  
+        <p class="mt-1 text-sm text-slate-400">  
+          Easy room management  
+        </p>  
+      </div>  
+
+      <div class="rounded-2xl border border-white/10 bg-white/5 p-5">  
+        <p class="text-2xl font-bold text-emerald-400">  
+          Billing  
+        </p>  
+        <p class="mt-1 text-sm text-slate-400">  
+          Track payments  
+        </p>  
+      </div>  
+
+    </div>  
+  </div>  
+</section>  
+
+
+<!-- =========================================================  
+     RIGHT LOGIN AREA  
+     ========================================================= -->  
+<section class="flex items-center justify-center p-5 sm:p-8">  
+
+  <div class="w-full max-w-md">  
+
+    <!-- MOBILE BRAND -->  
+    <div class="lg:hidden text-center mb-8">  
+
+      <div class="mx-auto w-20 h-20 rounded-2xl bg-slate-950 flex items-center justify-center shadow-lg">  
+        <div class="ch-logo-small" aria-label="CasaHome logo">  
+          <span class="c">C</span>  
+          <span class="h">H</span>  
+        </div>  
+      </div>  
+
+      <h1 class="mt-4 text-2xl font-bold">  
+        CasaHome  
+      </h1>  
+
+      <p class="text-sm text-slate-500">  
+        Management System  
+      </p>  
+
+    </div>  
+
+
+    <!-- =====================================================  
+         ROLE SELECTION  
+         ===================================================== -->  
+    <div  
+      id="roleScreen"  
+      class="glass rounded-3xl border border-slate-200 p-6 sm:p-8 fade-in"  
+    >  
+
+      <div class="text-center">  
+
+        <p class="text-sm font-semibold uppercase tracking-wider text-emerald-600">  
+          Welcome  
+        </p>  
+
+        <h2 class="mt-2 text-3xl font-bold tracking-tight">  
+          Sign in to CasaHome  
+        </h2>  
+
+        <p class="mt-2 text-sm leading-6 text-slate-500">  
+          Select how you want to access the system.  
+        </p>  
+
+      </div>  
+
 
-    }    
-</style>
-
-</head>    <body>    <div class="app">    <!-- =========================================================    
-     SIDEBAR    
-     ========================================================= -->    
-
-<aside class="sidebar">    
-
-    <div class="brand">    
-
-        <div class="brand-icon">    
-            <span class="logo-c">C</span>    
-            <span class="logo-h">H</span>    
-        </div>    
-
-        <div>    
-            <h1>CasaHome</h1>    
-            <span>Management System</span>    
-        </div>    
-
-    </div>    
-
-
-    <nav class="sidebar-nav">    
-
-        <a href="user-dashboard.html" class="nav-link active">    
-            <span>▦</span>    
-            Dashboard    
-        </a>    
-
-        <a href="#roomInformation" class="nav-link">    
-            <span>▤</span>    
-            My Room    
-        </a>    
-
-        <a href="#payments" class="nav-link">    
-            <span>₱</span>    
-            My Payments    
-        </a>    
-
-        <a href="#myAccount" class="nav-link">    
-            <span>♙</span>    
-            My Profile    
-        </a>    
-
-    </nav>    
-
-
-    <div class="sidebar-footer">    
-
-        <strong>CasaHome</strong>    
-
-        <small>    
-            Tenant Portal    
-        </small>    
-
-    </div>    
-
-</aside>    
-
-
-<!-- =========================================================    
-     MAIN CONTENT    
-     ========================================================= -->    
-
-<main class="main-content">    
-
-
-    <!-- =====================================================    
-         TOPBAR    
-         ===================================================== -->    
-
-    <header class="topbar">    
-
-        <div>    
-
-            <div class="user-badge">    
-                👤 TENANT    
-            </div>    
-
-            <p class="eyebrow">    
-                Tenant Overview    
-            </p>    
-
-            <h2>    
-                My Dashboard    
-            </h2>    
-
-            <p class="subtitle">    
-                View your room, payments, and boarding house information.    
-            </p>    
-
-        </div>    
-
-
-        <div class="dashboard-actions">    
-
-            <button    
-                id="logoutBtn"    
-                type="button"    
-                class="btn btn-user">    
-
-                Logout    
-
-            </button>    
-
-        </div>    
-
-    </header>    
-
-
-    <!-- =====================================================    
-         WELCOME CARD    
-         ===================================================== -->    
-
-    <section class="welcome-card">    
-
-        <p    
-            style="    
-                color:#6ee7b7;    
-                font-size:12px;    
-                font-weight:800;    
-                margin:0;    
-                text-transform:uppercase;    
-                letter-spacing:.06em;    
-            ">    
-
-            Welcome back    
-
-        </p>    
-
-        <h3    
-            id="welcomeName"    
-            style="    
-                font-size:24px;    
-                margin-top:5px;    
-            ">    
-
-            Loading...    
-
-        </h3>    
-
-        <p>    
-            Here's your current CasaHome account overview.    
-        </p>    
-
-    </section>    
-
-
-    <!-- =====================================================    
-         METRICS    
-         ===================================================== -->    
-
-    <section class="metrics-grid">    
-
-
-        <!-- MY ROOM -->    
-
-        <article class="metric-card">    
-
-            <div class="metric-icon">    
-                ▤    
-            </div>    
-
-            <div>    
-
-                <span>    
-                    My Room    
-                </span>    
-
-                <strong id="roomNumber">    
-                    —    
-                </strong>    
-
-            </div>    
-
-        </article>    
-
-
-        <!-- MONTHLY RENT -->    
-
-        <article class="metric-card">    
-
-            <div class="metric-icon">    
-                ₱    
-            </div>    
-
-            <div>    
-
-                <span>    
-                    Monthly Rent    
-                </span>    
-
-                <strong id="monthlyRent">    
-                    ₱0.00    
-                </strong>    
-
-            </div>    
-
-        </article>    
-
-
-        <!-- TOTAL PAID -->    
-
-        <article class="metric-card">    
-
-            <div class="metric-icon">    
-                ✓    
-            </div>    
-
-            <div>    
-
-                <span>    
-                    Total Paid    
-                </span>    
-
-                <strong id="totalPaid">    
-                    ₱0.00    
-                </strong>    
-
-            </div>    
-
-        </article>    
-
-
-        <!-- OUTSTANDING -->    
-
-        <article class="metric-card">    
-
-            <div class="metric-icon warning">    
-                !    
-            </div>    
-
-            <div>    
-
-                <span>    
-                    Outstanding    
-                </span>    
-
-                <strong id="outstanding">    
-                    ₱0.00    
-                </strong>    
-
-            </div>    
-
-        </article>    
-
-    </section>    
-
-
-    <!-- =====================================================    
-         RECENT PAYMENTS    
-         ===================================================== -->    
-
-    <section    
-        id="payments"    
-        class="card">    
-
-        <div class="section-header">    
-
-            <div>    
-
-                <h3>    
-                    My Recent Payments    
-                </h3>    
-
-                <p>    
-                    Your latest payment activity.    
-                </p>    
-
-            </div>    
-
-        </div>    
-
-
-        <div class="table-wrapper">    
-
-            <table>    
-
-                <thead>    
-
-                    <tr>    
-
-                        <th>    
-                            Date    
-                        </th>    
-
-                        <th>    
-                            Amount    
-                        </th>    
-
-                        <th>    
-                            Status    
-                        </th>    
-
-                    </tr>    
-
-                </thead>    
-
-
-                <tbody id="paymentsTable">    
-
-                    <tr>    
-
-                        <td    
-                            colspan="3"    
-                            class="empty-state">    
-
-                            Loading payments...    
-
-                        </td>    
-
-                    </tr>    
-
-                </tbody>    
-
-            </table>    
-
-        </div>    
-
-    </section>    
-
-
-    <!-- =====================================================    
-         ROOM INFORMATION    
-         ===================================================== -->    
-
-    <section    
-        id="roomInformation"    
-        class="card"    
-        style="margin-top:20px;">    
-
-        <div class="section-header">    
-
-            <div>    
-
-                <h3>    
-                    My Room Information    
-                </h3>    
-
-                <p>    
-                    Information about your current room assignment.    
-                </p>    
-
-            </div>    
-
-        </div>    
-
-
-        <div class="info-grid">    
-
-
-            <div class="info-item">    
-
-                <span>    
-                    Room Number    
-                </span>    
-
-                <strong id="detailRoomNumber">    
-                    —    
-                </strong>    
-
-            </div>    
-
-
-            <div class="info-item">    
-
-                <span>    
-                    Room Type    
-                </span>    
-
-                <strong id="detailRoomType">    
-                    —    
-                </strong>    
-
-            </div>    
-
-
-            <div class="info-item">    
-
-                <span>    
-                    Monthly Rate    
-                </span>    
-
-                <strong id="detailRoomRate">    
-                    ₱0.00    
-                </strong>    
-
-            </div>    
-
-
-            <div class="info-item">    
-
-                <span>    
-                    Room Status    
-                </span>    
-
-                <strong id="detailRoomStatus">    
-                    —    
-                </strong>    
-
-            </div>    
-
-
-            <div class="info-item">    
-
-                <span>    
-                    Move-in Date    
-                </span>    
-
-                <strong id="moveInDate">    
-                    —    
-                </strong>    
-
-            </div>    
-
-
-            <div class="info-item">    
-
-                <span>    
-                    Tenant Status    
-                </span>    
-
-                <strong id="tenantStatus">    
-                    —    
-                </strong>    
-
-            </div>    
-
-        </div>    
-
-    </section>    
-
-
-    <!-- =====================================================    
-         ACCOUNT INFORMATION    
-         ===================================================== -->    
-
-    <section    
-        id="myAccount"    
-        class="card"    
-        style="margin-top:20px;">    
-
-        <div class="section-header">    
-
-            <div>    
-
-                <h3>    
-                    My Account    
-                </h3>    
-
-                <p>    
-                    Currently signed in account information.    
-                </p>    
-
-            </div>    
-
-        </div>    
-
-
-        <div    
-            style="    
-                background:#f8fafc;    
-                border:1px solid #e2e8f0;    
-                border-radius:12px;    
-                padding:16px;    
-                margin-top:12px;    
-            ">    
-
-            <strong id="tenantName">    
-                Loading...    
-            </strong>    
-
-
-            <div    
-                id="tenantEmail"    
-                style="    
-                    color:#64748b;    
-                    font-size:13px;    
-                    margin-top:5px;    
-                ">    
-
-                Checking account...    
-
-            </div>    
-
-
-            <div    
-                style="    
-                    color:#047857;    
-                    font-size:13px;    
-                    font-weight:700;    
-                    margin-top:8px;    
-                ">    
-
-                Tenant access    
-
-            </div>    
-
-        </div>    
-
-    </section>    
-
-</main>
-
-</div>    <!-- =========================================================    
-     SUPABASE    
-     ========================================================= -->    <script src="assets/js/supabase.js"></script>    <script>    
-    
-document.addEventListener("DOMContentLoaded", async () => {    
-    
-    
-    /* =========================================================    
-       ELEMENTS    
-       ========================================================= */    
-    
-    const welcomeName =    
-        document.getElementById("welcomeName");    
-    
-    const roomNumber =    
-        document.getElementById("roomNumber");    
-    
-    const monthlyRent =    
-        document.getElementById("monthlyRent");    
-    
-    const totalPaid =    
-        document.getElementById("totalPaid");    
-    
-    const outstanding =    
-        document.getElementById("outstanding");    
-    
-    const paymentsTable =    
-        document.getElementById("paymentsTable");    
-    
-    const detailRoomNumber =    
-        document.getElementById("detailRoomNumber");    
-    
-    const detailRoomType =    
-        document.getElementById("detailRoomType");    
-    
-    const detailRoomRate =    
-        document.getElementById("detailRoomRate");    
-    
-    const detailRoomStatus =    
-        document.getElementById("detailRoomStatus");    
-    
-    const moveInDate =    
-        document.getElementById("moveInDate");    
-    
-    const tenantStatus =    
-        document.getElementById("tenantStatus");    
-    
-    const tenantName =    
-        document.getElementById("tenantName");    
-    
-    const tenantEmail =    
-        document.getElementById("tenantEmail");    
-    
-    const logoutBtn =    
-        document.getElementById("logoutBtn");    
-    
-    
-    /* =========================================================    
-       CURRENT TENANT    
-       ========================================================= */    
-    
-    let currentTenantId = null;    
-    
-    
-    /* =========================================================    
-       CHECK USER ACCESS    
-       ========================================================= */    
-    
-    async function checkUserAccess() {    
-    
-        try {    
-    
-            const client =    
-                await getClient();    
-    
-    
-            const {    
-                data: { session }    
-            } = await client.auth.getSession();    
-    
-    
-            /*    
-             * No session    
-             */    
-    
-            if (!session) {    
-    
-                window.location.href =    
-                    "index.html";    
-    
-                return false;    
-    
-            }    
-    
-    
-            /*    
-             * Get profile    
-             */    
-    
-            const {    
-                data: profile,    
-                error    
-            } = await client    
-                .from("profiles")    
-                .select("role, tenant_id")    
-                .eq("id", session.user.id)    
-                .single();    
-    
-    
-            if (    
-                error ||    
-                !profile    
-            ) {    
-    
-                await client.auth.signOut();    
-    
-                window.location.href =    
-                    "index.html";    
-    
-                return false;    
-    
-            }    
-    
-    
-            /*    
-             * Must be a user    
-             */    
-    
-            if (    
-                profile.role !== "user"    
-            ) {    
-    
-                await client.auth.signOut();    
-    
-                window.location.href =    
-                    "index.html";    
-    
-                return false;    
-    
-            }    
-    
-    
-            /*    
-             * Must have tenant    
-             */    
-    
-            if (    
-                !profile.tenant_id    
-            ) {    
-    
-                throw new Error(    
-                    "Your account is not linked to a tenant record."    
-                );    
-    
-            }    
-    
-    
-            currentTenantId =    
-                profile.tenant_id;    
-    
-    
-            /*    
-             * Show email    
-             */    
-    
-            tenantEmail.textContent =    
-                session.user.email ||    
-                "No email available";    
-    
-    
-            return true;    
-    
-        } catch (error) {    
-    
-            console.error(    
-                "User authentication error:",    
-                error    
-            );    
-    
-            alert(    
-                error?.message ||    
-                "Unable to verify your account."    
-            );    
-    
-            window.location.href =    
-                "index.html";    
-    
-            return false;    
-    
-        }    
-    
-    }    
-    
-    
-    /* =========================================================    
-       LOAD TENANT    
-       ========================================================= */    
-    
-    async function loadTenant() {    
-    
-        const client =    
-            await getClient();    
-    
-    
-        /*    
-         * IMPORTANT:    
-         *    
-         * Only request the tenant whose ID    
-         * belongs to the logged-in profile.    
-         */    
-    
-        const {    
-            data: tenant,    
-            error    
-        } = await client    
-            .from("tenants")    
-            .select(`    
-                id,    
-                full_name,    
-                contact_number,    
-                room_id,    
-                move_in_date,    
-                status,    
-                rooms (    
-                    id,    
-                    room_number,    
-                    room_type,    
-                    rate,    
-                    status    
-                )    
-            `)    
-            .eq(    
-                "id",    
-                currentTenantId    
-            )    
-            .single();    
-    
-    
-        if (error) {    
-            throw error;    
-        }    
-    
-    
-        return tenant;    
-    
-    }    
-    
-    
-    /* =========================================================    
-       LOAD PAYMENTS    
-       ========================================================= */    
-    
-    async function loadPayments() {    
-    
-        const client =    
-            await getClient();    
-    
-    
-        /*    
-         * IMPORTANT:    
-         *    
-         * Only retrieve payments belonging    
-         * to the logged-in tenant.    
-         */    
-    
-        const {    
-            data: payments,    
-            error    
-        } = await client    
-            .from("payments")    
-            .select(`    
-                id,    
-                tenant_id,    
-                amount,    
-                status,    
-                payment_date,    
-                created_at    
-            `)    
-            .eq(    
-                "tenant_id",    
-                currentTenantId    
-            )    
-            .order(    
-                "payment_date",    
-                {    
-                    ascending: false    
-                }    
-            );    
-    
-    
-        if (error) {    
-            throw error;    
-        }    
-    
-    
-        return payments || [];    
-    
-    }    
-    
-    
-    /* =========================================================    
-       RENDER TENANT    
-       ========================================================= */    
-    
-    function renderTenant(tenant) {    
-    
-        const room =    
-            tenant.rooms;    
-    
-    
-        /*    
-         * Name    
-         */    
-    
-        welcomeName.textContent =    
-            `Welcome back, ${tenant.full_name}`;    
-    
-    
-        tenantName.textContent =    
-            tenant.full_name;    
-    
-    
-        /*    
-         * Room    
-         */    
-    
-        if (room) {    
-    
-            roomNumber.textContent =    
-                room.room_number;    
-    
-    
-            monthlyRent.textContent =    
-                money(room.rate);    
-    
-    
-            detailRoomNumber.textContent =    
-                room.room_number;    
-    
-    
-            detailRoomType.textContent =    
-                room.room_type;    
-    
-    
-            detailRoomRate.textContent =    
-                money(room.rate);    
-    
-    
-            detailRoomStatus.textContent =    
-                room.status;    
-    
-        } else {    
-    
-            roomNumber.textContent =    
-                "Unassigned";    
-    
-    
-            monthlyRent.textContent =    
-                "₱0.00";    
-    
-    
-            detailRoomNumber.textContent =    
-                "No room assigned";    
-    
-    
-            detailRoomType.textContent =    
-                "—";    
-    
-    
-            detailRoomRate.textContent =    
-                "₱0.00";    
-    
-    
-            detailRoomStatus.textContent =    
-                "—";    
-    
-        }    
-    
-    
-        /*    
-         * Move-in    
-         */    
-    
-        moveInDate.textContent =    
-            date(tenant.move_in_date);    
-    
-    
-        /*    
-         * Tenant status    
-         */    
-    
-        tenantStatus.innerHTML = `    
-            <span class="badge ${statusClass(tenant.status)}">    
-                ${esc(tenant.status)}    
-            </span>    
-        `;    
-    
-    }    
-    
-    
-    /* =========================================================    
-       RENDER PAYMENTS    
-       ========================================================= */    
-    
-    function renderPayments(payments) {    
-    
-    
-        /*    
-         * Calculate totals    
-         */    
-    
-        let paid =    
-            0;    
-    
-        let outstandingAmount =    
-            0;    
-    
-    
-        payments.forEach(payment => {    
-    
-            const amount =    
-                Number(payment.amount || 0);    
-    
-    
-            if (    
-                payment.status === "Paid"    
-            ) {    
-    
-                paid += amount;    
-    
-            } else {    
-    
-                outstandingAmount += amount;    
-    
-            }    
-    
-        });    
-    
-    
-        /*    
-         * Metrics    
-         */    
-    
-        totalPaid.textContent =    
-            money(paid);    
-    
-    
-        outstanding.textContent =    
-            money(outstandingAmount);    
-    
-    
-        /*    
-         * No payments    
-         */    
-    
-        if (    
-            !payments.length    
-        ) {    
-    
-            paymentsTable.innerHTML = `    
-                <tr>    
-                    <td    
-                        colspan="3"    
-                        class="empty-state">    
-    
-                        No payment records found.    
-    
-                    </td>    
-                </tr>    
-            `;    
-    
-            return;    
-    
-        }    
-    
-    
-        /*    
-         * Render latest 10    
-         */    
-    
-        paymentsTable.innerHTML =    
-            payments    
-                .slice(0, 10)    
-                .map(payment => {    
-    
-                    return `    
-                        <tr>    
-    
-                            <td>    
-                                ${date(    
-                                    payment.payment_date    
-                                )}    
-                            </td>    
-    
-                            <td>    
-                                <strong>    
-                                    ${money(    
-                                        payment.amount    
-                                    )}    
-                                </strong>    
-                            </td>    
-    
-                            <td>    
-    
-                                <span    
-                                    class="badge ${statusClass(    
-                                        payment.status    
-                                    )}">    
-    
-                                    ${esc(    
-                                        payment.status    
-                                    )}    
-    
-                                </span>    
-    
-                            </td>    
-    
-                        </tr>    
-                    `;    
-    
-                })    
-                .join("");    
-    
-    }    
-    
-    
-    /* =========================================================    
-       LOAD DASHBOARD    
-       ========================================================= */    
-    
-    async function loadDashboard() {    
-    
-        try {    
-    
-            const [    
-                tenant,    
-                payments    
-            ] = await Promise.all([    
-    
-                loadTenant(),    
-    
-                loadPayments()    
-    
-            ]);    
-    
-    
-            renderTenant(    
-                tenant    
-            );    
-    
-    
-            renderPayments(    
-                payments    
-            );    
-    
-    
-        } catch (error) {    
-    
-            console.error(    
-                "Tenant dashboard error:",    
-                error    
-            );    
-    
-    
-            paymentsTable.innerHTML = `    
-                <tr>    
-                    <td    
-                        colspan="3"    
-                        class="empty-state error">    
-    
-                        Unable to load your information.    
-    
-                    </td>    
-                </tr>    
-            `;    
-    
-        }    
-    
-    }    
-    
-    
-    /* =========================================================    
-       LOGOUT    
-       ========================================================= */    
-    
-    logoutBtn.addEventListener(    
-        "click",    
-        async () => {    
-    
-            logoutBtn.disabled =    
-                true;    
-    
-            logoutBtn.textContent =    
-                "Logging out...";    
-    
-    
-            try {    
-    
-                const client =    
-                    await getClient();    
-    
-    
-                await client.auth.signOut();    
-    
-    
-            } catch (error) {    
-    
-                console.error(    
-                    "Logout error:",    
-                    error    
-                );    
-    
-            }    
-    
-    
-            window.location.href =    
-                "index.html";    
-    
-        }    
-    );    
-    
-    
-    /* =========================================================    
-       START    
-       ========================================================= */    
-    
-    const hasAccess =    
-        await checkUserAccess();    
-    
-    
-    if (!hasAccess) {    
-        return;    
-    }    
-    
-    
-    await loadDashboard();    
-    
-    
-    /* =========================================================    
-       REALTIME    
-       ========================================================= */    
-    
-    subscribeToPayments(    
-        async () => {    
-    
-            try {    
-    
-                const payments =    
-                    await loadPayments();    
-    
-                renderPayments(    
-                    payments    
-                );    
-    
-            } catch (error) {    
-    
-                console.error(    
-                    "Payment realtime error:",    
-                    error    
-                );    
-    
-            }    
-    
-        }    
-    );    
-    
-    
-    subscribeToRooms(    
-        async () => {    
-    
-            try {    
-    
-                const tenant =    
-                    await loadTenant();    
-    
-                renderTenant(    
-                    tenant    
-                );    
-    
-            } catch (error) {    
-    
-                console.error(    
-                    "Room realtime error:",    
-                    error    
-                );    
-    
-            }    
-    
-        }    
-    );    
-    
-});    
-    
-</script>    </body>    
+      <!-- ADMIN LOGIN BUTTON -->  
+      <div class="mt-8 space-y-4">  
+
+        <button  
+          type="button"  
+          onclick="showLogin('admin')"  
+          class="w-full rounded-2xl border border-slate-200 bg-white p-5 text-left transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"  
+        >  
+
+          <div class="flex items-center gap-4">  
+
+            <div class="w-12 h-12 shrink-0 rounded-xl bg-slate-950 text-white flex items-center justify-center">  
+
+              <svg  
+                width="22"  
+                height="22"  
+                viewBox="0 0 24 24"  
+                fill="none"  
+                stroke="currentColor"  
+                stroke-width="1.8"  
+              >  
+                <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>  
+                <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.8 1.8-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20H10.97v-.1a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34L8 18.74l-1.8-1.8.06-.06A1.7 1.7 0 0 0 6.6 15a1.7 1.7 0 0 0-1.56-1.03H4.96v-2.55h.08A1.7 1.7 0 0 0 6.6 10.4a1.7 1.7 0 0 0-.34-1.88L6.2 8.46 8 6.66l.06.06a1.7 1.7 0 0 0 1.88.34 1.7 1.7 0 0 0 1.03-1.56v-.08h2.55v.08a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.8 1.8-.06.06a1.7 1.7 0 0 0-.34 1.88 1.7 1.7 0 0 0-.34 1.88 1.7 1.7 0 0 0 1.56 1.03h.08v2.55h-.08A1.7 1.7 0 0 0 19.4 15Z"/>  
+              </svg>  
+
+            </div>  
+
+            <div class="flex-1">  
+              <h3 class="font-bold text-slate-900">  
+                Admin Login  
+              </h3>  
+
+              <p class="mt-1 text-sm text-slate-500">  
+                Manage rooms, customers, and billing.  
+              </p>  
+            </div>  
+
+            <span class="text-slate-300 text-xl">  
+              ›  
+            </span>  
+
+          </div>  
+
+        </button>  
+
+
+        <!-- USER LOGIN BUTTON -->  
+        <button  
+          type="button"  
+          onclick="showLogin('user')"  
+          class="w-full rounded-2xl border border-slate-200 bg-white p-5 text-left transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"  
+        >  
+
+          <div class="flex items-center gap-4">  
+
+            <div class="w-12 h-12 shrink-0 rounded-xl bg-emerald-500 text-white flex items-center justify-center">  
+
+              <svg  
+                width="22"  
+                height="22"  
+                viewBox="0 0 24 24"  
+                fill="none"  
+                stroke="currentColor"  
+                stroke-width="1.8"  
+              >  
+                <circle cx="12" cy="8" r="3.2"/>  
+                <path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>  
+              </svg>  
+
+            </div>  
+
+            <div class="flex-1">  
+              <h3 class="font-bold text-slate-900">  
+                User Login  
+              </h3>  
+
+              <p class="mt-1 text-sm text-slate-500">  
+                View your room and payment information.  
+              </p>  
+            </div>  
+
+            <span class="text-slate-300 text-xl">  
+              ›  
+            </span>  
+
+          </div>  
+
+        </button>  
+
+      </div>  
+
+
+      <p class="mt-8 text-center text-xs text-slate-400">  
+        CasaHome Web-Based Boarding House Management System  
+      </p>  
+
+    </div>  
+
+
+    <!-- =====================================================  
+         LOGIN FORM  
+         ===================================================== -->  
+    <div  
+      id="loginScreen"  
+      class="hidden glass rounded-3xl border border-slate-200 p-6 sm:p-8 fade-in"  
+    >  
+
+      <!-- BACK BUTTON -->  
+      <button  
+        type="button"  
+        onclick="showRoles()"  
+        class="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900"  
+      >  
+        <span>←</span>  
+        Back  
+      </button>  
+
+
+      <!-- LOGIN HEADER -->  
+      <div class="mt-7">  
+
+        <div  
+          id="loginIcon"  
+          class="w-12 h-12 rounded-xl bg-slate-950 text-white flex items-center justify-center"  
+        >  
+          <span  
+            id="loginIconText"  
+            class="font-bold"  
+          >  
+            A  
+          </span>  
+        </div>  
+
+        <p  
+          id="loginTypeLabel"  
+          class="mt-6 text-sm font-semibold text-emerald-600"  
+        >  
+          ADMIN ACCESS  
+        </p>  
+
+        <h2  
+          id="loginTitle"  
+          class="mt-1 text-3xl font-bold tracking-tight"  
+        >  
+          Admin Login  
+        </h2>  
+
+        <p  
+          id="loginDescription"  
+          class="mt-2 text-sm leading-6 text-slate-500"  
+        >  
+          Sign in with your administrator account.  
+        </p>  
+
+      </div>  
+
+
+      <!-- FORM -->  
+      <form  
+        id="loginForm"  
+        class="mt-8 space-y-5"  
+      >  
+
+        <!-- EMAIL -->  
+        <div>  
+
+          <label  
+            for="email"  
+            class="block text-sm font-semibold text-slate-700 mb-2"  
+          >  
+            Email address  
+          </label>  
+
+          <input  
+            id="email"  
+            type="email"  
+            autocomplete="email"  
+            required  
+            placeholder="you@example.com"  
+            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"  
+          >  
+
+        </div>  
+
+
+        <!-- PASSWORD -->  
+        <div>  
+
+          <label  
+            for="password"  
+            class="block text-sm font-semibold text-slate-700 mb-2"  
+          >  
+            Password  
+          </label>  
+
+          <div class="relative">  
+
+            <input  
+              id="password"  
+              type="password"  
+              autocomplete="current-password"  
+              required  
+              placeholder="Enter your password"  
+              class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 pr-12 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"  
+            >  
+
+            <button  
+              type="button"  
+              onclick="togglePassword()"  
+              class="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 hover:text-slate-700"  
+              aria-label="Show or hide password"  
+            >  
+
+              <svg  
+                id="eyeIcon"  
+                width="20"  
+                height="20"  
+                viewBox="0 0 24 24"  
+                fill="none"  
+                stroke="currentColor"  
+                stroke-width="1.8"  
+              >  
+                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/>  
+                <circle cx="12" cy="12" r="2.5"/>  
+              </svg>  
+
+            </button>  
+
+          </div>  
+
+        </div>  
+
+
+        <!-- ERROR -->  
+        <div  
+          id="errorBox"  
+          class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"  
+        ></div>  
+
+
+        <!-- SUBMIT -->  
+        <button  
+          id="loginButton"  
+          type="submit"  
+          class="w-full rounded-xl bg-emerald-500 px-4 py-3.5 font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-600 focus:outline-none focus:ring-4 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-60"  
+        >  
+
+          <span  
+            id="loginButtonContent"  
+            class="flex items-center justify-center gap-2"  
+          >  
+            Sign in  
+          </span>  
+
+        </button>  
+
+      </form>  
+
+
+      <!-- HINT -->  
+      <p  
+        id="loginHint"  
+        class="mt-6 text-center text-xs leading-5 text-slate-400"  
+      >  
+        Admin accounts must have <b>role = admin</b> in the profiles table.  
+      </p>  
+
+    </div>  
+
+  </div>  
+</section>
+
+  </main>    <!-- =========================================================  
+       SUPABASE  
+       ========================================================= -->    <script src="assets/js/supabase.js"></script>    <!-- =========================================================  
+       LOGIN JAVASCRIPT  
+       ========================================================= -->    <script>  
+  
+    let selectedRole = null;  
+  
+  
+    /* ---------------------------------------------------------  
+       SHOW LOGIN SCREEN  
+       --------------------------------------------------------- */  
+    function showLogin(role) {  
+  
+      selectedRole = role;  
+  
+      document  
+        .getElementById("roleScreen")  
+        .classList  
+        .add("hidden");  
+  
+      document  
+        .getElementById("loginScreen")  
+        .classList  
+        .remove("hidden");  
+  
+      const admin = role === "admin";  
+  
+  
+      document.getElementById("loginTypeLabel").textContent =  
+        admin ? "ADMIN ACCESS" : "TENANT ACCESS";  
+  
+  
+      document.getElementById("loginTitle").textContent =  
+        admin ? "Admin Login" : "User Login";  
+  
+  
+      document.getElementById("loginDescription").textContent =  
+        admin  
+          ? "Sign in with your administrator account."  
+          : "Sign in with your CasaHome user account.";  
+  
+  
+      document.getElementById("loginIcon").className =  
+        admin  
+          ? "w-12 h-12 rounded-xl bg-slate-950 text-white flex items-center justify-center"  
+          : "w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center";  
+  
+  
+      document.getElementById("loginIconText").textContent =  
+        admin ? "A" : "U";  
+  
+  
+      document.getElementById("loginHint").innerHTML =  
+        admin  
+          ? 'Admin accounts must have <b>role = admin</b> in the profiles table.'  
+          : 'User accounts must have <b>role = user</b> and a linked <b>tenant_id</b> in the profiles table.';  
+  
+  
+      clearError();  
+  
+      document.getElementById("email").focus();  
+  
+    }  
+  
+  
+    /* ---------------------------------------------------------  
+       BACK TO ROLE SELECTION  
+       --------------------------------------------------------- */  
+    function showRoles() {  
+  
+      selectedRole = null;  
+  
+      document  
+        .getElementById("loginScreen")  
+        .classList  
+        .add("hidden");  
+  
+      document  
+        .getElementById("roleScreen")  
+        .classList  
+        .remove("hidden");  
+  
+      document.getElementById("loginForm").reset();  
+  
+      clearError();  
+  
+    }  
+  
+  
+    /* ---------------------------------------------------------  
+       ERROR  
+       --------------------------------------------------------- */  
+    function clearError() {  
+  
+      const box = document.getElementById("errorBox");  
+  
+      box.textContent = "";  
+  
+      box.classList.add("hidden");  
+  
+    }  
+  
+  
+    function showError(message) {  
+  
+      const box = document.getElementById("errorBox");  
+  
+      box.textContent = message;  
+  
+      box.classList.remove("hidden");  
+  
+    }  
+  
+  
+    /* ---------------------------------------------------------  
+       PASSWORD VISIBILITY  
+       --------------------------------------------------------- */  
+    function togglePassword() {  
+  
+      const input = document.getElementById("password");  
+  
+      input.type =  
+        input.type === "password"  
+          ? "text"  
+          : "password";  
+  
+    }  
+  
+  
+    /* ---------------------------------------------------------  
+       LOADING STATE  
+       --------------------------------------------------------- */  
+    function setLoading(loading) {  
+  
+      const button =  
+        document.getElementById("loginButton");  
+  
+      const content =  
+        document.getElementById("loginButtonContent");  
+  
+  
+      button.disabled = loading;  
+  
+  
+      if (loading) {  
+  
+        content.innerHTML =  
+          '<span class="spinner"></span><span>Signing in...</span>';  
+  
+      } else {  
+  
+        content.textContent = "Sign in";  
+  
+      }  
+  
+    }  
+  
+  
+    /* ---------------------------------------------------------  
+       CHECK EXISTING SESSION  
+       --------------------------------------------------------- */  
+    async function redirectIfAlreadyLoggedIn() {  
+  
+      try {  
+  
+        const client = await getClient();  
+  
+        const {  
+          data: { user }  
+        } = await client.auth.getUser();  
+  
+  
+        if (!user) {  
+          return;  
+        }  
+  
+  
+        const {  
+          data: profile  
+        } = await client  
+          .from("profiles")  
+          .select("role,tenant_id")  
+          .eq("id", user.id)  
+          .maybeSingle();  
+  
+  
+        if (profile?.role === "admin") {  
+  
+          window.location.replace(  
+            "admin-index.html"  
+          );  
+  
+        } else if (profile?.role === "user") {  
+  
+          window.location.replace(  
+            "user-dashboard.html"  
+          );  
+  
+        }  
+  
+      } catch (error) {  
+  
+        console.warn(  
+          "Session check skipped:",  
+          error  
+        );  
+  
+      }  
+  
+    }  
+  
+  
+    /* ---------------------------------------------------------  
+       LOGIN  
+       --------------------------------------------------------- */  
+    async function handleLogin(event) {  
+  
+      event.preventDefault();  
+  
+      clearError();  
+  
+  
+      if (!selectedRole) {  
+  
+        showError(  
+          "Please select a login type first."  
+        );  
+  
+        return;  
+  
+      }  
+  
+  
+      const email =  
+        document  
+          .getElementById("email")  
+          .value  
+          .trim();  
+  
+  
+      const password =  
+        document  
+          .getElementById("password")  
+          .value;  
+  
+  
+      if (!email || !password) {  
+  
+        showError(  
+          "Please enter your email and password."  
+        );  
+  
+        return;  
+  
+      }  
+  
+  
+      setLoading(true);  
+  
+  
+      try {  
+  
+        const client =  
+          await getClient();  
+  
+  
+        /* SIGN IN */  
+        const {  
+          data,  
+          error  
+        } = await client.auth.signInWithPassword({  
+  
+          email,  
+          password  
+  
+        });  
+  
+  
+        if (error) {  
+          throw error;  
+        }  
+  
+  
+        const user = data.user;  
+  
+  
+        /* GET PROFILE */  
+        const {  
+          data: profile,  
+          error: profileError  
+        } = await client  
+          .from("profiles")  
+          .select("role,tenant_id")  
+          .eq("id", user.id)  
+          .maybeSingle();  
+  
+  
+        if (profileError) {  
+          throw profileError;  
+        }  
+  
+  
+        /* PROFILE DOES NOT EXIST */  
+        if (!profile) {  
+  
+          await client.auth.signOut();  
+  
+          throw new Error(  
+            "Your account does not have a profile record yet."  
+          );  
+  
+        }  
+  
+  
+        /* ADMIN CHECK */  
+        if (  
+          selectedRole === "admin" &&  
+          profile.role !== "admin"  
+        ) {  
+  
+          await client.auth.signOut();  
+  
+          throw new Error(  
+            "This account is not registered as an administrator."  
+          );  
+  
+        }  
+  
+  
+        /* USER CHECK */  
+        if (  
+          selectedRole === "user" &&  
+          profile.role !== "user"  
+        ) {  
+  
+          await client.auth.signOut();  
+  
+          throw new Error(  
+            "This account is not registered as a user."  
+          );  
+  
+        }  
+  
+  
+        /* USER TENANT CHECK */  
+        if (  
+          selectedRole === "user" &&  
+          !profile.tenant_id  
+        ) {  
+  
+          await client.auth.signOut();  
+  
+          throw new Error(  
+            "Your account is not linked to a tenant record yet."  
+          );  
+  
+        }  
+  
+  
+        /* REDIRECT */  
+        if (selectedRole === "admin") {  
+  
+          window.location.replace(  
+            "admin-index.html"  
+          );  
+  
+        } else {  
+  
+          window.location.replace(  
+            "user-dashboard.html"  
+          );  
+  
+        }  
+  
+      } catch (error) {  
+  
+        console.error(  
+          "Login error:",  
+          error  
+        );  
+  
+  
+        showError(  
+          error?.message ||  
+          "Login failed. Please check your credentials."  
+        );  
+  
+  
+        setLoading(false);  
+  
+      }  
+  
+    }  
+  
+  
+    /* ---------------------------------------------------------  
+       FORM EVENT  
+       --------------------------------------------------------- */  
+    document  
+      .getElementById("loginForm")  
+      .addEventListener(  
+        "submit",  
+        handleLogin  
+      );  
+  
+  
+    /* ---------------------------------------------------------  
+       INITIAL SESSION CHECK  
+       --------------------------------------------------------- */  
+    redirectIfAlreadyLoggedIn();  
+  
+  </script>  
+  </body>  
 </html>
