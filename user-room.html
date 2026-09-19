@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="CasaHome — My Room"
+    >
+
+    <title>CasaHome — My Room</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .page-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 22px;
+            margin-top: 20px;
+        }
+
+        .room-hero {
+            background: linear-gradient(
+                135deg,
+                #0f172a,
+                #172033
+            );
+
+            color: white;
+            border-radius: 16px;
+            padding: 26px;
+            margin-top: 20px;
+        }
+
+        .room-label {
+            color: #6ee7b7;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        .room-number {
+            margin-top: 6px;
+            color: white;
+            font-size: 34px;
+            font-weight: 900;
+        }
+
+        .room-type {
+            margin-top: 5px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+
+        .info-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .info-item span {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .info-item strong {
+            display: block;
+            color: #0f172a;
+            font-size: 16px;
+        }
+
+        .user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #ecfdf5;
+            color: #047857;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .btn-user {
+            background: #10b981;
+            color: #ffffff;
+            border: 1px solid #10b981;
+        }
+
+        .btn-user:hover {
+            background: #059669;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 35px;
+            color: #64748b;
+        }
+
+        .error {
+            text-align: center;
+            padding: 25px;
+            color: #b91c1c;
+        }
+
+        @media (max-width: 640px) {
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .room-number {
+                font-size: 29px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+
+                <span class="logo-c">C</span>
+                <span class="logo-h">H</span>
+
+            </div>
+
+            <div>
+
+                <h1>CasaHome</h1>
+
+                <span>
+                    Management System
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="user-dashboard.html"
+                class="nav-link"
+            >
+
+                <span>▦</span>
+
+                Dashboard
+
+            </a>
+
+
+            <a
+                href="user-room.html"
+                class="nav-link active"
+            >
+
+                <span>▤</span>
+
+                My Room
+
+            </a>
+
+
+            <a
+                href="user-payments.html"
+                class="nav-link"
+            >
+
+                <span>₱</span>
+
+                My Payments
+
+            </a>
+
+
+            <a
+                href="user-profile.html"
+                class="nav-link"
+            >
+
+                <span>♙</span>
+
+                My Profile
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <strong>CasaHome</strong>
+
+            <small>
+                Tenant Portal
+            </small>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <div class="user-badge">
+                    👤 TENANT
+                </div>
+
+                <p class="eyebrow">
+                    Tenant Portal
+                </p>
+
+                <h2>
+                    My Room
+                </h2>
+
+                <p class="subtitle">
+                    View your current room assignment and tenancy details.
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-actions">
+
+                <button
+                    id="logoutBtn"
+                    type="button"
+                    class="btn btn-user"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ROOM HERO -->
+
+        <section class="room-hero">
+
+            <div class="room-label">
+                Assigned Room
+            </div>
+
+            <div
+                id="roomNumber"
+                class="room-number"
+            >
+                Loading...
+            </div>
+
+            <div
+                id="roomType"
+                class="room-type"
+            >
+                Please wait...
+            </div>
+
+        </section>
+
+
+
+        <!-- ROOM INFORMATION -->
+
+        <section class="page-card">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>
+                        Room Information
+                    </h3>
+
+                    <p>
+                        Details of your current room assignment.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="roomContent"
+                class="loading"
+            >
+
+                Loading your room...
+
+            </div>
+
+        </section>
+
+
+
+        <!-- TENANT INFORMATION -->
+
+        <section class="page-card">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>
+                        Tenant Information
+                    </h3>
+
+                    <p>
+                        Your current tenancy details.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="tenantContent"
+                class="loading"
+            >
+
+                Loading...
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<!-- =========================================================
+     SUPABASE
+     ========================================================= -->
+
+<script src="assets/js/supabase.js"></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+
+
+        let currentTenantId = null;
+
+
+        /* =====================================================
+           CHECK TENANT ACCESS
+           ===================================================== */
+
+        async function checkTenantAccess() {
+
+            const client =
+                await getClient();
+
+
+            const {
+                data: {
+                    session
+                }
+            } = await client.auth.getSession();
+
+
+            if (!session) {
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return null;
+
+            }
+
+
+            const {
+                data: profile,
+                error
+            } = await client
+                .from("profiles")
+                .select(
+                    "role, tenant_id"
+                )
+                .eq(
+                    "id",
+                    session.user.id
+                )
+                .single();
+
+
+            if (
+                error ||
+                !profile
+            ) {
+
+                await client.auth.signOut();
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return null;
+
+            }
+
+
+            if (
+                profile.role !== "user"
+            ) {
+
+                await client.auth.signOut();
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return null;
+
+            }
+
+
+            if (
+                !profile.tenant_id
+            ) {
+
+                await client.auth.signOut();
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return null;
+
+            }
+
+
+            currentTenantId =
+                profile.tenant_id;
+
+
+            return client;
+
+        }
+
+
+
+        /* =====================================================
+           LOAD ROOM
+           ===================================================== */
+
+        async function loadRoom() {
+
+            const client =
+                await checkTenantAccess();
+
+
+            if (!client) {
+                return;
+            }
+
+
+            const {
+                data: tenant,
+                error
+            } = await client
+                .from("tenants")
+                .select(`
+                    id,
+                    full_name,
+                    contact_number,
+                    room_id,
+                    move_in_date,
+                    status,
+                    rooms (
+                        id,
+                        room_number,
+                        room_type,
+                        rate,
+                        status
+                    )
+                `)
+                .eq(
+                    "id",
+                    currentTenantId
+                )
+                .single();
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            const room =
+                tenant.rooms;
+
+
+            /* =================================================
+               ROOM HERO
+               ================================================= */
+
+            if (room) {
+
+                document.getElementById(
+                    "roomNumber"
+                ).textContent =
+                    room.room_number;
+
+
+                document.getElementById(
+                    "roomType"
+                ).textContent =
+                    room.room_type;
+
+            } else {
+
+                document.getElementById(
+                    "roomNumber"
+                ).textContent =
+                    "Unassigned";
+
+
+                document.getElementById(
+                    "roomType"
+                ).textContent =
+                    "No room assigned";
+
+            }
+
+
+            /* =================================================
+               ROOM DETAILS
+               ================================================= */
+
+            if (room) {
+
+                document.getElementById(
+                    "roomContent"
+                ).innerHTML = `
+
+                    <div class="info-grid">
+
+                        <div class="info-item">
+
+                            <span>
+                                Room Number
+                            </span>
+
+                            <strong>
+                                ${esc(room.room_number)}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <span>
+                                Room Type
+                            </span>
+
+                            <strong>
+                                ${esc(room.room_type)}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <span>
+                                Monthly Rate
+                            </span>
+
+                            <strong>
+                                ${money(room.rate)}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <span>
+                                Room Status
+                            </span>
+
+                            <strong>
+                                ${esc(room.status)}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            } else {
+
+                document.getElementById(
+                    "roomContent"
+                ).innerHTML = `
+
+                    <div class="error">
+
+                        No room is currently assigned
+                        to your account.
+
+                    </div>
+
+                `;
+
+            }
+
+
+            /* =================================================
+               TENANT DETAILS
+               ================================================= */
+
+            document.getElementById(
+                "tenantContent"
+            ).innerHTML = `
+
+                <div class="info-grid">
+
+                    <div class="info-item">
+
+                        <span>
+                            Tenant Name
+                        </span>
+
+                        <strong>
+                            ${esc(
+                                tenant.full_name
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <span>
+                            Contact Number
+                        </span>
+
+                        <strong>
+                            ${esc(
+                                tenant.contact_number ||
+                                "—"
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <span>
+                            Move-in Date
+                        </span>
+
+                        <strong>
+                            ${date(
+                                tenant.move_in_date
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <span>
+                            Tenant Status
+                        </span>
+
+                        <strong>
+                            ${esc(
+                                tenant.status
+                            )}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+
+
+        /* =====================================================
+           LOGOUT
+           ===================================================== */
+
+        document
+            .getElementById("logoutBtn")
+            .addEventListener(
+                "click",
+                async () => {
+
+                    try {
+
+                        const client =
+                            await getClient();
+
+                        await client.auth.signOut();
+
+                    } catch (error) {
+
+                        console.error(
+                            "Logout error:",
+                            error
+                        );
+
+                    }
+
+                    window.location.replace(
+                        "index.html"
+                    );
+
+                }
+            );
+
+
+
+        /* =====================================================
+           START
+           ===================================================== */
+
+        try {
+
+            await loadRoom();
+
+        } catch (error) {
+
+            console.error(
+                "Room loading error:",
+                error
+            );
+
+
+            document.getElementById(
+                "roomContent"
+            ).innerHTML = `
+
+                <div class="error">
+
+                    Unable to load your room information.
+
+                </div>
+
+            `;
+
+
+            document.getElementById(
+                "tenantContent"
+            ).innerHTML = `
+
+                <div class="error">
+
+                    Unable to load your tenant information.
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+);
+
+</script>
+
+</body>
+
+</html>
