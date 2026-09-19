@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CasaHome room management">
+    <title>Rooms</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Clickable room status filters */
+        .room-status-filters {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .room-filter {
+            appearance: none;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #64748b;
+            border-radius: 999px;
+            padding: 7px 11px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .room-filter:hover {
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .room-filter.active {
+            color: #0f172a;
+            border-color: #cbd5e1;
+            box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.04);
+        }
+
+        .room-filter .filter-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex: 0 0 7px;
+        }
+
+        .room-filter .filter-count {
+            min-width: 20px;
+            padding: 2px 6px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 11px;
+            line-height: 1.2;
+        }
+
+        .room-filter.vacant .filter-dot {
+            background: #94a3b8;
+        }
+
+        .room-filter.occupied .filter-dot {
+            background: #10b981;
+        }
+
+        .room-filter.maintenance .filter-dot {
+            background: #f59e0b;
+        }
+
+        .room-filter.vacant.active {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .room-filter.occupied.active {
+            background: #ecfdf5;
+            border-color: #a7f3d0;
+            color: #047857;
+        }
+
+        .room-filter.maintenance.active {
+            background: #fffbeb;
+            border-color: #fde68a;
+            color: #b45309;
+        }
+
+        .room-filter.all.active {
+            background: #f8fafc;
+        }
+
+        /* Admin indicator */
+        .admin-context {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-left: 12px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .admin-context-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        /* Clickable room cards */
+        .room-card {
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .room-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+            border-color: #cbd5e1;
+        }
+
+        .room-card .room-status {
+            cursor: pointer;
+        }
+
+        /* Room details modal */
+        .room-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.58);
+            backdrop-filter: blur(4px);
+        }
+
+        .room-modal.show {
+            display: flex;
+        }
+
+        .room-modal-card {
+            width: min(100%, 520px);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.25);
+            animation: roomModalIn 0.2s ease;
+        }
+
+        @keyframes roomModalIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .room-modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px 22px 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .room-modal-kicker {
+            margin: 0 0 5px;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .room-modal-title {
+            margin: 0;
+            color: #0f172a;
+            font-size: 25px;
+            line-height: 1.1;
+        }
+
+        .room-modal-close {
+            width: 38px;
+            height: 38px;
+            flex: 0 0 38px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #64748b;
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .room-modal-close:hover {
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .room-modal-body {
+            padding: 20px 22px 22px;
+        }
+
+        .room-modal-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .room-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .room-info-item {
+            padding: 13px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+
+        .room-info-item span {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .room-info-item strong {
+            color: #0f172a;
+            font-size: 15px;
+        }
+
+        .resident-section {
+            border: 1px solid #d1fae5;
+            border-radius: 15px;
+            padding: 17px;
+            background: #f0fdf4;
+        }
+
+        .resident-section.vacant {
+            border-color: #e2e8f0;
+            background: #f8fafc;
+        }
+
+        .resident-section.maintenance {
+            border-color: #fde68a;
+            background: #fffbeb;
+        }
+
+        .resident-heading {
+            margin: 0 0 12px;
+            color: #0f172a;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .resident-name {
+            margin: 0;
+            color: #0f172a;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .resident-detail {
+            margin-top: 7px;
+            color: #475569;
+            font-size: 13px;
+        }
+
+        .resident-detail strong {
+            color: #334155;
+        }
+
+        .no-resident {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 800px) {
+            .room-status-filters {
+                justify-content: flex-start;
+                width: 100%;
+                margin-top: 12px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .admin-context {
+                margin-left: 0;
+                margin-top: 8px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .room-modal {
+                padding: 12px;
+                align-items: flex-end;
+            }
+
+            .room-modal-card {
+                width: 100%;
+                max-height: 92vh;
+                border-radius: 18px 18px 12px 12px;
+            }
+
+            .room-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .room-modal-header,
+            .room-modal-body {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">
+                    <span class="logo-c">C</span>
+                    <span class="logo-h">H</span>
+                </div>
+
+                <div>
+                    <h1>CasaHome</h1>
+                    <span>Management System</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a href="index.html" id="dashboardLink" class="nav-link">
+                    <span>▦</span>
+                    Dashboard
+                </a>
+
+                <a href="rooms.html" class="nav-link active">
+                    <span>▤</span>
+                    Rooms
+                </a>
+
+                <a href="tenants.html" class="nav-link">
+                    <span>♙</span>
+                    Customers
+                </a>
+
+                <a href="billing.html" class="nav-link">
+                    <span>₱</span>
+                    Billing
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <strong>CasaHome</strong>
+                <small>Web-based prototype</small>
+            </div>
+
+        </aside>
+
+        <!-- Main -->
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div>
+                    <p class="eyebrow">Property</p>
+
+                    <h2>
+                        Room Management
+
+                        <span id="adminContext" class="admin-context" style="display:none;">
+                            <span class="admin-context-dot"></span>
+                            Admin Mode
+                        </span>
+                    </h2>
+
+                    <p class="subtitle">
+                        View room availability and update room status.
+                        Click a room to view its current resident.
+                    </p>
+                </div>
+
+                <!-- Clickable status filters -->
+                <div class="room-status-filters" aria-label="Room status filters">
+
+                    <button type="button"
+                            class="room-filter all"
+                            data-filter="All">
+                        <span>All</span>
+                        <span class="filter-count" id="allCount">0</span>
+                    </button>
+
+                    <button type="button"
+                            class="room-filter vacant"
+                            data-filter="Vacant">
+                        <i class="filter-dot"></i>
+                        <span>Vacant</span>
+                        <span class="filter-count" id="vacantCount">0</span>
+                    </button>
+
+                    <button type="button"
+                            class="room-filter occupied"
+                            data-filter="Occupied">
+                        <i class="filter-dot"></i>
+                        <span>Occupied</span>
+                        <span class="filter-count" id="occupiedCount">0</span>
+                    </button>
+
+                    <button type="button"
+                            class="room-filter maintenance"
+                            data-filter="Maintenance">
+                        <i class="filter-dot"></i>
+                        <span>Maintenance</span>
+                        <span class="filter-count" id="maintenanceCount">0</span>
+                    </button>
+
+                </div>
+
+            </header>
+
+            <section class="card">
+
+                <div class="section-header">
+
+                    <div>
+                        <h3>Room Matrix</h3>
+
+                        <p id="roomCount">
+                            Loading rooms...
+                        </p>
+                    </div>
+
+                </div>
+
+                <div id="roomGrid" class="room-grid">
+
+                    <div class="loading">
+                        Loading rooms...
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Room / Resident Modal -->
+    <div
+        id="roomModal"
+        class="room-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="roomModalTitle">
+
+        <div class="room-modal-card">
+
+            <div class="room-modal-header">
+
+                <div>
+                    <p class="room-modal-kicker">Room Details</p>
+                    <h3 id="roomModalTitle" class="room-modal-title">
+                        Room
+                    </h3>
+                </div>
+
+                <button
+                    type="button"
+                    id="closeRoomModal"
+                    class="room-modal-close"
+                    aria-label="Close room details">
+                    ×
+                </button>
+
+            </div>
+
+            <div class="room-modal-body">
+
+                <div class="room-modal-status">
+
+                    <span
+                        id="modalRoomStatus"
+                        class="badge">
+                        —
+                    </span>
+
+                </div>
+
+                <div class="room-info-grid">
+
+                    <div class="room-info-item">
+                        <span>Room Type</span>
+                        <strong id="modalRoomType">—</strong>
+                    </div>
+
+                    <div class="room-info-item">
+                        <span>Monthly Rate</span>
+                        <strong id="modalRoomRate">—</strong>
+                    </div>
+
+                </div>
+
+                <div id="residentSection" class="resident-section">
+
+                    <h4 class="resident-heading">
+                        Current Resident
+                    </h4>
+
+                    <div id="residentContent">
+                        Loading resident information...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="assets/js/supabase.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+
+            const grid = document.getElementById("roomGrid");
+            const roomCount = document.getElementById("roomCount");
+
+            const allCount = document.getElementById("allCount");
+            const vacantCount = document.getElementById("vacantCount");
+            const occupiedCount = document.getElementById("occupiedCount");
+            const maintenanceCount = document.getElementById("maintenanceCount");
+
+            const filterButtons =
+                document.querySelectorAll(".room-filter");
+
+            const dashboardLink =
+                document.getElementById("dashboardLink");
+
+            const adminContext =
+                document.getElementById("adminContext");
+
+            const roomModal =
+                document.getElementById("roomModal");
+
+            const closeRoomModal =
+                document.getElementById("closeRoomModal");
+
+            const modalRoomTitle =
+                document.getElementById("roomModalTitle");
+
+            const modalRoomStatus =
+                document.getElementById("modalRoomStatus");
+
+            const modalRoomType =
+                document.getElementById("modalRoomType");
+
+            const modalRoomRate =
+                document.getElementById("modalRoomRate");
+
+            const residentSection =
+                document.getElementById("residentSection");
+
+            const residentContent =
+                document.getElementById("residentContent");
+
+            let allRooms = [];
+            let allTenants = [];
+            let activeFilter = "All";
+
+            /*
+             * Detect whether the current browser session
+             * belongs to an admin.
+             */
+            async function setupNavigation() {
+
+                try {
+
+                    const client = await getClient();
+
+                    const {
+                        data: {
+                            session
+                        }
+                    } = await client.auth.getSession();
+
+                    if (!session) {
+                        dashboardLink.href = "index.html";
+                        return;
+                    }
+
+                    const {
+                        data: profile,
+                        error
+                    } = await client
+                        .from("profiles")
+                        .select("role")
+                        .eq("id", session.user.id)
+                        .maybeSingle();
+
+                    if (error) {
+
+                        console.error(
+                            "Unable to check user role:",
+                            error
+                        );
+
+                        dashboardLink.href = "index.html";
+                        return;
+                    }
+
+                    if (profile?.role === "admin") {
+
+                        dashboardLink.href = "admin-index.html";
+
+                        adminContext.style.display = "inline-flex";
+
+                    } else {
+
+                        dashboardLink.href = "index.html";
+
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        "Navigation setup error:",
+                        error
+                    );
+
+                    dashboardLink.href = "index.html";
+                }
+            }
+
+
+            function updateCounts(rooms) {
+
+                const vacant =
+                    rooms.filter(
+                        room => room.status === "Vacant"
+                    ).length;
+
+                const occupied =
+                    rooms.filter(
+                        room => room.status === "Occupied"
+                    ).length;
+
+                const maintenance =
+                    rooms.filter(
+                        room => room.status === "Maintenance"
+                    ).length;
+
+                allCount.textContent = rooms.length;
+                vacantCount.textContent = vacant;
+                occupiedCount.textContent = occupied;
+                maintenanceCount.textContent = maintenance;
+            }
+
+
+            function updateActiveFilter() {
+
+                filterButtons.forEach(button => {
+
+                    button.classList.toggle(
+                        "active",
+                        button.dataset.filter === activeFilter
+                    );
+
+                });
+            }
+
+
+            /*
+             * Open room details and find the tenant linked
+             * to this room through tenants.room_id.
+             */
+            function openRoomModal(room) {
+
+                modalRoomTitle.textContent =
+                    `Room ${room.room_number}`;
+
+                modalRoomStatus.textContent =
+                    room.status || "Unknown";
+
+                modalRoomStatus.className =
+                    `badge ${statusClass(room.status)}`;
+
+                modalRoomType.textContent =
+                    room.room_type || "Standard";
+
+                modalRoomRate.textContent =
+                    money(room.rate);
+
+                const resident =
+                    allTenants.find(
+                        tenant =>
+                            String(tenant.room_id) === String(room.id) &&
+                            tenant.status === "Active"
+                    );
+
+                residentSection.className =
+                    "resident-section";
+
+                if (room.status === "Vacant") {
+
+                    residentSection.classList.add("vacant");
+
+                    residentContent.innerHTML = `
+                        <div class="no-resident">
+                            This room is currently vacant.
+                            There is no active resident assigned to this room.
+                        </div>
+                    `;
+
+                } else if (room.status === "Maintenance") {
+
+                    residentSection.classList.add("maintenance");
+
+                    residentContent.innerHTML = `
+                        <div class="no-resident">
+                            This room is currently under maintenance.
+                            Resident information is not displayed as an active
+                            occupant for this room.
+                        </div>
+                    `;
+
+                } else if (resident) {
+
+                    residentContent.innerHTML = `
+                        <p class="resident-name">
+                            ${esc(resident.full_name)}
+                        </p>
+
+                        <div class="resident-detail">
+                            <strong>Contact:</strong>
+                            ${esc(resident.contact_number || "Not provided")}
+                        </div>
+
+                        <div class="resident-detail">
+                            <strong>Move-in date:</strong>
+                            ${date(resident.move_in_date)}
+                        </div>
+
+                        <div class="resident-detail">
+                            <strong>Status:</strong>
+                            ${esc(resident.status || "Active")}
+                        </div>
+                    `;
+
+                } else {
+
+                    residentContent.innerHTML = `
+                        <div class="no-resident">
+                            This room is marked as occupied, but no active
+                            resident is currently linked to it.
+                        </div>
+                    `;
+                }
+
+                roomModal.classList.add("show");
+                document.body.style.overflow = "hidden";
+            }
+
+
+            function closeModal() {
+
+                roomModal.classList.remove("show");
+                document.body.style.overflow = "";
+            }
+
+
+            closeRoomModal.addEventListener(
+                "click",
+                closeModal
+            );
+
+
+            roomModal.addEventListener(
+                "click",
+                event => {
+
+                    if (event.target === roomModal) {
+                        closeModal();
+                    }
+
+                }
+            );
+
+
+            document.addEventListener(
+                "keydown",
+                event => {
+
+                    if (
+                        event.key === "Escape" &&
+                        roomModal.classList.contains("show")
+                    ) {
+                        closeModal();
+                    }
+
+                }
+            );
+
+
+            function renderRooms(rooms) {
+
+                if (!rooms.length) {
+
+                    grid.innerHTML = `
+                        <div class="empty-state">
+                            No ${
+                                activeFilter === "All"
+                                    ? ""
+                                    : activeFilter.toLowerCase() + " "
+                            }rooms found.
+                        </div>
+                    `;
+
+                    return;
+                }
+
+                grid.innerHTML = rooms.map(room => `
+
+                    <article
+                        class="room-card"
+                        data-room-id="${room.id}"
+                        tabindex="0"
+                        role="button"
+                        aria-label="View details for Room ${esc(room.room_number)}">
+
+                        <div class="room-card-top">
+
+                            <div>
+
+                                <span class="room-label">
+                                    ROOM
+                                </span>
+
+                                <h3>
+                                    ${esc(room.room_number)}
+                                </h3>
+
+                            </div>
+
+                            <span class="badge ${statusClass(room.status)}">
+                                ${esc(room.status)}
+                            </span>
+
+                        </div>
+
+                        <div class="room-details">
+
+                            <div>
+
+                                <span>Type</span>
+
+                                <strong>
+                                    ${esc(room.room_type || "Standard")}
+                                </strong>
+
+                            </div>
+
+                            <div>
+
+                                <span>Monthly Rate</span>
+
+                                <strong>
+                                    ${money(room.rate)}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                        <label class="form-label">
+
+                            Update Status
+
+                            <select
+                                class="form-control room-status"
+                                data-room-id="${room.id}"
+                                data-current="${esc(room.status)}">
+
+                                <option value="Vacant"
+                                    ${room.status === "Vacant" ? "selected" : ""}>
+                                    Vacant
+                                </option>
+
+                                <option value="Occupied"
+                                    ${room.status === "Occupied" ? "selected" : ""}>
+                                    Occupied
+                                </option>
+
+                                <option value="Maintenance"
+                                    ${room.status === "Maintenance" ? "selected" : ""}>
+                                    Maintenance
+                                </option>
+
+                            </select>
+
+                        </label>
+
+                    </article>
+
+                `).join("");
+
+
+                document
+                    .querySelectorAll(".room-status")
+                    .forEach(select => {
+
+                        /*
+                         * Prevent clicking the status selector
+                         * from opening the room modal.
+                         */
+                        select.addEventListener(
+                            "click",
+                            event => {
+                                event.stopPropagation();
+                            }
+                        );
+
+                        select.addEventListener(
+                            "change",
+                            async event => {
+
+                                event.stopPropagation();
+
+                                const roomId =
+                                    event.target.dataset.roomId;
+
+                                const newStatus =
+                                    event.target.value;
+
+                                const previousStatus =
+                                    event.target.dataset.current;
+
+                                try {
+
+                                    await updateRoomStatus(
+                                        roomId,
+                                        newStatus
+                                    );
+
+                                    await loadRooms();
+
+                                } catch (error) {
+
+                                    console.error(error);
+
+                                    alert(
+                                        "Unable to update room status."
+                                    );
+
+                                    event.target.value =
+                                        previousStatus;
+                                }
+
+                            }
+                        );
+
+                    });
+
+
+                /*
+                 * Make each room card clickable.
+                 */
+                document
+                    .querySelectorAll(".room-card")
+                    .forEach(card => {
+
+                        card.addEventListener(
+                            "click",
+                            event => {
+
+                                /*
+                                 * Do not open the modal when the user
+                                 * is interacting with the status select.
+                                 */
+                                if (
+                                    event.target.closest(
+                                        ".room-status"
+                                    )
+                                ) {
+                                    return;
+                                }
+
+                                const roomId =
+                                    card.dataset.roomId;
+
+                                const room =
+                                    allRooms.find(
+                                        item =>
+                                            String(item.id) ===
+                                            String(roomId)
+                                    );
+
+                                if (room) {
+                                    openRoomModal(room);
+                                }
+
+                            }
+                        );
+
+
+                        card.addEventListener(
+                            "keydown",
+                            event => {
+
+                                if (
+                                    event.key === "Enter" ||
+                                    event.key === " "
+                                ) {
+
+                                    event.preventDefault();
+
+                                    const roomId =
+                                        card.dataset.roomId;
+
+                                    const room =
+                                        allRooms.find(
+                                            item =>
+                                                String(item.id) ===
+                                                String(roomId)
+                                        );
+
+                                    if (room) {
+                                        openRoomModal(room);
+                                    }
+
+                                }
+
+                            }
+                        );
+
+                    });
+            }
+
+
+            function applyFilter() {
+
+                const filteredRooms =
+                    activeFilter === "All"
+                        ? allRooms
+                        : allRooms.filter(
+                            room =>
+                                room.status === activeFilter
+                        );
+
+                roomCount.textContent =
+                    activeFilter === "All"
+                        ? `${allRooms.length} rooms registered`
+                        : `${filteredRooms.length} ${activeFilter.toLowerCase()} rooms`;
+
+                renderRooms(filteredRooms);
+
+                updateActiveFilter();
+            }
+
+
+            async function loadRooms() {
+
+                try {
+
+                    const rooms =
+                        await fetchRooms();
+
+                    allRooms =
+                        rooms || [];
+
+                    /*
+                     * Fetch existing tenant records too.
+                     * No new tenant/customer dataset is created.
+                     */
+                    allTenants =
+                        await fetchTenants();
+
+                    updateCounts(allRooms);
+
+                    applyFilter();
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    grid.innerHTML = `
+                        <div class="empty-state error">
+                            Unable to load rooms.
+                        </div>
+                    `;
+                }
+            }
+
+
+            filterButtons.forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const selectedFilter =
+                            button.dataset.filter;
+
+                        if (
+                            activeFilter === selectedFilter &&
+                            selectedFilter !== "All"
+                        ) {
+
+                            activeFilter = "All";
+
+                        } else {
+
+                            activeFilter =
+                                selectedFilter;
+                        }
+
+                        applyFilter();
+
+                    }
+                );
+
+            });
+
+
+            await setupNavigation();
+
+            await loadRooms();
+
+            subscribeToRooms(loadRooms);
+
+            /*
+             * Keep resident information current when a tenant
+             * is added, edited, moved out, or reassigned.
+             */
+            subscribeToTenants(loadRooms);
+
+        });
+    </script>
+
+</body>
+
+</html>
