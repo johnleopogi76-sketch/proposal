@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CasaHome Administrator Dashboard">
+    <title>CasaHome — Admin Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .btn-admin {
+            background: #0f172a;
+            color: #ffffff;
+            border: 1px solid #0f172a;
+        }
+
+        .btn-admin:hover {
+            background: #1e293b;
+            border-color: #1e293b;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .admin-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #ecfdf5;
+            color: #047857;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 640px) {
+            .dashboard-actions {
+                width: 100%;
+            }
+
+            .dashboard-actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <span class="logo-c">C</span>
+                <span class="logo-h">H</span>
+            </div>
+
+            <div>
+                <h1>CasaHome</h1>
+                <span>Management System</span>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="admin-index.html" class="nav-link active">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="rooms.html" class="nav-link">
+                <span>▤</span>
+                Rooms
+            </a>
+
+            <a href="tenants.html" class="nav-link">
+                <span>♙</span>
+                Customers
+            </a>
+
+            <a href="billing.html" class="nav-link">
+                <span>₱</span>
+                Billing
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+            <strong>CasaHome</strong>
+            <small>Administrator Panel</small>
+        </div>
+
+    </aside>
+
+
+    <!-- Main -->
+    <main class="main-content">
+
+        <!-- Header -->
+        <header class="topbar">
+
+            <div>
+
+                <div class="admin-badge">
+                    🔐 ADMINISTRATOR
+                </div>
+
+                <p class="eyebrow">Admin Overview</p>
+
+                <h2>Executive Dashboard</h2>
+
+                <p class="subtitle">
+                    Manage rooms, customers, payments, and overall occupancy.
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-actions">
+
+                <a href="tenants.html" class="btn btn-primary">
+                    View Customers
+                </a>
+
+                <button
+                    id="logoutBtn"
+                    type="button"
+                    class="btn btn-admin">
+                    Logout
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- Metrics -->
+        <section class="metrics-grid">
+
+            <article class="metric-card">
+
+                <div class="metric-icon">
+                    ▤
+                </div>
+
+                <div>
+                    <span>Total Rooms</span>
+                    <strong id="totalRooms">0</strong>
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-icon">
+                    ◉
+                </div>
+
+                <div>
+                    <span>Occupancy Rate</span>
+                    <strong id="occupancy">0%</strong>
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-icon">
+                    ₱
+                </div>
+
+                <div>
+                    <span>Total Revenue</span>
+                    <strong id="revenue">₱0.00</strong>
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-icon warning">
+                    !
+                </div>
+
+                <div>
+                    <span>Pending Balances</span>
+                    <strong id="pending">₱0.00</strong>
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- Transactions -->
+        <section class="card">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>Recent Transactions</h3>
+
+                    <p>
+                        Latest payment activity recorded in the system.
+                    </p>
+
+                </div>
+
+
+                <a href="billing.html" class="text-link">
+                    View billing →
+                </a>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Customer</th>
+                            <th>Room</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="transactions">
+
+                        <tr>
+
+                            <td colspan="5" class="empty-state">
+                                Loading transactions...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- Admin Account -->
+        <section class="card" style="margin-top: 20px;">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>Administrator Account</h3>
+
+                    <p>
+                        Currently signed in as:
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                style="
+                    background:#f8fafc;
+                    border:1px solid #e2e8f0;
+                    border-radius:12px;
+                    padding:14px 16px;
+                    margin-top:12px;
+                ">
+
+                <strong id="adminEmail">
+                    Checking account...
+                </strong>
+
+                <div
+                    style="
+                        color:#64748b;
+                        font-size:13px;
+                        margin-top:4px;
+                    ">
+
+                    Administrator access
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- Supabase -->
+<script src="assets/js/supabase.js"></script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const totalRooms =
+        document.getElementById("totalRooms");
+
+    const occupancy =
+        document.getElementById("occupancy");
+
+    const revenue =
+        document.getElementById("revenue");
+
+    const pending =
+        document.getElementById("pending");
+
+    const transactions =
+        document.getElementById("transactions");
+
+    const adminEmail =
+        document.getElementById("adminEmail");
+
+    const logoutBtn =
+        document.getElementById("logoutBtn");
+
+
+    /*
+     * ADMIN AUTHENTICATION
+     */
+    async function checkAdminAccess() {
+
+        try {
+
+            const client =
+                await getClient();
+
+
+            const {
+                data: { session }
+            } = await client.auth.getSession();
+
+
+            /*
+             * No logged-in user
+             */
+            if (!session) {
+
+                window.location.href =
+                    "admin-login.html";
+
+                return false;
+
+            }
+
+
+            /*
+             * Check admin profile
+             */
+            const {
+                data: profile,
+                error
+            } = await client
+                .from("profiles")
+                .select("role")
+                .eq("id", session.user.id)
+                .single();
+
+
+            /*
+             * Not an admin
+             */
+            if (
+                error ||
+                !profile ||
+                profile.role !== "admin"
+            ) {
+
+                await client.auth.signOut();
+
+                window.location.href =
+                    "admin-login.html";
+
+                return false;
+
+            }
+
+
+            /*
+             * Display admin email
+             */
+            adminEmail.textContent =
+                session.user.email || "Administrator";
+
+
+            return true;
+
+
+        } catch (error) {
+
+            console.error(
+                "Admin authentication error:",
+                error
+            );
+
+            window.location.href =
+                "admin-login.html";
+
+            return false;
+
+        }
+
+    }
+
+
+    /*
+     * RENDER TRANSACTIONS
+     */
+    function renderTransactions(payments) {
+
+        if (!payments || !payments.length) {
+
+            transactions.innerHTML = `
+                <tr>
+                    <td colspan="5" class="empty-state">
+                        No transactions found.
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+
+        transactions.innerHTML = payments
+            .slice(0, 10)
+            .map(payment => {
+
+                const customer =
+                    payment.tenants?.full_name ||
+                    "Unknown Customer";
+
+                const room =
+                    payment.tenants?.rooms?.room_number ||
+                    "—";
+
+
+                return `
+                    <tr>
+
+                        <td>
+                            <strong>
+                                ${esc(customer)}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${esc(room)}
+                        </td>
+
+                        <td>
+                            ${money(payment.amount)}
+                        </td>
+
+                        <td>
+                            <span class="badge ${statusClass(payment.status)}">
+                                ${esc(payment.status)}
+                            </span>
+                        </td>
+
+                        <td>
+                            ${date(payment.payment_date)}
+                        </td>
+
+                    </tr>
+                `;
+
+            })
+            .join("");
+
+    }
+
+
+    /*
+     * LOAD DASHBOARD DATA
+     */
+    async function loadDashboard() {
+
+        try {
+
+            const data =
+                await fetchDashboardData();
+
+
+            totalRooms.textContent =
+                data.metrics.totalRooms;
+
+
+            occupancy.textContent =
+                `${data.metrics.occupancyRate.toFixed(1)}%`;
+
+
+            revenue.textContent =
+                money(data.metrics.revenue);
+
+
+            pending.textContent =
+                money(data.metrics.pending);
+
+
+            renderTransactions(
+                data.payments
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Dashboard error:",
+                error
+            );
+
+
+            transactions.innerHTML = `
+                <tr>
+                    <td colspan="5" class="empty-state error">
+                        Unable to load dashboard data.
+                    </td>
+                </tr>
+            `;
+
+        }
+
+    }
+
+
+    /*
+     * LOGOUT
+     */
+    logoutBtn.addEventListener(
+        "click",
+        async () => {
+
+            logoutBtn.disabled = true;
+            logoutBtn.textContent = "Logging out...";
+
+
+            try {
+
+                const client =
+                    await getClient();
+
+                await client.auth.signOut();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Logout error:",
+                    error
+                );
+
+            }
+
+
+            window.location.href =
+                "admin-login.html";
+
+        }
+    );
+
+
+    /*
+     * START
+     */
+    const isAdmin =
+        await checkAdminAccess();
+
+
+    if (!isAdmin) {
+        return;
+    }
+
+
+    await loadDashboard();
+
+
+    /*
+     * REALTIME UPDATES
+     */
+    subscribeToPayments(
+        loadDashboard
+    );
+
+
+    subscribeToRooms(
+        loadDashboard
+    );
+
+});
+
+</script>
+
+</body>
+</html>
