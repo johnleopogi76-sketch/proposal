@@ -1,1059 +1,1305 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="description"
-        content="CasaHome — Boarding House Management System"
-    >
-
-    <title>CasaHome — Login</title>
-
-    <link rel="stylesheet" href="style.css">
-
-    <style>
-        /* =====================================================
-           LOGIN PAGE
-           ===================================================== */
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: #f8fafc;
-        }
-
-        .login-page {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 440px;
-        }
-
-        /* =====================================================
-           BRAND
-           ===================================================== */
-
-        .login-brand {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-
-        .login-logo {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 14px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: #10b981;
-            border-radius: 18px;
-
-            box-shadow:
-                0 12px 30px rgba(16, 185, 129, 0.20);
-        }
-
-        .login-logo .logo-c {
-            color: #ffffff;
-            font-size: 25px;
-            font-weight: 900;
-            line-height: 1;
-        }
-
-        .login-logo .logo-h {
-            color: #0f172a;
-            font-size: 25px;
-            font-weight: 900;
-            line-height: 1;
-        }
-
-        .login-brand h1 {
-            margin: 0;
-            color: #0f172a;
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: -0.03em;
-        }
-
-        .login-brand p {
-            margin: 6px 0 0;
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        /* =====================================================
-           LOGIN CARD
-           ===================================================== */
-
-        .login-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            padding: 28px;
-
-            box-shadow:
-                0 20px 50px rgba(15, 23, 42, 0.08);
-        }
-
-        .login-card h2 {
-            margin: 0;
-            color: #0f172a;
-            font-size: 22px;
-            font-weight: 800;
-        }
-
-        .login-card-subtitle {
-            margin: 7px 0 24px;
-            color: #64748b;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        /* =====================================================
-           ROLE SELECTION
-           ===================================================== */
-
-        .role-label {
-            display: block;
-            margin-bottom: 9px;
-
-            color: #334155;
-            font-size: 13px;
-            font-weight: 800;
-        }
-
-        .role-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 22px;
-        }
-
-        .role-btn {
-            min-height: 48px;
-
-            border: 1px solid #cbd5e1;
-            border-radius: 11px;
-
-            background: #ffffff;
-            color: #475569;
-
-            font-size: 13px;
-            font-weight: 800;
-
-            cursor: pointer;
-
-            transition:
-                background 0.2s ease,
-                color 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-        .role-btn:hover {
-            border-color: #94a3b8;
-            transform: translateY(-1px);
-        }
-
-        .role-btn.active {
-            background: #ecfdf5;
-            border-color: #10b981;
-            color: #047857;
-        }
-
-        .role-btn span {
-            display: block;
-            margin-bottom: 2px;
-            font-size: 17px;
-        }
-
-        /* =====================================================
-           FORM
-           ===================================================== */
-
-        .form-group {
-            margin-bottom: 17px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 7px;
-
-            color: #334155;
-            font-size: 13px;
-            font-weight: 800;
-        }
-
-        .form-group input {
-            width: 100%;
-            height: 46px;
-
-            padding: 0 13px;
-
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-
-            background: #ffffff;
-            color: #0f172a;
-
-            font-family: inherit;
-            font-size: 14px;
-
-            outline: none;
-
-            transition:
-                border-color 0.2s ease,
-                box-shadow 0.2s ease;
-        }
-
-        .form-group input::placeholder {
-            color: #94a3b8;
-        }
-
-        .form-group input:focus {
-            border-color: #10b981;
-
-            box-shadow:
-                0 0 0 3px rgba(16, 185, 129, 0.12);
-        }
-
-        /* =====================================================
-           LOGIN BUTTON
-           ===================================================== */
-
-        .login-btn {
-            width: 100%;
-            min-height: 48px;
-
-            border: 0;
-            border-radius: 11px;
-
-            background: #10b981;
-            color: #ffffff;
-
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 800;
-
-            cursor: pointer;
-
-            transition:
-                background 0.2s ease,
-                transform 0.2s ease;
-        }
-
-        .login-btn:hover {
-            background: #059669;
-            transform: translateY(-1px);
-        }
-
-        .login-btn:disabled {
-            opacity: 0.65;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* =====================================================
-           ERROR / SUCCESS MESSAGE
-           ===================================================== */
-
-        .login-message {
-            display: none;
-
-            margin-bottom: 17px;
-            padding: 12px 14px;
+<!DOCTYPE html>    <html lang="en">    
+<head>    
+    <meta charset="UTF-8">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <meta name="description" content="CasaHome Tenant Dashboard">    
+    <title>CasaHome — Tenant Dashboard</title>    <link rel="stylesheet" href="style.css">    
+
+<style>    
+    .btn-user {    
+        background: #10b981;    
+        color: #ffffff;    
+        border: 1px solid #10b981;    
+    }    
+
+    .btn-user:hover {    
+        background: #059669;    
+        border-color: #059669;    
+    }    
+
+    .dashboard-actions {    
+        display: flex;    
+        gap: 10px;    
+        align-items: center;    
+        flex-wrap: wrap;    
+    }    
+
+    .user-badge {    
+        display: inline-flex;    
+        align-items: center;    
+        gap: 6px;    
+        padding: 6px 10px;    
+        border-radius: 999px;    
+        background: #ecfdf5;    
+        color: #047857;    
+        font-size: 12px;    
+        font-weight: 800;    
+        margin-bottom: 8px;    
+    }    
+
+    .info-grid {    
+        display: grid;    
+        grid-template-columns: repeat(2, minmax(0, 1fr));    
+        gap: 16px;    
+        margin-top: 16px;    
+    }    
+
+    .info-item {    
+        background: #f8fafc;    
+        border: 1px solid #e2e8f0;    
+        border-radius: 12px;    
+        padding: 14px 16px;    
+    }    
+
+    .info-item span {    
+        display: block;    
+        color: #64748b;    
+        font-size: 12px;    
+        font-weight: 700;    
+        margin-bottom: 5px;    
+    }    
+
+    .info-item strong {    
+        display: block;    
+        color: #0f172a;    
+        font-size: 15px;    
+    }    
+
+    .welcome-card {    
+        background: linear-gradient(    
+            135deg,    
+            #0f172a 0%,    
+            #172033 100%    
+        );    
+        color: white;    
+        border-radius: 16px;    
+        padding: 22px;    
+        margin-bottom: 20px;    
+    }    
+
+    .welcome-card h3 {    
+        color: white;    
+        margin: 0;    
+    }    
+
+    .welcome-card p {    
+        color: #94a3b8;    
+        margin-top: 6px;    
+    }    
+
+    @media (max-width: 640px) {    
+
+        .dashboard-actions {    
+            width: 100%;    
+        }    
+
+        .dashboard-actions .btn {    
+            flex: 1;    
+            text-align: center;    
+        }    
+
+        .info-grid {    
+            grid-template-columns: 1fr;    
+        }    
 
-            border-radius: 10px;
+    }    
+</style>
 
-            font-size: 13px;
-            font-weight: 700;
-            line-height: 1.45;
-        }
+</head>    <body>    <div class="app">    <!-- =========================================================    
+     SIDEBAR    
+     ========================================================= -->    
 
-        .login-message.error {
-            display: block;
+<aside class="sidebar">    
 
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #b91c1c;
-        }
+    <div class="brand">    
 
-        .login-message.success {
-            display: block;
+        <div class="brand-icon">    
+            <span class="logo-c">C</span>    
+            <span class="logo-h">H</span>    
+        </div>    
 
-            background: #ecfdf5;
-            border: 1px solid #a7f3d0;
-            color: #047857;
-        }
+        <div>    
+            <h1>CasaHome</h1>    
+            <span>Management System</span>    
+        </div>    
 
-        /* =====================================================
-           FOOTER
-           ===================================================== */
+    </div>    
 
-        .login-footer {
-            text-align: center;
-            margin-top: 20px;
-        }
 
-        .login-footer p {
-            margin: 0;
+    <nav class="sidebar-nav">    
 
-            color: #94a3b8;
-            font-size: 12px;
-        }
+        <a href="user-dashboard.html" class="nav-link active">    
+            <span>▦</span>    
+            Dashboard    
+        </a>    
 
-        /* =====================================================
-           DEMO ACCOUNT NOTE
-           ===================================================== */
+        <a href="#roomInformation" class="nav-link">    
+            <span>▤</span>    
+            My Room    
+        </a>    
 
-        .demo-note {
-            margin-top: 18px;
-            padding: 13px 14px;
+        <a href="#payments" class="nav-link">    
+            <span>₱</span>    
+            My Payments    
+        </a>    
 
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
+        <a href="#myAccount" class="nav-link">    
+            <span>♙</span>    
+            My Profile    
+        </a>    
 
-            color: #64748b;
-            font-size: 12px;
-            line-height: 1.5;
-        }
+    </nav>    
 
-        .demo-note strong {
-            color: #334155;
-        }
 
-        /* =====================================================
-           MOBILE
-           ===================================================== */
+    <div class="sidebar-footer">    
 
-        @media (max-width: 480px) {
+        <strong>CasaHome</strong>    
 
-            .login-page {
-                padding: 16px;
-            }
+        <small>    
+            Tenant Portal    
+        </small>    
 
-            .login-card {
-                padding: 22px 18px;
-                border-radius: 16px;
-            }
+    </div>    
 
-            .login-brand {
-                margin-bottom: 22px;
-            }
+</aside>    
 
-            .login-brand h1 {
-                font-size: 25px;
-            }
 
-            .role-buttons {
-                gap: 8px;
-            }
+<!-- =========================================================    
+     MAIN CONTENT    
+     ========================================================= -->    
 
-            .role-btn {
-                font-size: 12px;
-            }
-        }
-    </style>
-</head>
+<main class="main-content">    
 
 
-<body>
+    <!-- =====================================================    
+         TOPBAR    
+         ===================================================== -->    
 
-<div class="login-page">
+    <header class="topbar">    
 
-    <div class="login-container">
+        <div>    
 
+            <div class="user-badge">    
+                👤 TENANT    
+            </div>    
 
-        <!-- =================================================
-             BRAND
-             ================================================= -->
+            <p class="eyebrow">    
+                Tenant Overview    
+            </p>    
 
-        <div class="login-brand">
+            <h2>    
+                My Dashboard    
+            </h2>    
 
-            <div class="login-logo">
+            <p class="subtitle">    
+                View your room, payments, and boarding house information.    
+            </p>    
 
-                <span class="logo-c">C</span>
-                <span class="logo-h">H</span>
+        </div>    
 
-            </div>
 
-            <h1>
-                CasaHome
-            </h1>
+        <div class="dashboard-actions">    
 
-            <p>
-                Boarding House Management System
-            </p>
+            <button    
+                id="logoutBtn"    
+                type="button"    
+                class="btn btn-user">    
 
-        </div>
+                Logout    
 
+            </button>    
 
-        <!-- =================================================
-             LOGIN CARD
-             ================================================= -->
+        </div>    
 
-        <div class="login-card">
+    </header>    
 
-            <h2>
-                Welcome back
-            </h2>
 
-            <p class="login-card-subtitle">
-                Sign in to access your CasaHome account.
-            </p>
+    <!-- =====================================================    
+         WELCOME CARD    
+         ===================================================== -->    
 
+    <section class="welcome-card">    
 
-            <!-- =============================================
-                 ROLE
-                 ============================================= -->
+        <p    
+            style="    
+                color:#6ee7b7;    
+                font-size:12px;    
+                font-weight:800;    
+                margin:0;    
+                text-transform:uppercase;    
+                letter-spacing:.06em;    
+            ">    
 
-            <label class="role-label">
-                Login as
-            </label>
+            Welcome back    
 
+        </p>    
 
-            <div class="role-buttons">
+        <h3    
+            id="welcomeName"    
+            style="    
+                font-size:24px;    
+                margin-top:5px;    
+            ">    
 
-                <button
-                    type="button"
-                    id="adminRoleBtn"
-                    class="role-btn active">
+            Loading...    
 
-                    <span>🛡</span>
+        </h3>    
 
-                    Admin
+        <p>    
+            Here's your current CasaHome account overview.    
+        </p>    
 
-                </button>
+    </section>    
 
 
-                <button
-                    type="button"
-                    id="userRoleBtn"
-                    class="role-btn">
+    <!-- =====================================================    
+         METRICS    
+         ===================================================== -->    
 
-                    <span>👤</span>
+    <section class="metrics-grid">    
 
-                    Tenant
 
-                </button>
+        <!-- MY ROOM -->    
 
-            </div>
+        <article class="metric-card">    
 
+            <div class="metric-icon">    
+                ▤    
+            </div>    
 
-            <!-- =============================================
-                 MESSAGE
-                 ============================================= -->
+            <div>    
 
-            <div
-                id="loginMessage"
-                class="login-message">
-            </div>
+                <span>    
+                    My Room    
+                </span>    
 
+                <strong id="roomNumber">    
+                    —    
+                </strong>    
 
-            <!-- =============================================
-                 LOGIN FORM
-                 ============================================= -->
+            </div>    
 
-            <form id="loginForm">
+        </article>    
 
 
-                <!-- EMAIL -->
+        <!-- MONTHLY RENT -->    
 
-                <div class="form-group">
+        <article class="metric-card">    
 
-                    <label for="email">
-                        Email Address
-                    </label>
+            <div class="metric-icon">    
+                ₱    
+            </div>    
 
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        autocomplete="email"
-                        required
-                    >
+            <div>    
 
-                </div>
+                <span>    
+                    Monthly Rent    
+                </span>    
 
+                <strong id="monthlyRent">    
+                    ₱0.00    
+                </strong>    
 
-                <!-- PASSWORD -->
+            </div>    
 
-                <div class="form-group">
+        </article>    
 
-                    <label for="password">
-                        Password
-                    </label>
 
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        autocomplete="current-password"
-                        required
-                    >
+        <!-- TOTAL PAID -->    
 
-                </div>
+        <article class="metric-card">    
 
+            <div class="metric-icon">    
+                ✓    
+            </div>    
 
-                <!-- LOGIN BUTTON -->
+            <div>    
 
-                <button
-                    type="submit"
-                    id="loginBtn"
-                    class="login-btn">
+                <span>    
+                    Total Paid    
+                </span>    
 
-                    Login
+                <strong id="totalPaid">    
+                    ₱0.00    
+                </strong>    
 
-                </button>
+            </div>    
 
-            </form>
+        </article>    
 
 
-            <!-- =============================================
-                 DEMO NOTE
-                 ============================================= -->
+        <!-- OUTSTANDING -->    
 
-            <div
-                id="demoNote"
-                class="demo-note">
+        <article class="metric-card">    
 
-                <strong>Admin access:</strong>
-                Use your registered administrator account.
+            <div class="metric-icon warning">    
+                !    
+            </div>    
 
-            </div>
+            <div>    
 
-        </div>
+                <span>    
+                    Outstanding    
+                </span>    
 
+                <strong id="outstanding">    
+                    ₱0.00    
+                </strong>    
 
-        <!-- =================================================
-             FOOTER
-             ================================================= -->
+            </div>    
 
-        <div class="login-footer">
+        </article>    
 
-            <p>
-                © 2026 CasaHome · Academic/Testing System
-            </p>
+    </section>    
 
-        </div>
 
-    </div>
+    <!-- =====================================================    
+         RECENT PAYMENTS    
+         ===================================================== -->    
 
-</div>
+    <section    
+        id="payments"    
+        class="card">    
 
+        <div class="section-header">    
 
-<!-- =========================================================
-     SUPABASE
-     ========================================================= -->
+            <div>    
 
-<script src="assets/js/supabase.js"></script>
+                <h3>    
+                    My Recent Payments    
+                </h3>    
 
+                <p>    
+                    Your latest payment activity.    
+                </p>    
 
-<script>
+            </div>    
 
-document.addEventListener(
-    "DOMContentLoaded",
-    async () => {
+        </div>    
 
 
-        /* =================================================
-           ELEMENTS
-           ================================================= */
+        <div class="table-wrapper">    
 
-        const loginForm =
-            document.getElementById("loginForm");
+            <table>    
 
-        const emailInput =
-            document.getElementById("email");
+                <thead>    
 
-        const passwordInput =
-            document.getElementById("password");
+                    <tr>    
 
-        const loginBtn =
-            document.getElementById("loginBtn");
+                        <th>    
+                            Date    
+                        </th>    
 
-        const loginMessage =
-            document.getElementById("loginMessage");
+                        <th>    
+                            Amount    
+                        </th>    
 
-        const adminRoleBtn =
-            document.getElementById("adminRoleBtn");
+                        <th>    
+                            Status    
+                        </th>    
 
-        const userRoleBtn =
-            document.getElementById("userRoleBtn");
+                    </tr>    
 
-        const demoNote =
-            document.getElementById("demoNote");
+                </thead>    
 
 
-        /* =================================================
-           SELECTED ROLE
-           ================================================= */
+                <tbody id="paymentsTable">    
 
-        let selectedRole = "admin";
+                    <tr>    
 
+                        <td    
+                            colspan="3"    
+                            class="empty-state">    
 
-        /* =================================================
-           MESSAGE
-           ================================================= */
+                            Loading payments...    
 
-        function showMessage(
-            message,
-            type = "error"
-        ) {
+                        </td>    
 
-            loginMessage.textContent =
-                message;
+                    </tr>    
 
-            loginMessage.className =
-                `login-message ${type}`;
+                </tbody>    
 
-        }
+            </table>    
 
+        </div>    
 
-        function clearMessage() {
+    </section>    
 
-            loginMessage.textContent =
-                "";
 
-            loginMessage.className =
-                "login-message";
+    <!-- =====================================================    
+         ROOM INFORMATION    
+         ===================================================== -->    
 
-        }
+    <section    
+        id="roomInformation"    
+        class="card"    
+        style="margin-top:20px;">    
 
+        <div class="section-header">    
 
-        /* =================================================
-           ROLE SELECTION
-           ================================================= */
+            <div>    
 
-        adminRoleBtn.addEventListener(
-            "click",
-            () => {
+                <h3>    
+                    My Room Information    
+                </h3>    
 
-                selectedRole = "admin";
+                <p>    
+                    Information about your current room assignment.    
+                </p>    
 
+            </div>    
 
-                adminRoleBtn.classList.add(
-                    "active"
-                );
+        </div>    
 
-                userRoleBtn.classList.remove(
-                    "active"
-                );
 
+        <div class="info-grid">    
 
-                demoNote.innerHTML = `
-                    <strong>Admin access:</strong>
-                    Use your registered administrator account.
-                `;
 
+            <div class="info-item">    
 
-                clearMessage();
+                <span>    
+                    Room Number    
+                </span>    
 
-            }
-        );
+                <strong id="detailRoomNumber">    
+                    —    
+                </strong>    
 
+            </div>    
 
-        userRoleBtn.addEventListener(
-            "click",
-            () => {
 
-                selectedRole = "user";
+            <div class="info-item">    
 
+                <span>    
+                    Room Type    
+                </span>    
 
-                userRoleBtn.classList.add(
-                    "active"
-                );
+                <strong id="detailRoomType">    
+                    —    
+                </strong>    
 
-                adminRoleBtn.classList.remove(
-                    "active"
-                );
+            </div>    
 
 
-                demoNote.innerHTML = `
-                    <strong>Demo tenant:</strong>
-                    Mr. Juan Dela Cruz
-                `;
+            <div class="info-item">    
 
+                <span>    
+                    Monthly Rate    
+                </span>    
 
-                clearMessage();
+                <strong id="detailRoomRate">    
+                    ₱0.00    
+                </strong>    
 
-            }
-        );
+            </div>    
 
 
-        /* =================================================
-           LOGIN
-           ================================================= */
+            <div class="info-item">    
 
-        loginForm.addEventListener(
-            "submit",
-            async (event) => {
+                <span>    
+                    Room Status    
+                </span>    
 
-                event.preventDefault();
+                <strong id="detailRoomStatus">    
+                    —    
+                </strong>    
 
-                clearMessage();
+            </div>    
 
 
-                const email =
-                    emailInput.value.trim();
+            <div class="info-item">    
 
-                const password =
-                    passwordInput.value;
+                <span>    
+                    Move-in Date    
+                </span>    
 
+                <strong id="moveInDate">    
+                    —    
+                </strong>    
 
-                if (!email || !password) {
+            </div>    
 
-                    showMessage(
-                        "Please enter your email and password."
-                    );
 
-                    return;
+            <div class="info-item">    
 
-                }
+                <span>    
+                    Tenant Status    
+                </span>    
 
+                <strong id="tenantStatus">    
+                    —    
+                </strong>    
 
-                /* Disable button */
+            </div>    
 
-                loginBtn.disabled = true;
+        </div>    
 
-                loginBtn.textContent =
-                    "Signing in...";
+    </section>    
 
 
-                try {
+    <!-- =====================================================    
+         ACCOUNT INFORMATION    
+         ===================================================== -->    
 
+    <section    
+        id="myAccount"    
+        class="card"    
+        style="margin-top:20px;">    
 
-                    /* =====================================
-                       GET SUPABASE CLIENT
-                       ===================================== */
+        <div class="section-header">    
 
-                    const client =
-                        await getClient();
+            <div>    
 
+                <h3>    
+                    My Account    
+                </h3>    
 
-                    /* =====================================
-                       SIGN IN
-                       ===================================== */
+                <p>    
+                    Currently signed in account information.    
+                </p>    
 
-                    const {
-                        data: authData,
-                        error: authError
-                    } = await client.auth.signInWithPassword({
+            </div>    
 
-                        email: email,
+        </div>    
 
-                        password: password
 
-                    });
+        <div    
+            style="    
+                background:#f8fafc;    
+                border:1px solid #e2e8f0;    
+                border-radius:12px;    
+                padding:16px;    
+                margin-top:12px;    
+            ">    
 
+            <strong id="tenantName">    
+                Loading...    
+            </strong>    
 
-                    if (authError) {
 
-                        throw authError;
+            <div    
+                id="tenantEmail"    
+                style="    
+                    color:#64748b;    
+                    font-size:13px;    
+                    margin-top:5px;    
+                ">    
 
-                    }
+                Checking account...    
 
+            </div>    
 
-                    const user =
-                        authData.user;
 
+            <div    
+                style="    
+                    color:#047857;    
+                    font-size:13px;    
+                    font-weight:700;    
+                    margin-top:8px;    
+                ">    
 
-                    if (!user) {
+                Tenant access    
 
-                        throw new Error(
-                            "Unable to sign in."
-                        );
+            </div>    
 
-                    }
+        </div>    
 
+    </section>    
 
-                    /* =====================================
-                       GET PROFILE
-                       ===================================== */
+</main>
 
-                    const {
-                        data: profile,
-                        error: profileError
-                    } = await client
-                        .from("profiles")
-                        .select(
-                            "role, tenant_id"
-                        )
-                        .eq(
-                            "id",
-                            user.id
-                        )
-                        .maybeSingle();
-
-
-                    if (profileError) {
-
-                        throw profileError;
-
-                    }
-
-
-                    /* =====================================
-                       NO PROFILE
-                       ===================================== */
-
-                    if (!profile) {
-
-                        await client.auth.signOut();
-
-                        throw new Error(
-                            "Your account does not have a profile record yet."
-                        );
-
-                    }
-
-
-                    /* =====================================
-                       ADMIN LOGIN
-                       ===================================== */
-
-                    if (
-                        selectedRole === "admin"
-                    ) {
-
-
-                        if (
-                            profile.role !== "admin"
-                        ) {
-
-                            await client.auth.signOut();
-
-                            throw new Error(
-                                "This account is not registered as an administrator."
-                            );
-
-                        }
-
-
-                        showMessage(
-                            "Admin login successful. Redirecting...",
-                            "success"
-                        );
-
-
-                        window.location.replace(
-                            "admin-index.html"
-                        );
-
-
-                        return;
-
-                    }
-
-
-                    /* =====================================
-                       TENANT LOGIN
-                       ===================================== */
-
-                    if (
-                        selectedRole === "user"
-                    ) {
-
-
-                        if (
-                            profile.role !== "user"
-                        ) {
-
-                            await client.auth.signOut();
-
-                            throw new Error(
-                                "This account is not registered as a tenant."
-                            );
-
-                        }
-
-
-                        if (
-                            !profile.tenant_id
-                        ) {
-
-                            await client.auth.signOut();
-
-                            throw new Error(
-                                "This tenant account is not linked to a tenant record yet."
-                            );
-
-                        }
-
-
-                        showMessage(
-                            "Tenant login successful. Redirecting...",
-                            "success"
-                        );
-
-
-                        window.location.replace(
-                            "user-dashboard.html"
-                        );
-
-
-                        return;
-
-                    }
-
-
-                } catch (error) {
-
-                    console.error(
-                        "Login error:",
-                        error
-                    );
-
-
-                    let message =
-                        "Unable to sign in. Please check your account details.";
-
-
-                    if (
-                        error?.message
-                    ) {
-
-                        message =
-                            error.message;
-
-                    }
-
-
-                    showMessage(
-                        message,
-                        "error"
-                    );
-
-
-                    loginBtn.disabled =
-                        false;
-
-                    loginBtn.textContent =
-                        "Login";
-
-                }
-
-            }
-        );
-
-
-        /* =================================================
-           CHECK EXISTING SESSION
-           ================================================= */
-
-        try {
-
-            const client =
-                await getClient();
-
-
-            const {
-                data: {
-                    session
-                }
-            } = await client.auth.getSession();
-
-
-            if (session) {
-
-
-                /* =========================================
-                   Get existing profile
-                   ========================================= */
-
-                const {
-                    data: profile
-                } = await client
-                    .from("profiles")
-                    .select(
-                        "role, tenant_id"
-                    )
-                    .eq(
-                        "id",
-                        session.user.id
-                    )
-                    .maybeSingle();
-
-
-                if (profile) {
-
-
-                    /* ================================
-                       Existing Admin Session
-                       ================================ */
-
-                    if (
-                        profile.role === "admin"
-                    ) {
-
-                        window.location.replace(
-                            "admin-index.html"
-                        );
-
-                        return;
-
-                    }
-
-
-                    /* ================================
-                       Existing Tenant Session
-                       ================================ */
-
-                    if (
-                        profile.role === "user" &&
-                        profile.tenant_id
-                    ) {
-
-                        window.location.replace(
-                            "user-dashboard.html"
-                        );
-
-                        return;
-
-                    }
-
-                }
-
-            }
-
-        } catch (error) {
-
-            /*
-             * Do not block the login page if the
-             * existing-session check fails.
-             */
-
-            console.warn(
-                "Session check:",
-                error
-            );
-
-        }
-
-    }
-
-);
-
-</script>
-
-</body>
+</div>    <!-- =========================================================    
+     SUPABASE    
+     ========================================================= -->    <script src="assets/js/supabase.js"></script>    <script>    
+    
+document.addEventListener("DOMContentLoaded", async () => {    
+    
+    
+    /* =========================================================    
+       ELEMENTS    
+       ========================================================= */    
+    
+    const welcomeName =    
+        document.getElementById("welcomeName");    
+    
+    const roomNumber =    
+        document.getElementById("roomNumber");    
+    
+    const monthlyRent =    
+        document.getElementById("monthlyRent");    
+    
+    const totalPaid =    
+        document.getElementById("totalPaid");    
+    
+    const outstanding =    
+        document.getElementById("outstanding");    
+    
+    const paymentsTable =    
+        document.getElementById("paymentsTable");    
+    
+    const detailRoomNumber =    
+        document.getElementById("detailRoomNumber");    
+    
+    const detailRoomType =    
+        document.getElementById("detailRoomType");    
+    
+    const detailRoomRate =    
+        document.getElementById("detailRoomRate");    
+    
+    const detailRoomStatus =    
+        document.getElementById("detailRoomStatus");    
+    
+    const moveInDate =    
+        document.getElementById("moveInDate");    
+    
+    const tenantStatus =    
+        document.getElementById("tenantStatus");    
+    
+    const tenantName =    
+        document.getElementById("tenantName");    
+    
+    const tenantEmail =    
+        document.getElementById("tenantEmail");    
+    
+    const logoutBtn =    
+        document.getElementById("logoutBtn");    
+    
+    
+    /* =========================================================    
+       CURRENT TENANT    
+       ========================================================= */    
+    
+    let currentTenantId = null;    
+    
+    
+    /* =========================================================    
+       CHECK USER ACCESS    
+       ========================================================= */    
+    
+    async function checkUserAccess() {    
+    
+        try {    
+    
+            const client =    
+                await getClient();    
+    
+    
+            const {    
+                data: { session }    
+            } = await client.auth.getSession();    
+    
+    
+            /*    
+             * No session    
+             */    
+    
+            if (!session) {    
+    
+                window.location.href =    
+                    "index.html";    
+    
+                return false;    
+    
+            }    
+    
+    
+            /*    
+             * Get profile    
+             */    
+    
+            const {    
+                data: profile,    
+                error    
+            } = await client    
+                .from("profiles")    
+                .select("role, tenant_id")    
+                .eq("id", session.user.id)    
+                .single();    
+    
+    
+            if (    
+                error ||    
+                !profile    
+            ) {    
+    
+                await client.auth.signOut();    
+    
+                window.location.href =    
+                    "index.html";    
+    
+                return false;    
+    
+            }    
+    
+    
+            /*    
+             * Must be a user    
+             */    
+    
+            if (    
+                profile.role !== "user"    
+            ) {    
+    
+                await client.auth.signOut();    
+    
+                window.location.href =    
+                    "index.html";    
+    
+                return false;    
+    
+            }    
+    
+    
+            /*    
+             * Must have tenant    
+             */    
+    
+            if (    
+                !profile.tenant_id    
+            ) {    
+    
+                throw new Error(    
+                    "Your account is not linked to a tenant record."    
+                );    
+    
+            }    
+    
+    
+            currentTenantId =    
+                profile.tenant_id;    
+    
+    
+            /*    
+             * Show email    
+             */    
+    
+            tenantEmail.textContent =    
+                session.user.email ||    
+                "No email available";    
+    
+    
+            return true;    
+    
+        } catch (error) {    
+    
+            console.error(    
+                "User authentication error:",    
+                error    
+            );    
+    
+            alert(    
+                error?.message ||    
+                "Unable to verify your account."    
+            );    
+    
+            window.location.href =    
+                "index.html";    
+    
+            return false;    
+    
+        }    
+    
+    }    
+    
+    
+    /* =========================================================    
+       LOAD TENANT    
+       ========================================================= */    
+    
+    async function loadTenant() {    
+    
+        const client =    
+            await getClient();    
+    
+    
+        /*    
+         * IMPORTANT:    
+         *    
+         * Only request the tenant whose ID    
+         * belongs to the logged-in profile.    
+         */    
+    
+        const {    
+            data: tenant,    
+            error    
+        } = await client    
+            .from("tenants")    
+            .select(`    
+                id,    
+                full_name,    
+                contact_number,    
+                room_id,    
+                move_in_date,    
+                status,    
+                rooms (    
+                    id,    
+                    room_number,    
+                    room_type,    
+                    rate,    
+                    status    
+                )    
+            `)    
+            .eq(    
+                "id",    
+                currentTenantId    
+            )    
+            .single();    
+    
+    
+        if (error) {    
+            throw error;    
+        }    
+    
+    
+        return tenant;    
+    
+    }    
+    
+    
+    /* =========================================================    
+       LOAD PAYMENTS    
+       ========================================================= */    
+    
+    async function loadPayments() {    
+    
+        const client =    
+            await getClient();    
+    
+    
+        /*    
+         * IMPORTANT:    
+         *    
+         * Only retrieve payments belonging    
+         * to the logged-in tenant.    
+         */    
+    
+        const {    
+            data: payments,    
+            error    
+        } = await client    
+            .from("payments")    
+            .select(`    
+                id,    
+                tenant_id,    
+                amount,    
+                status,    
+                payment_date,    
+                created_at    
+            `)    
+            .eq(    
+                "tenant_id",    
+                currentTenantId    
+            )    
+            .order(    
+                "payment_date",    
+                {    
+                    ascending: false    
+                }    
+            );    
+    
+    
+        if (error) {    
+            throw error;    
+        }    
+    
+    
+        return payments || [];    
+    
+    }    
+    
+    
+    /* =========================================================    
+       RENDER TENANT    
+       ========================================================= */    
+    
+    function renderTenant(tenant) {    
+    
+        const room =    
+            tenant.rooms;    
+    
+    
+        /*    
+         * Name    
+         */    
+    
+        welcomeName.textContent =    
+            `Welcome back, ${tenant.full_name}`;    
+    
+    
+        tenantName.textContent =    
+            tenant.full_name;    
+    
+    
+        /*    
+         * Room    
+         */    
+    
+        if (room) {    
+    
+            roomNumber.textContent =    
+                room.room_number;    
+    
+    
+            monthlyRent.textContent =    
+                money(room.rate);    
+    
+    
+            detailRoomNumber.textContent =    
+                room.room_number;    
+    
+    
+            detailRoomType.textContent =    
+                room.room_type;    
+    
+    
+            detailRoomRate.textContent =    
+                money(room.rate);    
+    
+    
+            detailRoomStatus.textContent =    
+                room.status;    
+    
+        } else {    
+    
+            roomNumber.textContent =    
+                "Unassigned";    
+    
+    
+            monthlyRent.textContent =    
+                "₱0.00";    
+    
+    
+            detailRoomNumber.textContent =    
+                "No room assigned";    
+    
+    
+            detailRoomType.textContent =    
+                "—";    
+    
+    
+            detailRoomRate.textContent =    
+                "₱0.00";    
+    
+    
+            detailRoomStatus.textContent =    
+                "—";    
+    
+        }    
+    
+    
+        /*    
+         * Move-in    
+         */    
+    
+        moveInDate.textContent =    
+            date(tenant.move_in_date);    
+    
+    
+        /*    
+         * Tenant status    
+         */    
+    
+        tenantStatus.innerHTML = `    
+            <span class="badge ${statusClass(tenant.status)}">    
+                ${esc(tenant.status)}    
+            </span>    
+        `;    
+    
+    }    
+    
+    
+    /* =========================================================    
+       RENDER PAYMENTS    
+       ========================================================= */    
+    
+    function renderPayments(payments) {    
+    
+    
+        /*    
+         * Calculate totals    
+         */    
+    
+        let paid =    
+            0;    
+    
+        let outstandingAmount =    
+            0;    
+    
+    
+        payments.forEach(payment => {    
+    
+            const amount =    
+                Number(payment.amount || 0);    
+    
+    
+            if (    
+                payment.status === "Paid"    
+            ) {    
+    
+                paid += amount;    
+    
+            } else {    
+    
+                outstandingAmount += amount;    
+    
+            }    
+    
+        });    
+    
+    
+        /*    
+         * Metrics    
+         */    
+    
+        totalPaid.textContent =    
+            money(paid);    
+    
+    
+        outstanding.textContent =    
+            money(outstandingAmount);    
+    
+    
+        /*    
+         * No payments    
+         */    
+    
+        if (    
+            !payments.length    
+        ) {    
+    
+            paymentsTable.innerHTML = `    
+                <tr>    
+                    <td    
+                        colspan="3"    
+                        class="empty-state">    
+    
+                        No payment records found.    
+    
+                    </td>    
+                </tr>    
+            `;    
+    
+            return;    
+    
+        }    
+    
+    
+        /*    
+         * Render latest 10    
+         */    
+    
+        paymentsTable.innerHTML =    
+            payments    
+                .slice(0, 10)    
+                .map(payment => {    
+    
+                    return `    
+                        <tr>    
+    
+                            <td>    
+                                ${date(    
+                                    payment.payment_date    
+                                )}    
+                            </td>    
+    
+                            <td>    
+                                <strong>    
+                                    ${money(    
+                                        payment.amount    
+                                    )}    
+                                </strong>    
+                            </td>    
+    
+                            <td>    
+    
+                                <span    
+                                    class="badge ${statusClass(    
+                                        payment.status    
+                                    )}">    
+    
+                                    ${esc(    
+                                        payment.status    
+                                    )}    
+    
+                                </span>    
+    
+                            </td>    
+    
+                        </tr>    
+                    `;    
+    
+                })    
+                .join("");    
+    
+    }    
+    
+    
+    /* =========================================================    
+       LOAD DASHBOARD    
+       ========================================================= */    
+    
+    async function loadDashboard() {    
+    
+        try {    
+    
+            const [    
+                tenant,    
+                payments    
+            ] = await Promise.all([    
+    
+                loadTenant(),    
+    
+                loadPayments()    
+    
+            ]);    
+    
+    
+            renderTenant(    
+                tenant    
+            );    
+    
+    
+            renderPayments(    
+                payments    
+            );    
+    
+    
+        } catch (error) {    
+    
+            console.error(    
+                "Tenant dashboard error:",    
+                error    
+            );    
+    
+    
+            paymentsTable.innerHTML = `    
+                <tr>    
+                    <td    
+                        colspan="3"    
+                        class="empty-state error">    
+    
+                        Unable to load your information.    
+    
+                    </td>    
+                </tr>    
+            `;    
+    
+        }    
+    
+    }    
+    
+    
+    /* =========================================================    
+       LOGOUT    
+       ========================================================= */    
+    
+    logoutBtn.addEventListener(    
+        "click",    
+        async () => {    
+    
+            logoutBtn.disabled =    
+                true;    
+    
+            logoutBtn.textContent =    
+                "Logging out...";    
+    
+    
+            try {    
+    
+                const client =    
+                    await getClient();    
+    
+    
+                await client.auth.signOut();    
+    
+    
+            } catch (error) {    
+    
+                console.error(    
+                    "Logout error:",    
+                    error    
+                );    
+    
+            }    
+    
+    
+            window.location.href =    
+                "index.html";    
+    
+        }    
+    );    
+    
+    
+    /* =========================================================    
+       START    
+       ========================================================= */    
+    
+    const hasAccess =    
+        await checkUserAccess();    
+    
+    
+    if (!hasAccess) {    
+        return;    
+    }    
+    
+    
+    await loadDashboard();    
+    
+    
+    /* =========================================================    
+       REALTIME    
+       ========================================================= */    
+    
+    subscribeToPayments(    
+        async () => {    
+    
+            try {    
+    
+                const payments =    
+                    await loadPayments();    
+    
+                renderPayments(    
+                    payments    
+                );    
+    
+            } catch (error) {    
+    
+                console.error(    
+                    "Payment realtime error:",    
+                    error    
+                );    
+    
+            }    
+    
+        }    
+    );    
+    
+    
+    subscribeToRooms(    
+        async () => {    
+    
+            try {    
+    
+                const tenant =    
+                    await loadTenant();    
+    
+                renderTenant(    
+                    tenant    
+                );    
+    
+            } catch (error) {    
+    
+                console.error(    
+                    "Room realtime error:",    
+                    error    
+                );    
+    
+            }    
+    
+        }    
+    );    
+    
+});    
+    
+</script>    </body>    
 </html>
