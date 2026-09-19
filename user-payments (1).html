@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="CasaHome — My Payments"
+    >
+
+    <title>CasaHome — My Payments</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .page-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 22px;
+            margin-top: 20px;
+        }
+
+        .user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #ecfdf5;
+            color: #047857;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .btn-user {
+            background: #10b981;
+            color: #ffffff;
+            border: 1px solid #10b981;
+        }
+
+        .btn-user:hover {
+            background: #059669;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+        }
+
+        .error {
+            color: #b91c1c;
+        }
+
+        /* =====================================================
+           PAY BUTTON
+           ===================================================== */
+
+        .pay-btn {
+            background: #10b981;
+            color: #ffffff;
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            padding: 7px 13px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .pay-btn:hover {
+            background: #059669;
+            border-color: #059669;
+        }
+
+        .pay-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .paid-text {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 640px) {
+
+            .table-wrapper {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 600px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+
+                <span class="logo-c">C</span>
+                <span class="logo-h">H</span>
+
+            </div>
+
+            <div>
+
+                <h1>CasaHome</h1>
+
+                <span>
+                    Management System
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="user-dashboard.html"
+                class="nav-link"
+            >
+
+                <span>▦</span>
+
+                Dashboard
+
+            </a>
+
+
+            <a
+                href="user-room.html"
+                class="nav-link"
+            >
+
+                <span>▤</span>
+
+                My Room
+
+            </a>
+
+
+            <a
+                href="user-payments.html"
+                class="nav-link active"
+            >
+
+                <span>₱</span>
+
+                My Payments
+
+            </a>
+
+
+            <a
+                href="user-profile.html"
+                class="nav-link"
+            >
+
+                <span>♙</span>
+
+                My Profile
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <strong>CasaHome</strong>
+
+            <small>
+                Tenant Portal
+            </small>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <div class="user-badge">
+                    👤 TENANT
+                </div>
+
+                <p class="eyebrow">
+                    Tenant Portal
+                </p>
+
+                <h2>
+                    My Payments
+                </h2>
+
+                <p class="subtitle">
+                    View your payment history and outstanding balance.
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-actions">
+
+                <button
+                    id="logoutBtn"
+                    type="button"
+                    class="btn btn-user"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             METRICS
+             ===================================================== -->
+
+        <section class="metrics-grid">
+
+
+            <article class="metric-card">
+
+                <div class="metric-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Paid
+                    </span>
+
+                    <strong id="totalPaid">
+                        ₱0.00
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-icon warning">
+                    !
+                </div>
+
+                <div>
+
+                    <span>
+                        Outstanding
+                    </span>
+
+                    <strong id="outstanding">
+                        ₱0.00
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-icon">
+                    #
+                </div>
+
+                <div>
+
+                    <span>
+                        Payment Records
+                    </span>
+
+                    <strong id="paymentCount">
+                        0
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             PAYMENT HISTORY
+             ===================================================== -->
+
+        <section class="page-card">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>
+                        My Payment History
+                    </h3>
+
+                    <p>
+                        Only payments linked to your tenant account are shown.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="paymentsTable">
+
+                        <tr>
+
+                            <td
+                                colspan="4"
+                                class="empty-state"
+                            >
+
+                                Loading payments...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<script src="assets/js/supabase.js"></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+
+
+        let currentTenantId = null;
+
+
+        /* =====================================================
+           CHECK ACCESS
+           ===================================================== */
+
+        async function checkTenantAccess() {
+
+            const client =
+                await getClient();
+
+
+            const {
+                data: {
+                    session
+                }
+            } = await client.auth.getSession();
+
+
+            if (!session) {
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return null;
+
+            }
+
+
+            const {
+                data: profile,
+                error
+            } = await client
+                .from("profiles")
+                .select(
+                    "role, tenant_id"
+                )
+                .eq(
+                    "id",
+                    session.user.id
+                )
+                .single();
+
+
+            if (
+                error ||
+                !profile ||
+                profile.role !== "user" ||
+                !profile.tenant_id
+            ) {
+
+                await client.auth.signOut();
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return null;
+
+            }
+
+
+            currentTenantId =
+                profile.tenant_id;
+
+
+            return client;
+
+        }
+
+
+
+        /* =====================================================
+           PAY PENDING PAYMENT
+           ===================================================== */
+
+        async function payPendingPayment(paymentId) {
+
+            const confirmed =
+                window.confirm(
+                    "Are you sure you want to pay this pending payment?"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            try {
+
+                const client =
+                    await getClient();
+
+
+                /* ---------------------------------------------
+                   Make sure the current user is still valid
+                   --------------------------------------------- */
+
+                const {
+                    data: {
+                        session
+                    }
+                } = await client.auth.getSession();
+
+
+                if (!session) {
+
+                    window.location.replace(
+                        "index.html"
+                    );
+
+                    return;
+
+                }
+
+
+                /* ---------------------------------------------
+                   Update ONLY this tenant's pending payment
+                   --------------------------------------------- */
+
+                const {
+                    data,
+                    error
+                } = await client
+                    .from("payments")
+                    .update({
+                        status: "Paid"
+                    })
+                    .eq(
+                        "id",
+                        paymentId
+                    )
+                    .eq(
+                        "tenant_id",
+                        currentTenantId
+                    )
+                    .eq(
+                        "status",
+                        "Pending"
+                    )
+                    .select()
+                    .single();
+
+
+                if (error) {
+                    throw error;
+                }
+
+
+                if (!data) {
+
+                    throw new Error(
+                        "Payment could not be updated."
+                    );
+
+                }
+
+
+                /* ---------------------------------------------
+                   Reload payment information
+                   --------------------------------------------- */
+
+                await loadPayments();
+
+
+                alert(
+                    "Payment successful! Your payment is now marked as Paid."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Payment update error:",
+                    error
+                );
+
+
+                alert(
+                    error?.message ||
+                    "Unable to process the payment."
+                );
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           LOAD PAYMENTS
+           ===================================================== */
+
+        async function loadPayments() {
+
+            const client =
+                await checkTenantAccess();
+
+
+            if (!client) {
+                return;
+            }
+
+
+            const {
+                data: payments,
+                error
+            } = await client
+                .from("payments")
+                .select(`
+                    id,
+                    tenant_id,
+                    amount,
+                    status,
+                    payment_date,
+                    created_at
+                `)
+                .eq(
+                    "tenant_id",
+                    currentTenantId
+                )
+                .order(
+                    "payment_date",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            let totalPaid =
+                0;
+
+            let outstanding =
+                0;
+
+
+            (payments || [])
+                .forEach(
+                    payment => {
+
+                        const amount =
+                            Number(
+                                payment.amount ||
+                                0
+                            );
+
+
+                        if (
+                            payment.status ===
+                            "Paid"
+                        ) {
+
+                            totalPaid +=
+                                amount;
+
+                        } else {
+
+                            outstanding +=
+                                amount;
+
+                        }
+
+                    }
+                );
+
+
+            document.getElementById(
+                "totalPaid"
+            ).textContent =
+                money(totalPaid);
+
+
+            document.getElementById(
+                "outstanding"
+            ).textContent =
+                money(outstanding);
+
+
+            document.getElementById(
+                "paymentCount"
+            ).textContent =
+                payments.length;
+
+
+            const table =
+                document.getElementById(
+                    "paymentsTable"
+                );
+
+
+            if (
+                !payments.length
+            ) {
+
+                table.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="4"
+                            class="empty-state"
+                        >
+
+                            No payment records found.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+
+            }
+
+
+            table.innerHTML =
+                payments
+                    .map(
+                        payment => `
+
+                            <tr>
+
+                                <td>
+                                    ${date(
+                                        payment.payment_date
+                                    )}
+                                </td>
+
+                                <td>
+
+                                    <strong>
+                                        ${money(
+                                            payment.amount
+                                        )}
+                                    </strong>
+
+                                </td>
+
+                                <td>
+
+                                    <span
+                                        class="badge ${statusClass(
+                                            payment.status
+                                        )}"
+                                    >
+
+                                        ${esc(
+                                            payment.status
+                                        )}
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    ${
+                                        payment.status === "Pending"
+
+                                            ? `
+
+                                                <button
+                                                    type="button"
+                                                    class="pay-btn"
+                                                    onclick="payPayment('${payment.id}')"
+                                                >
+                                                    PAY
+                                                </button>
+
+                                            `
+
+                                            : `
+
+                                                <span class="paid-text">
+                                                    —
+                                                </span>
+
+                                            `
+                                    }
+
+                                </td>
+
+                            </tr>
+
+                        `
+                    )
+                    .join("");
+
+        }
+
+
+
+        /* =====================================================
+           MAKE PAY FUNCTION AVAILABLE TO BUTTON
+           ===================================================== */
+
+        window.payPayment =
+            payPendingPayment;
+
+
+
+        /* =====================================================
+           LOGOUT
+           ===================================================== */
+
+        document
+            .getElementById("logoutBtn")
+            .addEventListener(
+                "click",
+                async () => {
+
+                    try {
+
+                        const client =
+                            await getClient();
+
+                        await client.auth.signOut();
+
+                    } catch (error) {
+
+                        console.error(
+                            error
+                        );
+
+                    }
+
+                    window.location.replace(
+                        "index.html"
+                    );
+
+                }
+            );
+
+
+
+        /* =====================================================
+           START
+           ===================================================== */
+
+        try {
+
+            await loadPayments();
+
+        } catch (error) {
+
+            console.error(
+                "Payment error:",
+                error
+            );
+
+
+            document.getElementById(
+                "paymentsTable"
+            ).innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="4"
+                        class="empty-state error"
+                    >
+
+                        Unable to load your payments.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+
+    }
+
+);
+
+</script>
+
+</body>
+
+</html>
