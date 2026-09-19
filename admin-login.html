@@ -6,16 +6,61 @@
   <title>CasaHome — Admin Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  body {
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  /* CH Logo */
+  .ch-logo {
+    position: relative;
+    width: 82px;
+    height: 82px;
+    margin-left: auto;
+    margin-right: auto;
+
+    font-family: Georgia, "Times New Roman", serif;
+    color: #ffffff;
+
+    overflow: hidden;
+  }
+
+  .logo-c {
+    position: absolute;
+    left: 0;
+    top: -13px;
+
+    font-size: 78px;
+    font-weight: 700;
+    line-height: 1;
+
+    z-index: 1;
+  }
+
+  .logo-h {
+    position: absolute;
+    right: -2px;
+    bottom: -13px;
+
+    font-size: 78px;
+    font-weight: 700;
+    line-height: 1;
+
+    z-index: 2;
+  }
+
+  .ch-glow {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
     }
-    .ch-glow {
-      animation: float 4s ease-in-out infinite;
+
+    50% {
+      transform: translateY(-8px);
     }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
+  }
   </style>
 </head>
 
@@ -23,8 +68,9 @@
   <div class="w-full max-w-md">
 
     <div class="text-center mb-8">
-      <div class="ch-glow mx-auto mb-4 w-16 h-16 rounded-2xl bg-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-        <span class="text-white text-2xl font-black">CH</span>
+      <div class="ch-logo ch-glow mx-auto mb-4">
+          <span class="logo-c">C</span>
+          <span class="logo-h">H</span>
       </div>
       <h1 class="text-3xl font-black text-white">CasaHome</h1>
       <p class="text-slate-400 mt-1">Admin Portal</p>
