@@ -40,314 +40,6 @@
             margin-bottom: 8px;
         }
 
-        /*
-         * Dashboard layout with messages on right
-         */
-        .dashboard-layout {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) 390px;
-            gap: 20px;
-            align-items: start;
-        }
-
-        .dashboard-main {
-            min-width: 0;
-        }
-
-        /*
-         * Messages panel
-         */
-        .messages-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            overflow: hidden;
-            position: sticky;
-            top: 20px;
-            min-height: 620px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .messages-header {
-            padding: 18px 18px 14px;
-            border-bottom: 1px solid #e2e8f0;
-            background: #ffffff;
-        }
-
-        .messages-header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .messages-header h3 {
-            margin: 0;
-            font-size: 18px;
-            color: #0f172a;
-        }
-
-        .messages-header p {
-            margin: 5px 0 0;
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        .message-count {
-            min-width: 24px;
-            height: 24px;
-            padding: 0 7px;
-            border-radius: 999px;
-            background: #10b981;
-            color: #ffffff;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .messages-body {
-            flex: 1;
-            min-height: 0;
-            display: grid;
-            grid-template-columns: 135px minmax(0, 1fr);
-        }
-
-        /*
-         * Conversation list
-         */
-        .conversation-list {
-            border-right: 1px solid #e2e8f0;
-            overflow-y: auto;
-            background: #f8fafc;
-        }
-
-        .conversation-empty {
-            padding: 25px 12px;
-            text-align: center;
-            color: #64748b;
-            font-size: 12px;
-            line-height: 1.5;
-        }
-
-        .conversation-item {
-            width: 100%;
-            border: 0;
-            border-bottom: 1px solid #e2e8f0;
-            background: transparent;
-            padding: 12px 10px;
-            text-align: left;
-            cursor: pointer;
-            transition: 0.2s ease;
-        }
-
-        .conversation-item:hover {
-            background: #f1f5f9;
-        }
-
-        .conversation-item.active {
-            background: #ecfdf5;
-            box-shadow: inset 3px 0 0 #10b981;
-        }
-
-        .conversation-name {
-            display: block;
-            color: #0f172a;
-            font-size: 12px;
-            font-weight: 800;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .conversation-preview {
-            display: block;
-            color: #64748b;
-            font-size: 11px;
-            margin-top: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .conversation-unread {
-            display: inline-flex;
-            margin-top: 6px;
-            padding: 3px 6px;
-            border-radius: 999px;
-            background: #10b981;
-            color: #ffffff;
-            font-size: 9px;
-            font-weight: 800;
-        }
-
-        /*
-         * Chat area
-         */
-        .chat-area {
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            background: #ffffff;
-        }
-
-        .chat-header {
-            padding: 14px;
-            border-bottom: 1px solid #e2e8f0;
-            min-height: 62px;
-        }
-
-        .chat-header-name {
-            color: #0f172a;
-            font-size: 14px;
-            font-weight: 800;
-        }
-
-        .chat-header-room {
-            color: #64748b;
-            font-size: 11px;
-            margin-top: 3px;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-            min-height: 390px;
-            max-height: 470px;
-            background: #f8fafc;
-        }
-
-        .chat-empty {
-            height: 100%;
-            min-height: 350px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #64748b;
-            font-size: 12px;
-            padding: 20px;
-        }
-
-        .message-row {
-            display: flex;
-            margin-bottom: 10px;
-        }
-
-        .message-row.user {
-            justify-content: flex-start;
-        }
-
-        .message-row.admin {
-            justify-content: flex-end;
-        }
-
-        .message-bubble {
-            max-width: 85%;
-            padding: 9px 11px;
-            border-radius: 12px;
-            font-size: 12px;
-            line-height: 1.45;
-            word-break: break-word;
-        }
-
-        .message-row.user .message-bubble {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            color: #334155;
-            border-bottom-left-radius: 4px;
-        }
-
-        .message-row.admin .message-bubble {
-            background: #10b981;
-            color: #ffffff;
-            border-bottom-right-radius: 4px;
-        }
-
-        .message-time {
-            display: block;
-            margin-top: 4px;
-            font-size: 9px;
-            opacity: 0.7;
-        }
-
-        /*
-         * Reply form
-         */
-        .chat-input-area {
-            padding: 12px;
-            border-top: 1px solid #e2e8f0;
-            background: #ffffff;
-        }
-
-        .chat-input-row {
-            display: flex;
-            gap: 7px;
-            align-items: flex-end;
-        }
-
-        .chat-input {
-            flex: 1;
-            width: 100%;
-            min-width: 0;
-            resize: none;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            padding: 9px 10px;
-            font-family: inherit;
-            font-size: 12px;
-            outline: none;
-            min-height: 40px;
-            max-height: 100px;
-        }
-
-        .chat-input:focus {
-            border-color: #10b981;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.10);
-        }
-
-        .send-message-btn {
-            border: 0;
-            background: #10b981;
-            color: #ffffff;
-            border-radius: 10px;
-            padding: 10px 13px;
-            font-size: 12px;
-            font-weight: 800;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .send-message-btn:hover {
-            background: #059669;
-        }
-
-        .send-message-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        /*
-         * Mobile
-         */
-        @media (max-width: 1100px) {
-            .dashboard-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .messages-card {
-                position: static;
-                min-height: 550px;
-            }
-
-            .chat-messages {
-                max-height: 420px;
-            }
-        }
-
         @media (max-width: 640px) {
             .dashboard-actions {
                 width: 100%;
@@ -356,27 +48,6 @@
             .dashboard-actions .btn {
                 flex: 1;
                 text-align: center;
-            }
-
-            .messages-body {
-                grid-template-columns: 110px minmax(0, 1fr);
-            }
-
-            .conversation-item {
-                padding: 11px 8px;
-            }
-
-            .chat-messages {
-                padding: 10px;
-                min-height: 320px;
-            }
-
-            .message-bubble {
-                max-width: 90%;
-            }
-
-            .send-message-btn {
-                padding: 10px;
             }
         }
     </style>
@@ -478,293 +149,171 @@
         </header>
 
 
-        <!-- Dashboard + Messages -->
-        <div class="dashboard-layout">
+        <!-- Metrics -->
+        <section class="metrics-grid">
 
-            <!-- LEFT SIDE -->
-            <div class="dashboard-main">
+            <article class="metric-card">
 
-                <!-- Metrics -->
-                <section class="metrics-grid">
+                <div class="metric-icon">
+                    ▤
+                </div>
 
-                    <article class="metric-card">
+                <div>
+                    <span>Total Rooms</span>
+                    <strong id="totalRooms">0</strong>
+                </div>
 
-                        <div class="metric-icon">
-                            ▤
-                        </div>
-
-                        <div>
-                            <span>Total Rooms</span>
-                            <strong id="totalRooms">0</strong>
-                        </div>
-
-                    </article>
+            </article>
 
 
-                    <article class="metric-card">
+            <article class="metric-card">
 
-                        <div class="metric-icon">
-                            ◉
-                        </div>
+                <div class="metric-icon">
+                    ◉
+                </div>
 
-                        <div>
-                            <span>Occupancy Rate</span>
-                            <strong id="occupancy">0%</strong>
-                        </div>
+                <div>
+                    <span>Occupancy Rate</span>
+                    <strong id="occupancy">0%</strong>
+                </div>
 
-                    </article>
-
-
-                    <article class="metric-card">
-
-                        <div class="metric-icon">
-                            ₱
-                        </div>
-
-                        <div>
-                            <span>Total Revenue</span>
-                            <strong id="revenue">₱0.00</strong>
-                        </div>
-
-                    </article>
+            </article>
 
 
-                    <article class="metric-card">
+            <article class="metric-card">
 
-                        <div class="metric-icon warning">
-                            !
-                        </div>
+                <div class="metric-icon">
+                    ₱
+                </div>
 
-                        <div>
-                            <span>Pending Balances</span>
-                            <strong id="pending">₱0.00</strong>
-                        </div>
+                <div>
+                    <span>Total Revenue</span>
+                    <strong id="revenue">₱0.00</strong>
+                </div>
 
-                    </article>
-
-                </section>
+            </article>
 
 
-                <!-- Transactions -->
-                <section class="card">
+            <article class="metric-card">
 
-                    <div class="section-header">
+                <div class="metric-icon warning">
+                    !
+                </div>
 
-                        <div>
+                <div>
+                    <span>Pending Balances</span>
+                    <strong id="pending">₱0.00</strong>
+                </div>
 
-                            <h3>Recent Transactions</h3>
+            </article>
 
-                            <p>
-                                Latest payment activity recorded in the system.
-                            </p>
-
-                        </div>
-
-
-                        <a href="billing.html" class="text-link">
-                            View billing →
-                        </a>
-
-                    </div>
+        </section>
 
 
-                    <div class="table-wrapper">
+        <!-- Transactions -->
+        <section class="card">
 
-                        <table>
+            <div class="section-header">
 
-                            <thead>
+                <div>
 
-                                <tr>
-                                    <th>Customer</th>
-                                    <th>Room</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                </tr>
+                    <h3>Recent Transactions</h3>
 
-                            </thead>
+                    <p>
+                        Latest payment activity recorded in the system.
+                    </p>
 
-
-                            <tbody id="transactions">
-
-                                <tr>
-
-                                    <td colspan="5" class="empty-state">
-                                        Loading transactions...
-                                    </td>
-
-                                </tr>
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </section>
+                </div>
 
 
-                <!-- Admin Account -->
-                <section class="card" style="margin-top: 20px;">
-
-                    <div class="section-header">
-
-                        <div>
-
-                            <h3>Administrator Account</h3>
-
-                            <p>
-                                Currently signed in as:
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div
-                        style="
-                            background:#f8fafc;
-                            border:1px solid #e2e8f0;
-                            border-radius:12px;
-                            padding:14px 16px;
-                            margin-top:12px;
-                        ">
-
-                        <strong id="adminEmail">
-                            Checking account...
-                        </strong>
-
-                        <div
-                            style="
-                                color:#64748b;
-                                font-size:13px;
-                                margin-top:4px;
-                            ">
-
-                            Administrator access
-
-                        </div>
-
-                    </div>
-
-                </section>
+                <a href="billing.html" class="text-link">
+                    View billing →
+                </a>
 
             </div>
 
 
-            <!-- RIGHT SIDE — MESSAGES -->
-            <aside class="messages-card">
+            <div class="table-wrapper">
 
-                <div class="messages-header">
+                <table>
 
-                    <div class="messages-header-top">
+                    <thead>
 
-                        <div>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Room</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
 
-                            <h3>Messages</h3>
-
-                            <p>
-                                Customer conversations
-                            </p>
-
-                        </div>
-
-                        <span
-                            id="unreadCount"
-                            class="message-count"
-                        >
-                            0
-                        </span>
-
-                    </div>
-
-                </div>
+                    </thead>
 
 
-                <div class="messages-body">
+                    <tbody id="transactions">
 
-                    <!-- Conversation list -->
-                    <div
-                        id="conversationList"
-                        class="conversation-list"
-                    >
+                        <tr>
 
-                        <div class="conversation-empty">
-                            Loading conversations...
-                        </div>
+                            <td colspan="5" class="empty-state">
+                                Loading transactions...
+                            </td>
 
-                    </div>
+                        </tr>
 
+                    </tbody>
 
-                    <!-- Chat -->
-                    <div class="chat-area">
+                </table>
 
-                        <div
-                            id="chatHeader"
-                            class="chat-header"
-                        >
+            </div>
 
-                            <div class="chat-header-name">
-                                Select a customer
-                            </div>
-
-                            <div class="chat-header-room">
-                                Choose a conversation
-                            </div>
-
-                        </div>
+        </section>
 
 
-                        <div
-                            id="chatMessages"
-                            class="chat-messages"
-                        >
+        <!-- Admin Account -->
+        <section class="card" style="margin-top: 20px;">
 
-                            <div class="chat-empty">
-                                Select a customer to view messages.
-                            </div>
+            <div class="section-header">
 
-                        </div>
+                <div>
 
+                    <h3>Administrator Account</h3>
 
-                        <div class="chat-input-area">
-
-                            <form id="messageForm">
-
-                                <div class="chat-input-row">
-
-                                    <textarea
-                                        id="messageInput"
-                                        class="chat-input"
-                                        rows="1"
-                                        placeholder="Type a reply..."
-                                        disabled
-                                    ></textarea>
-
-
-                                    <button
-                                        type="submit"
-                                        id="sendMessageBtn"
-                                        class="send-message-btn"
-                                        disabled
-                                    >
-                                        Send
-                                    </button>
-
-                                </div>
-
-                            </form>
-
-                        </div>
-
-                    </div>
+                    <p>
+                        Currently signed in as:
+                    </p>
 
                 </div>
 
-            </aside>
+            </div>
 
-        </div>
+
+            <div
+                style="
+                    background:#f8fafc;
+                    border:1px solid #e2e8f0;
+                    border-radius:12px;
+                    padding:14px 16px;
+                    margin-top:12px;
+                ">
+
+                <strong id="adminEmail">
+                    Checking account...
+                </strong>
+
+                <div
+                    style="
+                        color:#64748b;
+                        font-size:13px;
+                        margin-top:4px;
+                    ">
+
+                    Administrator access
+
+                </div>
+
+            </div>
+
+        </section>
 
     </main>
 
@@ -802,40 +351,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     /*
-     * MESSAGE ELEMENTS
-     */
-    const conversationList =
-        document.getElementById("conversationList");
-
-    const chatHeader =
-        document.getElementById("chatHeader");
-
-    const chatMessages =
-        document.getElementById("chatMessages");
-
-    const messageForm =
-        document.getElementById("messageForm");
-
-    const messageInput =
-        document.getElementById("messageInput");
-
-    const sendMessageBtn =
-        document.getElementById("sendMessageBtn");
-
-    const unreadCount =
-        document.getElementById("unreadCount");
-
-
-    let selectedTenantId = null;
-
-    let selectedTenant = null;
-
-    let allMessages = [];
-
-    let tenantCache = [];
-
-
-    /*
      * ADMIN AUTHENTICATION
      */
     async function checkAdminAccess() {
@@ -851,6 +366,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             } = await client.auth.getSession();
 
 
+            /*
+             * No logged-in user
+             */
             if (!session) {
 
                 window.location.href =
@@ -861,6 +379,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
 
+            /*
+             * Check admin profile
+             */
             const {
                 data: profile,
                 error
@@ -871,6 +392,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 .single();
 
 
+            /*
+             * Not an admin
+             */
             if (
                 error ||
                 !profile ||
@@ -887,9 +411,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
 
+            /*
+             * Display admin email
+             */
             adminEmail.textContent =
-                session.user.email ||
-                "Administrator";
+                session.user.email || "Administrator";
 
 
             return true;
@@ -1035,729 +561,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     /*
-     * LOAD TENANTS FOR MESSAGES
-     */
-    async function loadMessageCustomers() {
-
-        try {
-
-            tenantCache =
-                await fetchActiveTenants();
-
-
-            /*
-             * Load all messages.
-             */
-            const client =
-                await getClient();
-
-
-            const {
-                data,
-                error
-            } = await client
-                .from("messages")
-                .select("*")
-                .order("created_at", {
-                    ascending: true
-                });
-
-
-            if (error) {
-                throw error;
-            }
-
-
-            allMessages =
-                data || [];
-
-
-            renderConversationList();
-
-
-            /*
-             * If no selected customer,
-             * automatically select the first
-             * customer that has a message.
-             */
-            if (
-                !selectedTenantId &&
-                allMessages.length
-            ) {
-
-                const firstMessage =
-                    allMessages[0];
-
-                selectTenant(
-                    firstMessage.tenant_id
-                );
-
-            }
-
-
-        } catch (error) {
-
-            console.error(
-                "Unable to load messages:",
-                error
-            );
-
-
-            conversationList.innerHTML = `
-                <div class="conversation-empty">
-                    Unable to load messages.
-                </div>
-            `;
-
-        }
-
-    }
-
-
-    /*
-     * GET CUSTOMER
-     */
-    function getTenant(tenantId) {
-
-        return tenantCache.find(
-            tenant =>
-                String(tenant.id) ===
-                String(tenantId)
-        );
-
-    }
-
-
-    /*
-     * RENDER CONVERSATION LIST
-     */
-    function renderConversationList() {
-
-        /*
-         * Get tenant IDs that have messages.
-         */
-        const tenantIds =
-            [...new Set(
-                allMessages.map(
-                    message =>
-                        String(message.tenant_id)
-                )
-            )];
-
-
-        if (!tenantIds.length) {
-
-            conversationList.innerHTML = `
-                <div class="conversation-empty">
-                    No customer messages yet.
-                </div>
-            `;
-
-            unreadCount.textContent = "0";
-
-            return;
-
-        }
-
-
-        let totalUnread = 0;
-
-
-        const conversations =
-            tenantIds.map(tenantId => {
-
-                const tenant =
-                    getTenant(tenantId);
-
-
-                const messages =
-                    allMessages.filter(
-                        message =>
-                            String(message.tenant_id) ===
-                            String(tenantId)
-                    );
-
-
-                const latest =
-                    messages[messages.length - 1];
-
-
-                const unread =
-                    messages.filter(
-                        message =>
-                            message.sender_role === "user" &&
-                            !message.is_read
-                    ).length;
-
-
-                totalUnread += unread;
-
-
-                return {
-                    tenantId,
-                    tenant,
-                    latest,
-                    unread
-                };
-
-            });
-
-
-        /*
-         * Newest conversations first.
-         */
-        conversations.sort(
-            (a, b) => {
-
-                const dateA =
-                    new Date(
-                        a.latest?.created_at || 0
-                    );
-
-                const dateB =
-                    new Date(
-                        b.latest?.created_at || 0
-                    );
-
-                return dateB - dateA;
-
-            }
-        );
-
-
-        conversationList.innerHTML =
-            conversations.map(
-                conversation => {
-
-                    const name =
-                        conversation.tenant?.full_name ||
-                        "Unknown Customer";
-
-
-                    const preview =
-                        conversation.latest?.message ||
-                        "No messages";
-
-
-                    const active =
-                        String(selectedTenantId) ===
-                        String(conversation.tenantId)
-                            ? "active"
-                            : "";
-
-
-                    return `
-
-                        <button
-                            type="button"
-                            class="conversation-item ${active}"
-                            data-tenant-id="${esc(conversation.tenantId)}"
-                        >
-
-                            <span class="conversation-name">
-                                ${esc(name)}
-                            </span>
-
-                            <span class="conversation-preview">
-                                ${esc(preview)}
-                            </span>
-
-                            ${
-                                conversation.unread
-                                    ? `
-                                        <span class="conversation-unread">
-                                            ${conversation.unread} new
-                                        </span>
-                                      `
-                                    : ""
-                            }
-
-                        </button>
-
-                    `;
-
-                }
-            ).join("");
-
-
-        unreadCount.textContent =
-            totalUnread;
-
-    }
-
-
-    /*
-     * SELECT CUSTOMER
-     */
-    async function selectTenant(tenantId) {
-
-        selectedTenantId =
-            tenantId;
-
-
-        selectedTenant =
-            getTenant(tenantId);
-
-
-        renderConversationList();
-
-
-        const name =
-            selectedTenant?.full_name ||
-            "Customer";
-
-
-        const room =
-            selectedTenant?.rooms?.room_number ||
-            "No room";
-
-
-        chatHeader.innerHTML = `
-
-            <div class="chat-header-name">
-                ${esc(name)}
-            </div>
-
-            <div class="chat-header-room">
-                Room ${esc(room)}
-            </div>
-
-        `;
-
-
-        messageInput.disabled =
-            false;
-
-        sendMessageBtn.disabled =
-            false;
-
-
-        renderChat();
-
-
-        /*
-         * Mark incoming user messages
-         * as read for this customer.
-         */
-        try {
-
-            const client =
-                await getClient();
-
-
-            await client
-                .from("messages")
-                .update({
-                    is_read: true
-                })
-                .eq(
-                    "tenant_id",
-                    tenantId
-                )
-                .eq(
-                    "sender_role",
-                    "user"
-                )
-                .eq(
-                    "is_read",
-                    false
-                );
-
-
-            /*
-             * Update local cache.
-             */
-            allMessages =
-                allMessages.map(
-                    message => {
-
-                        if (
-                            String(message.tenant_id) ===
-                                String(tenantId) &&
-                            message.sender_role ===
-                                "user"
-                        ) {
-
-                            return {
-                                ...message,
-                                is_read: true
-                            };
-
-                        }
-
-                        return message;
-
-                    }
-                );
-
-
-            renderConversationList();
-
-
-        } catch (error) {
-
-            console.error(
-                "Unable to mark messages as read:",
-                error
-            );
-
-        }
-
-    }
-
-
-    /*
-     * RENDER CHAT
-     */
-    function renderChat() {
-
-        if (!selectedTenantId) {
-
-            chatMessages.innerHTML = `
-                <div class="chat-empty">
-                    Select a customer to view messages.
-                </div>
-            `;
-
-            return;
-
-        }
-
-
-        const messages =
-            allMessages.filter(
-                message =>
-                    String(message.tenant_id) ===
-                    String(selectedTenantId)
-            );
-
-
-        if (!messages.length) {
-
-            chatMessages.innerHTML = `
-                <div class="chat-empty">
-                    No messages yet.
-                </div>
-            `;
-
-            return;
-
-        }
-
-
-        chatMessages.innerHTML =
-            messages.map(
-                message => {
-
-                    const isAdmin =
-                        message.sender_role ===
-                        "admin";
-
-
-                    const time =
-                        new Date(
-                            message.created_at
-                        ).toLocaleString(
-                            "en-PH",
-                            {
-                                month: "short",
-                                day: "numeric",
-                                hour: "numeric",
-                                minute: "2-digit"
-                            }
-                        );
-
-
-                    return `
-
-                        <div class="message-row ${
-                            isAdmin
-                                ? "admin"
-                                : "user"
-                        }">
-
-                            <div class="message-bubble">
-
-                                ${esc(message.message)}
-
-                                <span class="message-time">
-                                    ${time}
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    `;
-
-                }
-            ).join("");
-
-
-        /*
-         * Scroll to latest message.
-         */
-        chatMessages.scrollTop =
-            chatMessages.scrollHeight;
-
-    }
-
-
-    /*
-     * SEND ADMIN MESSAGE
-     */
-    messageForm.addEventListener(
-        "submit",
-        async event => {
-
-            event.preventDefault();
-
-
-            if (!selectedTenantId) {
-
-                alert(
-                    "Please select a customer first."
-                );
-
-                return;
-
-            }
-
-
-            const message =
-                messageInput.value.trim();
-
-
-            if (!message) {
-                return;
-            }
-
-
-            sendMessageBtn.disabled =
-                true;
-
-            sendMessageBtn.textContent =
-                "Sending...";
-
-
-            try {
-
-                const client =
-                    await getClient();
-
-
-                const {
-                    data: {
-                        user
-                    }
-                } =
-                    await client.auth.getUser();
-
-
-                if (!user) {
-
-                    throw new Error(
-                        "Admin session expired."
-                    );
-
-                }
-
-
-                const {
-                    data,
-                    error
-                } = await client
-                    .from("messages")
-                    .insert([{
-
-                        tenant_id:
-                            selectedTenantId,
-
-                        sender_id:
-                            user.id,
-
-                        sender_role:
-                            "admin",
-
-                        message:
-                            message,
-
-                        is_read:
-                            false
-
-                    }])
-                    .select()
-                    .single();
-
-
-                if (error) {
-                    throw error;
-                }
-
-
-                /*
-                 * Add immediately to local cache.
-                 */
-                allMessages.push(data);
-
-
-                messageInput.value = "";
-
-
-                renderChat();
-
-                renderConversationList();
-
-
-            } catch (error) {
-
-                console.error(
-                    "Send message error:",
-                    error
-                );
-
-
-                alert(
-                    "Unable to send message.\n\n" +
-                    (
-                        error.message ||
-                        "Please check your Supabase policies."
-                    )
-                );
-
-            } finally {
-
-                sendMessageBtn.disabled =
-                    false;
-
-                sendMessageBtn.textContent =
-                    "Send";
-
-            }
-
-        }
-    );
-
-
-    /*
-     * Conversation click
-     */
-    conversationList.addEventListener(
-        "click",
-        event => {
-
-            const button =
-                event.target.closest(
-                    ".conversation-item"
-                );
-
-
-            if (!button) return;
-
-
-            selectTenant(
-                button.dataset.tenantId
-            );
-
-        }
-    );
-
-
-    /*
-     * REALTIME MESSAGES
-     */
-    async function subscribeToMessages() {
-
-        try {
-
-            const client =
-                await getClient();
-
-
-            client
-                .channel("casahome-admin-messages")
-                .on(
-                    "postgres_changes",
-                    {
-                        event: "*",
-                        schema: "public",
-                        table: "messages"
-                    },
-                    async payload => {
-
-                        console.log(
-                            "Message realtime update:",
-                            payload
-                        );
-
-
-                        /*
-                         * Reload messages so the
-                         * conversation list and
-                         * selected chat stay synced.
-                         */
-                        const {
-                            data,
-                            error
-                        } = await client
-                            .from("messages")
-                            .select("*")
-                            .order(
-                                "created_at",
-                                {
-                                    ascending: true
-                                }
-                            );
-
-
-                        if (!error) {
-
-                            allMessages =
-                                data || [];
-
-
-                            renderConversationList();
-
-                            renderChat();
-
-                        }
-
-                    }
-                )
-                .subscribe();
-
-
-        } catch (error) {
-
-            console.error(
-                "Message realtime error:",
-                error
-            );
-
-        }
-
-    }
-
-
-    /*
      * LOGOUT
      */
     logoutBtn.addEventListener(
         "click",
         async () => {
 
-            logoutBtn.disabled =
-                true;
-
-            logoutBtn.textContent =
-                "Logging out...";
+            logoutBtn.disabled = true;
+            logoutBtn.textContent = "Logging out...";
 
 
             try {
 
                 const client =
                     await getClient();
-
 
                 await client.auth.signOut();
 
@@ -1794,14 +611,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadDashboard();
 
 
-    await loadMessageCustomers();
-
-
-    await subscribeToMessages();
-
-
     /*
-     * REALTIME DASHBOARD UPDATES
+     * REALTIME UPDATES
      */
     subscribeToPayments(
         loadDashboard
