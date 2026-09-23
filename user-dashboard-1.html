@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CasaHome Tenant Dashboard">
+    <title>CasaHome — Tenant Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .btn-user {
+            background: #10b981;
+            color: #ffffff;
+            border: 1px solid #10b981;
+        }
+
+        .btn-user:hover {
+            background: #059669;
+            border-color: #059669;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #ecfdf5;
+            color: #047857;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .info-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 16px;
+        }
+
+        .info-item span {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .info-item strong {
+            display: block;
+            color: #0f172a;
+            font-size: 15px;
+        }
+
+        .welcome-card {
+            background: linear-gradient(
+                135deg,
+                #0f172a 0%,
+                #172033 100%
+            );
+            color: white;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-card h3 {
+            color: white;
+            margin: 0;
+        }
+
+        .welcome-card p {
+            color: #94a3b8;
+            margin-top: 6px;
+        }
+
+        /* =====================================================
+           MESSAGE BUTTON
+           ===================================================== */
+
+        .message-fab {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 58px;
+            height: 58px;
+            border: 0;
+            border-radius: 50%;
+            background: #10b981;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, .22);
+            z-index: 900;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .message-fab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 34px rgba(15, 23, 42, .28);
+        }
+
+        .message-fab svg {
+            width: 27px;
+            height: 27px;
+        }
+
+        .message-unread {
+            position: absolute;
+            top: -4px;
+            right: -3px;
+            min-width: 21px;
+            height: 21px;
+            padding: 0 5px;
+            border-radius: 999px;
+            background: #ef4444;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            font-size: 11px;
+            font-weight: 800;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* =====================================================
+           MESSAGE POPUP
+           ===================================================== */
+
+        .message-panel {
+            position: fixed;
+            right: 24px;
+            bottom: 94px;
+            width: min(430px, calc(100vw - 32px));
+            height: min(570px, calc(100vh - 125px));
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            box-shadow: 0 24px 70px rgba(15, 23, 42, .22);
+            overflow: hidden;
+            z-index: 899;
+            display: none;
+            flex-direction: column;
+        }
+
+        .message-panel.show {
+            display: flex;
+        }
+
+        .message-header {
+            min-height: 70px;
+            padding: 14px 18px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .message-header-info strong {
+            display: block;
+            color: #0f172a;
+            font-size: 15px;
+        }
+
+        .message-header-info span {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .message-close {
+            width: 36px;
+            height: 36px;
+            border: 0;
+            border-radius: 10px;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .message-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 18px;
+            background: #ffffff;
+        }
+
+        .message-empty {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            padding: 30px;
+        }
+
+        .message-row {
+            display: flex;
+            margin-bottom: 12px;
+        }
+
+        .message-row.user {
+            justify-content: flex-end;
+        }
+
+        .message-row.admin {
+            justify-content: flex-start;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 10px 13px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .message-row.user .message-bubble {
+            background: #10b981;
+            color: #ffffff;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-row.admin .message-bubble {
+            background: #f1f5f9;
+            color: #0f172a;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-time {
+            display: block;
+            font-size: 10px;
+            margin-top: 4px;
+            opacity: .72;
+        }
+
+        .message-compose {
+            padding: 12px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 8px;
+            background: #ffffff;
+        }
+
+        .message-compose input {
+            flex: 1;
+            min-width: 0;
+            border: 1px solid #cbd5e1;
+            border-radius: 11px;
+            padding: 11px 13px;
+            outline: none;
+            font: inherit;
+        }
+
+        .message-compose input:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16,185,129,.12);
+        }
+
+        .message-send {
+            width: 44px;
+            height: 44px;
+            flex: 0 0 44px;
+            border: 0;
+            border-radius: 11px;
+            background: #0f172a;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message-send:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 640px) {
+
+            .dashboard-actions {
+                width: 100%;
+            }
+
+            .dashboard-actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .message-fab {
+                right: 16px;
+                bottom: 16px;
+            }
+
+            .message-panel {
+                right: 10px;
+                bottom: 84px;
+                width: calc(100vw - 20px);
+                height: min(650px, calc(100vh - 105px));
+                border-radius: 16px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =========================================================
+         SIDEBAR
+         ========================================================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <span class="logo-c">C</span>
+                <span class="logo-h">H</span>
+            </div>
+
+            <div>
+                <h1>CasaHome</h1>
+                <span>Management System</span>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="user-dashboard.html" class="nav-link active">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="user-room.html" class="nav-link">
+                <span>▤</span>
+                My Room
+            </a>
+
+            <a href="user-payments.html" class="nav-link">
+                <span>₱</span>
+                My Payments
+            </a>
+
+            <a href="user-profile.html" class="nav-link">
+                <span>♙</span>
+                My Profile
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <strong>CasaHome</strong>
+
+            <small>
+                Tenant Portal
+            </small>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+         ========================================================= -->
+
+    <main class="main-content">
+
+
+        <!-- =====================================================
+             TOPBAR
+             ===================================================== -->
+
+        <header class="topbar">
+
+            <div>
+
+                <div class="user-badge">
+                    👤 TENANT
+                </div>
+
+                <p class="eyebrow">
+                    Tenant Overview
+                </p>
+
+                <h2>
+                    My Dashboard
+                </h2>
+
+                <p class="subtitle">
+                    View your room, payments, and boarding house information.
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-actions">
+
+                <button
+                    id="logoutBtn"
+                    type="button"
+                    class="btn btn-user">
+
+                    Logout
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+             WELCOME CARD
+             ===================================================== -->
+
+        <section class="welcome-card">
+
+            <p
+                style="
+                    color:#6ee7b7;
+                    font-size:12px;
+                    font-weight:800;
+                    margin:0;
+                    text-transform:uppercase;
+                    letter-spacing:.06em;
+                ">
+
+                Welcome back
+
+            </p>
+
+            <h3
+                id="welcomeName"
+                style="
+                    font-size:24px;
+                    margin-top:5px;
+                ">
+
+                Loading...
+
+            </h3>
+
+            <p>
+                Here's your current CasaHome account overview.
+            </p>
+
+        </section>
+
+
+        <!-- =====================================================
+             METRICS
+             ===================================================== -->
+
+        <section class="metrics-grid">
+
+
+            <article class="metric-card">
+
+                <div class="metric-icon">
+                    ▤
+                </div>
+
+                <div>
+
+                    <span>
+                        My Room
+                    </span>
+
+                    <strong id="roomNumber">
+                        —
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-icon">
+                    ₱
+                </div>
+
+                <div>
+
+                    <span>
+                        Monthly Rent
+                    </span>
+
+                    <strong id="monthlyRent">
+                        ₱0.00
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Paid
+                    </span>
+
+                    <strong id="totalPaid">
+                        ₱0.00
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-icon warning">
+                    !
+                </div>
+
+                <div>
+
+                    <span>
+                        Outstanding
+                    </span>
+
+                    <strong id="outstanding">
+                        ₱0.00
+                    </strong>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- =====================================================
+             RECENT PAYMENTS
+             ===================================================== -->
+
+        <section
+            id="payments"
+            class="card">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>
+                        My Recent Payments
+                    </h3>
+
+                    <p>
+                        Your latest payment activity.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="paymentsTable">
+
+                        <tr>
+
+                            <td
+                                colspan="3"
+                                class="empty-state">
+
+                                Loading payments...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             ROOM INFORMATION
+             ===================================================== -->
+
+        <section
+            id="roomInformation"
+            class="card"
+            style="margin-top:20px;">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>
+                        My Room Information
+                    </h3>
+
+                    <p>
+                        Information about your current room assignment.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-grid">
+
+
+                <div class="info-item">
+
+                    <span>
+                        Room Number
+                    </span>
+
+                    <strong id="detailRoomNumber">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        Room Type
+                    </span>
+
+                    <strong id="detailRoomType">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        Monthly Rate
+                    </span>
+
+                    <strong id="detailRoomRate">
+                        ₱0.00
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        Room Status
+                    </span>
+
+                    <strong id="detailRoomStatus">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        Move-in Date
+                    </span>
+
+                    <strong id="moveInDate">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        Tenant Status
+                    </span>
+
+                    <strong id="tenantStatus">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             ACCOUNT INFORMATION
+             ===================================================== -->
+
+        <section
+            id="myAccount"
+            class="card"
+            style="margin-top:20px;">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>
+                        My Account
+                    </h3>
+
+                    <p>
+                        Currently signed in account information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                style="
+                    background:#f8fafc;
+                    border:1px solid #e2e8f0;
+                    border-radius:12px;
+                    padding:16px;
+                    margin-top:12px;
+                ">
+
+                <strong id="tenantName">
+                    Loading...
+                </strong>
+
+
+                <div
+                    id="tenantEmail"
+                    style="
+                        color:#64748b;
+                        font-size:13px;
+                        margin-top:5px;
+                    ">
+
+                    Checking account...
+
+                </div>
+
+
+                <div
+                    style="
+                        color:#047857;
+                        font-size:13px;
+                        font-weight:700;
+                        margin-top:8px;
+                    ">
+
+                    Tenant access
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     FLOATING MESSAGE BUTTON
+     ========================================================= -->
+
+<button
+    type="button"
+    class="message-fab"
+    id="messageFab"
+    aria-label="Open messages"
+    title="Message CasaHome Admin">
+
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round">
+
+        <path d="M21 11.5a8.38 8.38 0 0 1-9 8.5 8.7 8.7 0 0 1-4-.9L3 21l1.9-4.4A8.38 8.38 0 0 1 3 11.5 8.38 8.38 0 0 1 12 3a8.38 8.38 0 0 1 9 8.5Z"></path>
+
+    </svg>
+
+    <span
+        id="messageUnread"
+        class="message-unread">
+        0
+    </span>
+
+</button>
+
+
+<!-- =========================================================
+     USER MESSAGE POPUP
+     ========================================================= -->
+
+<section
+    id="messagePanel"
+    class="message-panel"
+    aria-label="Message CasaHome Admin">
+
+    <header class="message-header">
+
+        <div class="message-header-info">
+
+            <strong>
+                CasaHome Admin
+            </strong>
+
+            <span>
+                Send a message to the administrator
+            </span>
+
+        </div>
+
+        <button
+            type="button"
+            id="closeMessages"
+            class="message-close"
+            aria-label="Close messages">
+
+            ×
+
+        </button>
+
+    </header>
+
+
+    <div
+        id="messageBody"
+        class="message-body">
+
+        <div class="message-empty">
+            Loading conversation...
+        </div>
+
+    </div>
+
+
+    <form
+        id="messageCompose"
+        class="message-compose">
+
+        <input
+            type="text"
+            id="messageInput"
+            placeholder="Type your message..."
+            autocomplete="off"
+            disabled>
+
+        <button
+            type="submit"
+            id="messageSend"
+            class="message-send"
+            disabled
+            aria-label="Send message">
+
+            <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="M22 2 11 13"></path>
+                <path d="m22 2-7 9-9-4Z"></path>
+
+            </svg>
+
+        </button>
+
+    </form>
+
+</section>
+
+
+<!-- =========================================================
+     SUPABASE
+     ========================================================= -->
+
+<script src="assets/js/supabase.js"></script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    /* =========================================================
+       ELEMENTS
+       ========================================================= */
+
+    const welcomeName =
+        document.getElementById("welcomeName");
+
+    const roomNumber =
+        document.getElementById("roomNumber");
+
+    const monthlyRent =
+        document.getElementById("monthlyRent");
+
+    const totalPaid =
+        document.getElementById("totalPaid");
+
+    const outstanding =
+        document.getElementById("outstanding");
+
+    const paymentsTable =
+        document.getElementById("paymentsTable");
+
+    const detailRoomNumber =
+        document.getElementById("detailRoomNumber");
+
+    const detailRoomType =
+        document.getElementById("detailRoomType");
+
+    const detailRoomRate =
+        document.getElementById("detailRoomRate");
+
+    const detailRoomStatus =
+        document.getElementById("detailRoomStatus");
+
+    const moveInDate =
+        document.getElementById("moveInDate");
+
+    const tenantStatus =
+        document.getElementById("tenantStatus");
+
+    const tenantName =
+        document.getElementById("tenantName");
+
+    const tenantEmail =
+        document.getElementById("tenantEmail");
+
+    const logoutBtn =
+        document.getElementById("logoutBtn");
+
+    /* Message elements */
+    const messageFab =
+        document.getElementById("messageFab");
+
+    const messagePanel =
+        document.getElementById("messagePanel");
+
+    const closeMessages =
+        document.getElementById("closeMessages");
+
+    const messageBody =
+        document.getElementById("messageBody");
+
+    const messageCompose =
+        document.getElementById("messageCompose");
+
+    const messageInput =
+        document.getElementById("messageInput");
+
+    const messageSend =
+        document.getElementById("messageSend");
+
+    const messageUnread =
+        document.getElementById("messageUnread");
+
+
+    /* =========================================================
+       STATE
+       ========================================================= */
+
+    let currentTenantId = null;
+    let currentUserId = null;
+    let messageChannel = null;
+
+
+    /* =========================================================
+       CHECK USER ACCESS
+       ========================================================= */
+
+    async function checkUserAccess() {
+
+        try {
+
+            const client =
+                await getClient();
+
+            const {
+                data: { session }
+            } = await client.auth.getSession();
+
+            if (!session) {
+
+                window.location.href =
+                    "index.html";
+
+                return false;
+
+            }
+
+            currentUserId =
+                session.user.id;
+
+            const {
+                data: profile,
+                error
+            } = await client
+                .from("profiles")
+                .select("role, tenant_id")
+                .eq("id", session.user.id)
+                .single();
+
+            if (
+                error ||
+                !profile
+            ) {
+
+                await client.auth.signOut();
+
+                window.location.href =
+                    "index.html";
+
+                return false;
+
+            }
+
+            if (
+                profile.role !== "user"
+            ) {
+
+                await client.auth.signOut();
+
+                window.location.href =
+                    "index.html";
+
+                return false;
+
+            }
+
+            if (
+                !profile.tenant_id
+            ) {
+
+                throw new Error(
+                    "Your account is not linked to a tenant record."
+                );
+
+            }
+
+            currentTenantId =
+                profile.tenant_id;
+
+            tenantEmail.textContent =
+                session.user.email ||
+                "No email available";
+
+            return true;
+
+        } catch (error) {
+
+            console.error(
+                "User authentication error:",
+                error
+            );
+
+            alert(
+                error?.message ||
+                "Unable to verify your account."
+            );
+
+            window.location.href =
+                "index.html";
+
+            return false;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       LOAD TENANT
+       ========================================================= */
+
+    async function loadTenant() {
+
+        const client =
+            await getClient();
+
+        const {
+            data: tenant,
+            error
+        } = await client
+            .from("tenants")
+            .select(`
+                id,
+                full_name,
+                contact_number,
+                room_id,
+                move_in_date,
+                status,
+                rooms (
+                    id,
+                    room_number,
+                    room_type,
+                    rate,
+                    status
+                )
+            `)
+            .eq(
+                "id",
+                currentTenantId
+            )
+            .single();
+
+        if (error) {
+            throw error;
+        }
+
+        return tenant;
+
+    }
+
+
+    /* =========================================================
+       LOAD PAYMENTS
+       ========================================================= */
+
+    async function loadPayments() {
+
+        const client =
+            await getClient();
+
+        const {
+            data: payments,
+            error
+        } = await client
+            .from("payments")
+            .select(`
+                id,
+                tenant_id,
+                amount,
+                status,
+                payment_date,
+                created_at
+            `)
+            .eq(
+                "tenant_id",
+                currentTenantId
+            )
+            .order(
+                "payment_date",
+                {
+                    ascending: false
+                }
+            );
+
+        if (error) {
+            throw error;
+        }
+
+        return payments || [];
+
+    }
+
+
+    /* =========================================================
+       RENDER TENANT
+       ========================================================= */
+
+    function renderTenant(tenant) {
+
+        const room =
+            tenant.rooms;
+
+        welcomeName.textContent =
+            `Welcome back, ${tenant.full_name}`;
+
+        tenantName.textContent =
+            tenant.full_name;
+
+        if (room) {
+
+            roomNumber.textContent =
+                room.room_number;
+
+            monthlyRent.textContent =
+                money(room.rate);
+
+            detailRoomNumber.textContent =
+                room.room_number;
+
+            detailRoomType.textContent =
+                room.room_type;
+
+            detailRoomRate.textContent =
+                money(room.rate);
+
+            detailRoomStatus.innerHTML = `
+                <span class="badge ${statusClass(room.status)}">
+                    ${esc(room.status)}
+                </span>
+            `;
+
+        } else {
+
+            roomNumber.textContent =
+                "Unassigned";
+
+            monthlyRent.textContent =
+                "₱0.00";
+
+            detailRoomNumber.textContent =
+                "No room assigned";
+
+            detailRoomType.textContent =
+                "—";
+
+            detailRoomRate.textContent =
+                "₱0.00";
+
+            detailRoomStatus.textContent =
+                "—";
+
+        }
+
+        moveInDate.textContent =
+            date(tenant.move_in_date);
+
+        tenantStatus.innerHTML = `
+            <span class="badge ${statusClass(tenant.status)}">
+                ${esc(tenant.status)}
+            </span>
+        `;
+
+    }
+
+
+    /* =========================================================
+       RENDER PAYMENTS
+       ========================================================= */
+
+    function renderPayments(payments) {
+
+        let paid =
+            0;
+
+        let outstandingAmount =
+            0;
+
+        payments.forEach(payment => {
+
+            const amount =
+                Number(payment.amount || 0);
+
+            if (
+                payment.status === "Paid"
+            ) {
+
+                paid += amount;
+
+            } else {
+
+                outstandingAmount += amount;
+
+            }
+
+        });
+
+        totalPaid.textContent =
+            money(paid);
+
+        outstanding.textContent =
+            money(outstandingAmount);
+
+        if (!payments.length) {
+
+            paymentsTable.innerHTML = `
+                <tr>
+                    <td
+                        colspan="3"
+                        class="empty-state">
+
+                        No payment records found.
+
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+        paymentsTable.innerHTML =
+            payments
+                .slice(0, 10)
+                .map(payment => {
+
+                    return `
+                        <tr>
+
+                            <td>
+                                ${date(payment.payment_date)}
+                            </td>
+
+                            <td>
+                                <strong>
+                                    ${money(payment.amount)}
+                                </strong>
+                            </td>
+
+                            <td>
+
+                                <span
+                                    class="badge ${statusClass(payment.status)}">
+
+                                    ${esc(payment.status)}
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+                    `;
+
+                })
+                .join("");
+
+    }
+
+
+    /* =========================================================
+       LOAD DASHBOARD
+       ========================================================= */
+
+    async function loadDashboard() {
+
+        try {
+
+            const [
+                tenant,
+                payments
+            ] = await Promise.all([
+                loadTenant(),
+                loadPayments()
+            ]);
+
+            renderTenant(
+                tenant
+            );
+
+            renderPayments(
+                payments
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Tenant dashboard error:",
+                error
+            );
+
+            paymentsTable.innerHTML = `
+                <tr>
+                    <td
+                        colspan="3"
+                        class="empty-state error">
+
+                        Unable to load your information.
+
+                    </td>
+                </tr>
+            `;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       MESSAGE HELPERS
+       ========================================================= */
+
+    function formatMessageTime(value) {
+
+        if (!value) {
+            return "";
+        }
+
+        return new Date(value).toLocaleString(
+            "en-PH",
+            {
+                month: "short",
+                day: "numeric",
+                hour: "numeric",
+                minute: "2-digit"
+            }
+        );
+
+    }
+
+
+    function renderMessages(messages) {
+
+        if (!messages || !messages.length) {
+
+            messageBody.innerHTML = `
+                <div class="message-empty">
+                    No messages yet.<br>
+                    Send a message to CasaHome administration.
+                </div>
+            `;
+
+            return;
+
+        }
+
+        messageBody.innerHTML =
+            messages.map(message => {
+
+                const isUser =
+                    message.sender_role === "user";
+
+                return `
+                    <div class="message-row ${isUser ? "user" : "admin"}">
+
+                        <div class="message-bubble">
+
+                            ${esc(message.message)}
+
+                            <span class="message-time">
+                                ${formatMessageTime(message.created_at)}
+                            </span>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("");
+
+        messageBody.scrollTop =
+            messageBody.scrollHeight;
+
+    }
+
+
+    /* =========================================================
+       LOAD CONVERSATION
+       ========================================================= */
+
+    async function loadConversation(
+        markAdminMessagesRead = true
+    ) {
+
+        if (!currentTenantId) {
+            return;
+        }
+
+        try {
+
+            const client =
+                await getClient();
+
+            const {
+                data: messages,
+                error
+            } = await client
+                .from("messages")
+                .select(`
+                    id,
+                    tenant_id,
+                    sender_id,
+                    sender_role,
+                    message,
+                    is_read,
+                    created_at
+                `)
+                .eq(
+                    "tenant_id",
+                    currentTenantId
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: true
+                    }
+                );
+
+            if (error) {
+                throw error;
+            }
+
+            renderMessages(
+                messages || []
+            );
+
+            /*
+             * When the user opens the chat,
+             * admin messages are marked as read.
+             */
+            if (
+                markAdminMessagesRead
+            ) {
+
+                const unreadAdminIds =
+                    (messages || [])
+                        .filter(message =>
+                            message.sender_role === "admin" &&
+                            message.is_read === false
+                        )
+                        .map(message => message.id);
+
+                if (
+                    unreadAdminIds.length
+                ) {
+
+                    await client
+                        .from("messages")
+                        .update({
+                            is_read: true
+                        })
+                        .in(
+                            "id",
+                            unreadAdminIds
+                        );
+
+                }
+
+            }
+
+            updateUnreadBadge(
+                messages || []
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Unable to load messages:",
+                error
+            );
+
+            messageBody.innerHTML = `
+                <div class="message-empty">
+                    Unable to load messages.
+                </div>
+            `;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       UNREAD BADGE
+       ========================================================= */
+
+    function updateUnreadBadge(
+        messages
+    ) {
+
+        const unread =
+            messages.filter(message =>
+                message.sender_role === "admin" &&
+                message.is_read === false
+            ).length;
+
+        if (
+            unread > 0
+        ) {
+
+            messageUnread.textContent =
+                unread > 99 ? "99+" : unread;
+
+            messageUnread.style.display =
+                "flex";
+
+        } else {
+
+            messageUnread.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    /* =========================================================
+       LOAD UNREAD COUNT
+       ========================================================= */
+
+    async function loadUnreadCount() {
+
+        if (!currentTenantId) {
+            return;
+        }
+
+        try {
+
+            const client =
+                await getClient();
+
+            const {
+                data,
+                error
+            } = await client
+                .from("messages")
+                .select(
+                    "id,is_read,sender_role"
+                )
+                .eq(
+                    "tenant_id",
+                    currentTenantId
+                )
+                .eq(
+                    "sender_role",
+                    "admin"
+                )
+                .eq(
+                    "is_read",
+                    false
+                );
+
+            if (error) {
+                throw error;
+            }
+
+            updateUnreadBadge(
+                data || []
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Unread message error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       SEND USER MESSAGE
+       ========================================================= */
+
+    async function sendUserMessage() {
+
+        const text =
+            messageInput.value.trim();
+
+        if (
+            !text ||
+            !currentTenantId ||
+            !currentUserId
+        ) {
+            return;
+        }
+
+        messageSend.disabled =
+            true;
+
+        try {
+
+            const client =
+                await getClient();
+
+            const {
+                error
+            } = await client
+                .from("messages")
+                .insert([{
+                    tenant_id:
+                        currentTenantId,
+
+                    sender_id:
+                        currentUserId,
+
+                    sender_role:
+                        "user",
+
+                    message:
+                        text,
+
+                    is_read:
+                        false
+                }]);
+
+            if (error) {
+                throw error;
+            }
+
+            messageInput.value = "";
+
+            await loadConversation(
+                false
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Unable to send message:",
+                error
+            );
+
+            alert(
+                "Unable to send message.\n\n" +
+                (error.message || "")
+            );
+
+        } finally {
+
+            messageSend.disabled =
+                false;
+
+            messageInput.focus();
+
+        }
+
+    }
+
+
+    /* =========================================================
+       OPEN / CLOSE MESSAGE POPUP
+       ========================================================= */
+
+    async function openMessagePanel() {
+
+        messagePanel.classList.add(
+            "show"
+        );
+
+        messageInput.disabled =
+            false;
+
+        messageSend.disabled =
+            false;
+
+        await loadConversation(
+            true
+        );
+
+        messageInput.focus();
+
+    }
+
+
+    function closeMessagePanel() {
+
+        messagePanel.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* =========================================================
+       MESSAGE REALTIME
+       ========================================================= */
+
+    async function setupMessageRealtime() {
+
+        try {
+
+            const client =
+                await getClient();
+
+            messageChannel =
+                client
+                    .channel(
+                        `casahome-user-messages-${currentTenantId}`
+                    )
+                    .on(
+                        "postgres_changes",
+                        {
+                            event: "*",
+                            schema: "public",
+                            table: "messages",
+                            filter:
+                                `tenant_id=eq.${currentTenantId}`
+                        },
+                        async () => {
+
+                            await loadUnreadCount();
+
+                            if (
+                                messagePanel.classList.contains(
+                                    "show"
+                                )
+                            ) {
+
+                                await loadConversation(
+                                    true
+                                );
+
+                            }
+
+                        }
+                    )
+                    .subscribe();
+
+        } catch (error) {
+
+            console.error(
+                "Message realtime error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       MESSAGE EVENTS
+       ========================================================= */
+
+    messageFab.addEventListener(
+        "click",
+        openMessagePanel
+    );
+
+
+    closeMessages.addEventListener(
+        "click",
+        closeMessagePanel
+    );
+
+
+    messageCompose.addEventListener(
+        "submit",
+        event => {
+
+            event.preventDefault();
+
+            sendUserMessage();
+
+        }
+    );
+
+
+    messageInput.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                sendUserMessage();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       LOGOUT
+       ========================================================= */
+
+    logoutBtn.addEventListener(
+        "click",
+        async () => {
+
+            logoutBtn.disabled =
+                true;
+
+            logoutBtn.textContent =
+                "Logging out...";
+
+            try {
+
+                const client =
+                    await getClient();
+
+                await client.auth.signOut();
+
+            } catch (error) {
+
+                console.error(
+                    "Logout error:",
+                    error
+                );
+
+            }
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+
+    /* =========================================================
+       START
+       ========================================================= */
+
+    const hasAccess =
+        await checkUserAccess();
+
+    if (!hasAccess) {
+        return;
+    }
+
+    await loadDashboard();
+
+    await loadUnreadCount();
+
+    await setupMessageRealtime();
+
+
+    /* =========================================================
+       REALTIME DASHBOARD UPDATES
+       ========================================================= */
+
+    subscribeToPayments(
+        async () => {
+
+            try {
+
+                const payments =
+                    await loadPayments();
+
+                renderPayments(
+                    payments
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Payment realtime error:",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+
+    subscribeToRooms(
+        async () => {
+
+            try {
+
+                const tenant =
+                    await loadTenant();
+
+                renderTenant(
+                    tenant
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Room realtime error:",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+});
+
+</script>
+
+</body>
+</html>
