@@ -114,6 +114,87 @@
             display: flex;
         }
 
+        /* =========================
+           NEW MESSAGE ALERT BAR
+           ========================= */
+
+        .message-alert-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            min-height: 62px;
+            padding: 10px 14px;
+            border: 0;
+            border-bottom: 1px solid #bbf7d0;
+            background: #ecfdf5;
+            color: #064e3b;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            text-align: left;
+            z-index: 20;
+        }
+
+        .message-alert-bar.show {
+            display: flex;
+        }
+
+        .message-alert-bar:hover {
+            background: #d1fae5;
+        }
+
+        .message-alert-icon {
+            width: 34px;
+            height: 34px;
+            flex: 0 0 34px;
+            border-radius: 50%;
+            background: #10b981;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 16px;
+        }
+
+        .message-alert-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .message-alert-info strong {
+            display: block;
+            color: #065f46;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .message-alert-info span {
+            display: block;
+            color: #047857;
+            font-size: 11px;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .message-alert-count {
+            min-width: 24px;
+            height: 24px;
+            padding: 0 7px;
+            border-radius: 999px;
+            background: #ef4444;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
         .message-sidebar {
             width: 230px;
             flex: 0 0 230px;
@@ -121,6 +202,7 @@
             background: #f8fafc;
             display: flex;
             flex-direction: column;
+            padding-top: 62px;
         }
 
         .message-sidebar-header {
@@ -225,6 +307,7 @@
             min-width: 0;
             display: flex;
             flex-direction: column;
+            padding-top: 62px;
         }
 
         .message-header {
@@ -381,6 +464,7 @@
         }
 
         @media (max-width: 640px) {
+
             .dashboard-actions {
                 width: 100%;
             }
@@ -403,9 +487,29 @@
                 border-radius: 16px;
             }
 
+            .message-alert-bar {
+                min-height: 58px;
+                padding: 9px 10px;
+            }
+
+            .message-alert-icon {
+                width: 30px;
+                height: 30px;
+                flex-basis: 30px;
+            }
+
+            .message-alert-info strong {
+                font-size: 11px;
+            }
+
+            .message-alert-info span {
+                font-size: 10px;
+            }
+
             .message-sidebar {
                 width: 92px;
                 flex-basis: 92px;
+                padding-top: 58px;
             }
 
             .message-sidebar-header {
@@ -442,6 +546,10 @@
                 flex-basis: 40px;
             }
 
+            .message-main {
+                padding-top: 58px;
+            }
+
             .message-bubble {
                 max-width: 84%;
             }
@@ -468,6 +576,7 @@
         </div>
 
         <nav class="sidebar-nav">
+
             <a href="admin-index.html" class="nav-link active">
                 <span>▦</span>
                 Dashboard
@@ -487,12 +596,14 @@
                 <span>₱</span>
                 Billing
             </a>
+
         </nav>
 
         <div class="sidebar-footer">
             <strong>CasaHome</strong>
             <small>Administrator Panel</small>
         </div>
+
     </aside>
 
     <main class="main-content">
@@ -500,17 +611,23 @@
         <header class="topbar">
 
             <div>
+
                 <div class="admin-badge">
                     🔐 ADMINISTRATOR
                 </div>
 
-                <p class="eyebrow">Admin Overview</p>
+                <p class="eyebrow">
+                    Admin Overview
+                </p>
 
-                <h2>Executive Dashboard</h2>
+                <h2>
+                    Executive Dashboard
+                </h2>
 
                 <p class="subtitle">
                     Manage rooms, customers, payments, and overall occupancy.
                 </p>
+
             </div>
 
             <div class="dashboard-actions">
@@ -533,35 +650,55 @@
         <section class="metrics-grid">
 
             <article class="metric-card">
-                <div class="metric-icon">▤</div>
+
+                <div class="metric-icon">
+                    ▤
+                </div>
+
                 <div>
                     <span>Total Rooms</span>
                     <strong id="totalRooms">0</strong>
                 </div>
+
             </article>
 
             <article class="metric-card">
-                <div class="metric-icon">◉</div>
+
+                <div class="metric-icon">
+                    ◉
+                </div>
+
                 <div>
                     <span>Occupancy Rate</span>
                     <strong id="occupancy">0%</strong>
                 </div>
+
             </article>
 
             <article class="metric-card">
-                <div class="metric-icon">₱</div>
+
+                <div class="metric-icon">
+                    ₱
+                </div>
+
                 <div>
                     <span>Total Revenue</span>
                     <strong id="revenue">₱0.00</strong>
                 </div>
+
             </article>
 
             <article class="metric-card">
-                <div class="metric-icon warning">!</div>
+
+                <div class="metric-icon warning">
+                    !
+                </div>
+
                 <div>
                     <span>Pending Balances</span>
                     <strong id="pending">₱0.00</strong>
                 </div>
+
             </article>
 
         </section>
@@ -571,10 +708,15 @@
             <div class="section-header">
 
                 <div>
-                    <h3>Recent Transactions</h3>
+
+                    <h3>
+                        Recent Transactions
+                    </h3>
+
                     <p>
                         Latest payment activity recorded in the system.
                     </p>
+
                 </div>
 
                 <a href="billing.html" class="text-link">
@@ -588,6 +730,7 @@
                 <table>
 
                     <thead>
+
                         <tr>
                             <th>Customer</th>
                             <th>Room</th>
@@ -595,14 +738,21 @@
                             <th>Status</th>
                             <th>Date</th>
                         </tr>
+
                     </thead>
 
                     <tbody id="transactions">
 
                         <tr>
-                            <td colspan="5" class="empty-state">
+
+                            <td
+                                colspan="5"
+                                class="empty-state">
+
                                 Loading transactions...
+
                             </td>
+
                         </tr>
 
                     </tbody>
@@ -613,15 +763,22 @@
 
         </section>
 
-        <section class="card" style="margin-top: 20px;">
+        <section
+            class="card"
+            style="margin-top: 20px;">
 
             <div class="section-header">
 
                 <div>
-                    <h3>Administrator Account</h3>
+
+                    <h3>
+                        Administrator Account
+                    </h3>
+
                     <p>
                         Currently signed in as:
                     </p>
+
                 </div>
 
             </div>
@@ -658,6 +815,7 @@
 
 </div>
 
+
 <!-- =========================================================
      FLOATING MESSAGE BUTTON
      ========================================================= -->
@@ -690,6 +848,7 @@
 
 </button>
 
+
 <!-- =========================================================
      MESSAGE POPUP
      ========================================================= -->
@@ -699,13 +858,53 @@
     class="message-panel"
     aria-label="Customer messages">
 
+
+    <!-- NEW MESSAGE ALERT -->
+
+    <button
+        type="button"
+        id="messageAlertBar"
+        class="message-alert-bar"
+        aria-label="Open latest unread message">
+
+        <div class="message-alert-icon">
+            !
+        </div>
+
+        <div class="message-alert-info">
+
+            <strong id="messageAlertTitle">
+                New customer message
+            </strong>
+
+            <span id="messageAlertPreview">
+                You have an unread message.
+            </span>
+
+        </div>
+
+        <span
+            id="messageAlertCount"
+            class="message-alert-count">
+            0
+        </span>
+
+    </button>
+
+
+    <!-- CUSTOMER LIST -->
+
     <aside class="message-sidebar">
 
         <div class="message-sidebar-header">
 
-            <strong>Messages</strong>
+            <strong>
+                Messages
+            </strong>
 
-            <span>Select a customer to view conversation</span>
+            <span>
+                Select a customer to view conversation
+            </span>
 
         </div>
 
@@ -720,6 +919,9 @@
         </div>
 
     </aside>
+
+
+    <!-- CONVERSATION -->
 
     <div class="message-main">
 
@@ -742,10 +944,13 @@
                 class="message-close"
                 id="closeMessages"
                 aria-label="Close messages">
+
                 ×
+
             </button>
 
         </header>
+
 
         <div
             id="messageBody"
@@ -756,6 +961,7 @@
             </div>
 
         </div>
+
 
         <form
             id="messageCompose"
@@ -798,11 +1004,19 @@
 
 </section>
 
+
 <script src="assets/js/supabase.js"></script>
 
 <script>
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+
+
+    /* =========================================================
+       DASHBOARD ELEMENTS
+       ========================================================= */
 
     const totalRooms =
         document.getElementById("totalRooms");
@@ -825,7 +1039,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const logoutBtn =
         document.getElementById("logoutBtn");
 
-    /* Message elements */
+
+    /* =========================================================
+       MESSAGE ELEMENTS
+       ========================================================= */
+
     const messageFab =
         document.getElementById("messageFab");
 
@@ -859,14 +1077,41 @@ document.addEventListener("DOMContentLoaded", async () => {
     const messageUnread =
         document.getElementById("messageUnread");
 
+
+    /* NEW ALERT ELEMENTS */
+
+    const messageAlertBar =
+        document.getElementById("messageAlertBar");
+
+    const messageAlertTitle =
+        document.getElementById("messageAlertTitle");
+
+    const messageAlertPreview =
+        document.getElementById("messageAlertPreview");
+
+    const messageAlertCount =
+        document.getElementById("messageAlertCount");
+
+
+    /* =========================================================
+       STATE
+       ========================================================= */
+
     let selectedTenantId = null;
+
     let tenantsCache = [];
+
     let messagesCache = [];
+
     let messageChannel = null;
 
-    /*
-     * ADMIN AUTHENTICATION
-     */
+    let latestUnreadTenantId = null;
+
+
+    /* =========================================================
+       ADMIN AUTHENTICATION
+       ========================================================= */
+
     async function checkAdminAccess() {
 
         try {
@@ -912,7 +1157,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             adminEmail.textContent =
-                session.user.email || "Administrator";
+                session.user.email ||
+                "Administrator";
 
             return true;
 
@@ -932,16 +1178,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     }
 
-    /*
-     * RENDER TRANSACTIONS
-     */
+
+    /* =========================================================
+       RENDER TRANSACTIONS
+       ========================================================= */
+
     function renderTransactions(payments) {
 
-        if (!payments || !payments.length) {
+        if (
+            !payments ||
+            !payments.length
+        ) {
 
             transactions.innerHTML = `
                 <tr>
-                    <td colspan="5" class="empty-state">
+                    <td
+                        colspan="5"
+                        class="empty-state">
                         No transactions found.
                     </td>
                 </tr>
@@ -951,56 +1204,60 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         }
 
-        transactions.innerHTML = payments
-            .slice(0, 10)
-            .map(payment => {
+        transactions.innerHTML =
+            payments
+                .slice(0, 10)
+                .map(payment => {
 
-                const customer =
-                    payment.tenants?.full_name ||
-                    "Unknown Customer";
+                    const customer =
+                        payment.tenants?.full_name ||
+                        "Unknown Customer";
 
-                const room =
-                    payment.tenants?.rooms?.room_number ||
-                    "—";
+                    const room =
+                        payment.tenants?.rooms?.room_number ||
+                        "—";
 
-                return `
-                    <tr>
+                    return `
+                        <tr>
 
-                        <td>
-                            <strong>
-                                ${esc(customer)}
-                            </strong>
-                        </td>
+                            <td>
+                                <strong>
+                                    ${esc(customer)}
+                                </strong>
+                            </td>
 
-                        <td>
-                            ${esc(room)}
-                        </td>
+                            <td>
+                                ${esc(room)}
+                            </td>
 
-                        <td>
-                            ${money(payment.amount)}
-                        </td>
+                            <td>
+                                ${money(payment.amount)}
+                            </td>
 
-                        <td>
-                            <span class="badge ${statusClass(payment.status)}">
-                                ${esc(payment.status)}
-                            </span>
-                        </td>
+                            <td>
+                                <span
+                                    class="badge ${statusClass(payment.status)}">
+                                    ${esc(payment.status)}
+                                </span>
+                            </td>
 
-                        <td>
-                            ${date(payment.payment_date)}
-                        </td>
+                            <td>
+                                ${date(payment.payment_date)}
+                            </td>
 
-                    </tr>
-                `;
+                        </tr>
+                    `;
 
-            })
-            .join("");
+                })
+                .join("");
 
     }
 
-    /*
-     * LOAD DASHBOARD DATA
-     */
+
+    /* =========================================================
+       LOAD DASHBOARD
+       ========================================================= */
+
     async function loadDashboard() {
 
         try {
@@ -1033,7 +1290,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             transactions.innerHTML = `
                 <tr>
-                    <td colspan="5" class="empty-state error">
+                    <td
+                        colspan="5"
+                        class="empty-state error">
                         Unable to load dashboard data.
                     </td>
                 </tr>
@@ -1043,8 +1302,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     }
 
+
     /* =========================================================
-       MESSAGE SYSTEM
+       MESSAGE HELPERS
        ========================================================= */
 
     function getInitials(name) {
@@ -1055,10 +1315,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 .split(/\s+/)
                 .filter(Boolean);
 
-        if (!parts.length) return "?";
+        if (!parts.length) {
+            return "?";
+        }
 
         if (parts.length === 1) {
-            return parts[0].charAt(0).toUpperCase();
+
+            return parts[0]
+                .charAt(0)
+                .toUpperCase();
+
         }
 
         return (
@@ -1068,35 +1334,175 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     }
 
+
     function formatMessageTime(value) {
 
-        if (!value) return "";
+        if (!value) {
+            return "";
+        }
 
-        return new Date(value).toLocaleString(
-            "en-PH",
-            {
-                month: "short",
-                day: "numeric",
-                hour: "numeric",
-                minute: "2-digit"
-            }
+        return new Date(value)
+            .toLocaleString(
+                "en-PH",
+                {
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit"
+                }
+            );
+
+    }
+
+
+    /* =========================================================
+       MESSAGE ALERT
+       ========================================================= */
+
+    function updateMessageAlert() {
+
+        const unreadMessages =
+            messagesCache
+                .filter(message =>
+                    message.sender_role === "user" &&
+                    message.is_read === false
+                )
+                .sort(
+                    (a, b) =>
+                        new Date(b.created_at) -
+                        new Date(a.created_at)
+                );
+
+
+        /*
+         * No unread messages
+         */
+
+        if (!unreadMessages.length) {
+
+            latestUnreadTenantId =
+                null;
+
+            messageAlertBar.classList.remove(
+                "show"
+            );
+
+            messageAlertCount.textContent =
+                "0";
+
+            return;
+
+        }
+
+
+        /*
+         * Find latest unread message
+         */
+
+        const latest =
+            unreadMessages[0];
+
+        latestUnreadTenantId =
+            Number(latest.tenant_id);
+
+
+        const tenant =
+            tenantsCache.find(
+                item =>
+                    Number(item.id) ===
+                    Number(latest.tenant_id)
+            );
+
+
+        const customerName =
+            tenant?.full_name ||
+            "Customer";
+
+
+        /*
+         * Customer name
+         */
+
+        messageAlertTitle.textContent =
+            `New message from ${customerName}`;
+
+
+        /*
+         * Message preview
+         */
+
+        const preview =
+            String(latest.message || "")
+                .trim();
+
+
+        messageAlertPreview.textContent =
+            preview ||
+            "You received a new message.";
+
+
+        /*
+         * Total unread
+         */
+
+        messageAlertCount.textContent =
+            unreadMessages.length > 99
+                ? "99+"
+                : unreadMessages.length;
+
+
+        /*
+         * Show alert
+         */
+
+        messageAlertBar.classList.add(
+            "show"
         );
 
     }
 
-    function openMessagePanel() {
 
-        messagePanel.classList.add("show");
+    /* =========================================================
+       OPEN / CLOSE MESSAGE PANEL
+       ========================================================= */
 
-        loadMessageCustomers();
+    async function openMessagePanel() {
+
+        messagePanel.classList.add(
+            "show"
+        );
+
+        await loadMessageCustomers();
+
+
+        /*
+         * If there is an unread message,
+         * automatically open the latest one.
+         */
+
+        if (latestUnreadTenantId) {
+
+            await loadConversation(
+                latestUnreadTenantId
+            );
+
+        }
 
     }
+
 
     function closeMessagePanel() {
 
-        messagePanel.classList.remove("show");
+        messagePanel.classList.remove(
+            "show"
+        );
 
     }
+
+
+    /* =========================================================
+       RENDER CUSTOMER LIST
+       ========================================================= */
 
     function renderMessageCustomers() {
 
@@ -1112,63 +1518,162 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         }
 
+
+        /*
+         * Put customers with unread messages
+         * at the top.
+         */
+
+        const sortedTenants =
+            [...tenantsCache].sort(
+                (a, b) => {
+
+                    const unreadA =
+                        messagesCache.filter(
+                            message =>
+                                Number(message.tenant_id) ===
+                                Number(a.id) &&
+                                message.sender_role === "user" &&
+                                message.is_read === false
+                        ).length;
+
+                    const unreadB =
+                        messagesCache.filter(
+                            message =>
+                                Number(message.tenant_id) ===
+                                Number(b.id) &&
+                                message.sender_role === "user" &&
+                                message.is_read === false
+                        ).length;
+
+
+                    /*
+                     * Unread first
+                     */
+
+                    if (
+                        unreadA > 0 &&
+                        unreadB === 0
+                    ) {
+                        return -1;
+                    }
+
+                    if (
+                        unreadA === 0 &&
+                        unreadB > 0
+                    ) {
+                        return 1;
+                    }
+
+
+                    /*
+                     * If both have unread,
+                     * more unread comes first.
+                     */
+
+                    if (
+                        unreadA !== unreadB
+                    ) {
+                        return unreadB - unreadA;
+                    }
+
+
+                    /*
+                     * Otherwise alphabetical
+                     */
+
+                    return String(
+                        a.full_name || ""
+                    ).localeCompare(
+                        String(
+                            b.full_name || ""
+                        )
+                    );
+
+                }
+            );
+
+
         messageCustomerList.innerHTML =
-            tenantsCache.map(tenant => {
+            sortedTenants
+                .map(tenant => {
 
-                const unread =
-                    messagesCache.filter(message =>
-                        Number(message.tenant_id) === Number(tenant.id) &&
-                        message.sender_role === "user" &&
-                        message.is_read === false
-                    ).length;
+                    const unread =
+                        messagesCache.filter(
+                            message =>
+                                Number(message.tenant_id) ===
+                                Number(tenant.id) &&
+                                message.sender_role === "user" &&
+                                message.is_read === false
+                        ).length;
 
-                const active =
-                    Number(selectedTenantId) ===
-                    Number(tenant.id)
-                        ? "active"
-                        : "";
 
-                const room =
-                    tenant.rooms?.room_number ||
-                    "No room";
+                    const active =
+                        Number(selectedTenantId) ===
+                        Number(tenant.id)
+                            ? "active"
+                            : "";
 
-                return `
-                    <button
-                        type="button"
-                        class="message-customer ${active}"
-                        data-tenant-id="${esc(tenant.id)}">
 
-                        <div class="message-avatar">
-                            ${esc(getInitials(tenant.full_name))}
-                        </div>
+                    const room =
+                        tenant.rooms?.room_number ||
+                        "No room";
 
-                        <div class="message-customer-info">
 
-                            <strong>
-                                ${esc(tenant.full_name)}
-                            </strong>
+                    return `
+                        <button
+                            type="button"
+                            class="message-customer ${active}"
+                            data-tenant-id="${esc(tenant.id)}">
 
-                            <small>
-                                Room ${esc(room)}
-                            </small>
+                            <div class="message-avatar">
+                                ${esc(
+                                    getInitials(
+                                        tenant.full_name
+                                    )
+                                )}
+                            </div>
 
-                        </div>
+                            <div class="message-customer-info">
 
-                        <span
-                            class="message-customer-unread ${unread ? "show" : ""}">
-                            ${unread > 9 ? "9+" : unread}
-                        </span>
+                                <strong>
+                                    ${esc(
+                                        tenant.full_name
+                                    )}
+                                </strong>
 
-                    </button>
-                `;
+                                <small>
+                                    Room ${esc(room)}
+                                </small>
 
-            }).join("");
+                            </div>
+
+                            <span
+                                class="message-customer-unread ${unread ? "show" : ""}">
+                                ${
+                                    unread > 9
+                                        ? "9+"
+                                        : unread
+                                }
+                            </span>
+
+                        </button>
+                    `;
+
+                })
+                .join("");
 
     }
 
+
+    /* =========================================================
+       RENDER MESSAGES
+       ========================================================= */
+
     function renderMessages(messages) {
 
-        messagesCache = messages || [];
+        messagesCache =
+            messages || [];
 
         if (!selectedTenantId) {
 
@@ -1181,6 +1686,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
 
         }
+
 
         if (!messagesCache.length) {
 
@@ -1195,34 +1701,56 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         }
 
+
         messageBody.innerHTML =
-            messagesCache.map(message => {
+            messagesCache
+                .map(message => {
 
-                const isAdmin =
-                    message.sender_role === "admin";
+                    const isAdmin =
+                        message.sender_role === "admin";
 
-                return `
-                    <div class="message-row ${isAdmin ? "admin" : "user"}">
 
-                        <div class="message-bubble">
+                    return `
+                        <div
+                            class="message-row ${
+                                isAdmin
+                                    ? "admin"
+                                    : "user"
+                            }">
 
-                            ${esc(message.message)}
+                            <div class="message-bubble">
 
-                            <span class="message-time">
-                                ${formatMessageTime(message.created_at)}
-                            </span>
+                                ${esc(
+                                    message.message
+                                )}
+
+                                <span
+                                    class="message-time">
+
+                                    ${formatMessageTime(
+                                        message.created_at
+                                    )}
+
+                                </span>
+
+                            </div>
 
                         </div>
+                    `;
 
-                    </div>
-                `;
+                })
+                .join("");
 
-            }).join("");
 
         messageBody.scrollTop =
             messageBody.scrollHeight;
 
     }
+
+
+    /* =========================================================
+       LOAD CUSTOMERS
+       ========================================================= */
 
     async function loadMessageCustomers() {
 
@@ -1234,9 +1762,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             tenantsCache =
                 customers || [];
 
+
             await loadAllMessages();
 
+
             renderMessageCustomers();
+
 
             if (
                 selectedTenantId &&
@@ -1247,7 +1778,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 )
             ) {
 
-                selectedTenantId = null;
+                selectedTenantId =
+                    null;
 
                 renderMessages([]);
 
@@ -1270,6 +1802,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     }
 
+
+    /* =========================================================
+       LOAD ALL MESSAGES
+       ========================================================= */
+
     async function loadAllMessages() {
 
         try {
@@ -1283,16 +1820,26 @@ document.addEventListener("DOMContentLoaded", async () => {
             } = await client
                 .from("messages")
                 .select("*")
-                .order("created_at", {
-                    ascending: true
-                });
+                .order(
+                    "created_at",
+                    {
+                        ascending: true
+                    }
+                );
 
-            if (error) throw error;
+
+            if (error) {
+                throw error;
+            }
+
 
             messagesCache =
                 data || [];
 
+
             updateUnreadCount();
+
+            updateMessageAlert();
 
         } catch (error) {
 
@@ -1301,16 +1848,29 @@ document.addEventListener("DOMContentLoaded", async () => {
                 error
             );
 
-            messagesCache = [];
+            messagesCache =
+                [];
+
+            updateUnreadCount();
+
+            updateMessageAlert();
 
         }
 
     }
 
-    async function loadConversation(tenantId) {
+
+    /* =========================================================
+       LOAD CONVERSATION
+       ========================================================= */
+
+    async function loadConversation(
+        tenantId
+    ) {
 
         selectedTenantId =
             Number(tenantId);
+
 
         const tenant =
             tenantsCache.find(
@@ -1319,13 +1879,23 @@ document.addEventListener("DOMContentLoaded", async () => {
                     Number(selectedTenantId)
             );
 
-        if (!tenant) return;
+
+        if (!tenant) {
+            return;
+        }
+
 
         messageCustomerName.textContent =
-            tenant.full_name || "Customer";
+            tenant.full_name ||
+            "Customer";
+
 
         messageCustomerRoom.textContent =
-            `Room ${tenant.rooms?.room_number || "—"}`;
+            `Room ${
+                tenant.rooms?.room_number ||
+                "—"
+            }`;
+
 
         messageInput.disabled =
             false;
@@ -1333,10 +1903,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         messageSend.disabled =
             false;
 
+
         try {
 
             const client =
                 await getClient();
+
 
             const {
                 data,
@@ -1344,40 +1916,75 @@ document.addEventListener("DOMContentLoaded", async () => {
             } = await client
                 .from("messages")
                 .select("*")
-                .eq("tenant_id", selectedTenantId)
-                .order("created_at", {
-                    ascending: true
-                });
+                .eq(
+                    "tenant_id",
+                    selectedTenantId
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: true
+                    }
+                );
 
-            if (error) throw error;
 
-            renderMessages(data || []);
+            if (error) {
+                throw error;
+            }
+
+
+            renderMessages(
+                data || []
+            );
+
 
             /*
-             * Mark incoming user messages as read.
+             * Find unread customer messages.
              */
+
             const unreadIds =
                 (data || [])
-                    .filter(message =>
-                        message.sender_role === "user" &&
-                        message.is_read === false
+                    .filter(
+                        message =>
+                            message.sender_role === "user" &&
+                            message.is_read === false
                     )
-                    .map(message => message.id);
+                    .map(
+                        message =>
+                            message.id
+                    );
 
-            if (unreadIds.length) {
+
+            /*
+             * Mark them as read.
+             */
+
+            if (
+                unreadIds.length
+            ) {
 
                 await client
                     .from("messages")
                     .update({
                         is_read: true
                     })
-                    .in("id", unreadIds);
+                    .in(
+                        "id",
+                        unreadIds
+                    );
 
             }
 
+
+            /*
+             * Reload message data.
+             */
+
             await loadAllMessages();
 
+
             renderMessageCustomers();
+
 
         } catch (error) {
 
@@ -1396,26 +2003,39 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     }
 
+
+    /* =========================================================
+       SEND ADMIN MESSAGE
+       ========================================================= */
+
     async function sendAdminMessage() {
 
         const text =
             messageInput.value.trim();
 
-        if (!text || !selectedTenantId) {
+
+        if (
+            !text ||
+            !selectedTenantId
+        ) {
             return;
         }
 
+
         messageSend.disabled =
             true;
+
 
         try {
 
             const client =
                 await getClient();
 
+
             const {
                 data: { user }
             } = await client.auth.getUser();
+
 
             const {
                 data,
@@ -1423,6 +2043,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             } = await client
                 .from("messages")
                 .insert([{
+
                     tenant_id:
                         selectedTenantId,
 
@@ -1437,17 +2058,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     is_read:
                         false
+
                 }])
                 .select()
                 .single();
 
-            if (error) throw error;
 
-            messageInput.value = "";
+            if (error) {
+                throw error;
+            }
+
+
+            messageInput.value =
+                "";
+
 
             await loadConversation(
                 selectedTenantId
             );
+
 
         } catch (error) {
 
@@ -1458,7 +2087,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             alert(
                 "Unable to send message.\n\n" +
-                (error.message || "")
+                (
+                    error.message ||
+                    ""
+                )
             );
 
         } finally {
@@ -1472,18 +2104,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     }
 
+
+    /* =========================================================
+       UNREAD COUNT
+       ========================================================= */
+
     function updateUnreadCount() {
 
         const unread =
-            messagesCache.filter(message =>
-                message.sender_role === "user" &&
-                message.is_read === false
+            messagesCache.filter(
+                message =>
+                    message.sender_role === "user" &&
+                    message.is_read === false
             ).length;
+
 
         if (unread > 0) {
 
             messageUnread.textContent =
-                unread > 99 ? "99+" : unread;
+                unread > 99
+                    ? "99+"
+                    : unread;
 
             messageUnread.style.display =
                 "flex";
@@ -1495,7 +2136,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         }
 
+
+        /*
+         * Also update the top alert.
+         */
+
+        updateMessageAlert();
+
     }
+
+
+    /* =========================================================
+       REALTIME MESSAGES
+       ========================================================= */
 
     async function setupMessageRealtime() {
 
@@ -1503,6 +2156,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const client =
                 await getClient();
+
 
             if (messageChannel) {
 
@@ -1512,6 +2166,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     );
 
             }
+
 
             messageChannel =
                 client
@@ -1531,7 +2186,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                             renderMessageCustomers();
 
-                            if (selectedTenantId) {
+
+                            if (
+                                selectedTenantId
+                            ) {
 
                                 await loadConversation(
                                     selectedTenantId
@@ -1542,6 +2200,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         }
                     )
                     .subscribe();
+
 
         } catch (error) {
 
@@ -1554,15 +2213,45 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     }
 
+
+    /* =========================================================
+       MESSAGE ALERT CLICK
+       ========================================================= */
+
+    messageAlertBar.addEventListener(
+        "click",
+        async () => {
+
+            if (
+                !latestUnreadTenantId
+            ) {
+                return;
+            }
+
+
+            await loadConversation(
+                latestUnreadTenantId
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       MESSAGE EVENTS
+       ========================================================= */
+
     messageFab.addEventListener(
         "click",
         openMessagePanel
     );
 
+
     closeMessages.addEventListener(
         "click",
         closeMessagePanel
     );
+
 
     messageCustomerList.addEventListener(
         "click",
@@ -1573,7 +2262,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     "[data-tenant-id]"
                 );
 
-            if (!button) return;
+
+            if (!button) {
+                return;
+            }
+
 
             loadConversation(
                 button.dataset.tenantId
@@ -1581,6 +2274,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         }
     );
+
 
     messageCompose.addEventListener(
         "submit",
@@ -1592,6 +2286,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         }
     );
+
 
     messageInput.addEventListener(
         "keydown",
@@ -1611,15 +2306,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     );
 
-    /*
-     * LOGOUT
-     */
+
+    /* =========================================================
+       LOGOUT
+       ========================================================= */
+
     logoutBtn.addEventListener(
         "click",
         async () => {
 
-            logoutBtn.disabled = true;
-            logoutBtn.textContent = "Logging out...";
+            logoutBtn.disabled =
+                true;
+
+            logoutBtn.textContent =
+                "Logging out...";
+
 
             try {
 
@@ -1637,42 +2338,57 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             }
 
+
             window.location.href =
                 "index.html";
 
         }
     );
 
-    /*
-     * START
-     */
+
+    /* =========================================================
+       START
+       ========================================================= */
+
     const isAdmin =
         await checkAdminAccess();
+
 
     if (!isAdmin) {
         return;
     }
 
+
     await loadDashboard();
 
+
     /*
-     * Load the message badge in the background.
-     * The popup itself is opened only when the icon is clicked.
+     * Load messages in background.
      */
+
     await loadMessageCustomers();
+
+
+    /*
+     * Realtime messages.
+     */
 
     await setupMessageRealtime();
 
-    /*
-     * REALTIME DASHBOARD UPDATES
-     */
+
+    /* =========================================================
+       REALTIME DASHBOARD UPDATES
+       ========================================================= */
+
     subscribeToPayments(
         loadDashboard
     );
 
+
     subscribeToRooms(
         loadDashboard
     );
+
 
 });
 
