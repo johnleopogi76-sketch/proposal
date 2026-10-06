@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/images/casahome-logo.png">
+  <title>CasaHome — Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+
+    /* CasaHome CH logo */
+    .ch-logo { position: relative; width: 76px; height: 82px; flex-shrink: 0; font-family: Georgia, "Times New Roman", serif; color: #ffffff; }
+    .ch-logo .c { position: absolute; top: -7px; left: 0; font-size: 72px; line-height: 1; font-weight: 700; letter-spacing: -9px; }
+    .ch-logo .h { position: absolute; bottom: -7px; right: 0; font-size: 72px; line-height: 1; font-weight: 700; letter-spacing: -8px; }
+
+    .ch-logo-small { position: relative; width: 58px; height: 62px; flex-shrink: 0; font-family: Georgia, "Times New Roman", serif; color: #ffffff; }
+    .ch-logo-small .c { position: absolute; top: -5px; left: 0; font-size: 55px; line-height: 1; font-weight: 700; letter-spacing: -7px; }
+    .ch-logo-small .h { position: absolute; bottom: -5px; right: 0; font-size: 55px; line-height: 1; font-weight: 700; letter-spacing: -6px; }
+
+    .glass { background: rgba(255, 255, 255, 0.97); box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12); }
+
+    .fade-in { animation: fadeIn .25s ease-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.45); border-top-color: white; border-radius: 999px; animation: spin .7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900">
+
+<!-- CasaHome loader -->
+<style>
+#ch-loader{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse 70% 38% at 50% 0%,rgba(16,185,129,.09),transparent 70%),#f8fafc;
+  transition:opacity .5s ease,visibility .5s}
+#ch-loader.ch-hide{opacity:0;visibility:hidden}
+#ch-loader .ch-mark{position:absolute;inset:0;background:url("data:image/png;base64,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") 50% 38%/min(88vw,520px) auto no-repeat;opacity:.09;pointer-events:none}
+#ch-loader .ch-box{position:relative;display:flex;flex-direction:column;align-items:center;gap:20px}
+#ch-loader .ch-ring{position:relative;width:28px;height:28px}
+#ch-loader .ch-ring i{position:absolute;inset:0;border-radius:50%;border:2px solid transparent}
+#ch-loader .ch-a{border-top-color:#10b981;border-left-color:#10b981;animation:ch-spin 1.1s linear infinite;filter:drop-shadow(0 0 5px #10b981)}
+#ch-loader .ch-b{inset:5px!important;border-bottom-color:#0f172a;border-right-color:#0f172a;opacity:.7;animation:ch-spin 1.6s linear infinite reverse}
+#ch-loader .ch-ring::after{content:"";position:absolute;inset:-8px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.2),transparent 65%)}
+#ch-loader .ch-text{font:700 12px/1 system-ui,-apple-system,'Segoe UI',sans-serif;letter-spacing:.32em;text-indent:.32em;text-transform:uppercase;color:#059669}
+@keyframes ch-spin{to{transform:rotate(360deg)}}
+</style>
+
+<div id="ch-loader" role="status" aria-label="Loading CasaHome">
+  <div class="ch-mark" aria-hidden="true"></div>
+  <div class="ch-box">
+    <div class="ch-ring" aria-hidden="true"><i class="ch-a"></i><i class="ch-b"></i></div>
+    <div class="ch-text">Loading</div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var loader = document.getElementById('ch-loader');
+  var started = Date.now();
+  var MIN_MS = 900;   // shortest time the loader stays visible
+  var MAX_MS = 8000;  // safety: never block the site longer than this
+
+  function hide() {
+    if (!loader) return;
+    loader.classList.add('ch-hide');
+    setTimeout(function () { loader && loader.remove(); loader = null; }, 600);
+  }
+  function done() {
+    var wait = Math.max(0, MIN_MS - (Date.now() - started));
+    setTimeout(hide, wait);
+  }
+
+  if (document.readyState === 'complete') done();
+  else window.addEventListener('load', done);
+  setTimeout(hide, MAX_MS);
+})();
+</script>
+
+<main class="min-h-screen grid lg:grid-cols-2">
+
+<!-- =========================================================
+     LEFT BRAND PANEL
+     ========================================================= -->
+<section class="hidden lg:flex bg-slate-950 relative overflow-hidden items-center justify-center p-12">
+
+  <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl"></div>
+  <div class="absolute -bottom-40 -right-32 w-[30rem] h-[30rem] rounded-full bg-emerald-400/10 blur-3xl"></div>
+
+  <div class="relative max-w-lg text-white">
+
+    <!-- LOGO + BRAND -->
+    <div class="flex items-center gap-5 mb-12">
+      <div class="ch-logo" aria-label="CasaHome logo">
+        <span class="c">C</span>
+        <span class="h">H</span>
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight">CasaHome</h1>
+        <p class="mt-1 text-base text-slate-400">Management System</p>
+      </div>
+    </div>
+
+    <h2 class="text-5xl font-bold leading-tight tracking-tight">
+      Simple management.<br>
+      Better living.
+    </h2>
+
+    <p class="mt-6 text-lg leading-8 text-slate-400">
+      A simple digital platform for managing rooms, tenants,
+      billing, and boarding house information.
+    </p>
+
+    <!-- FEATURE CARDS -->
+    <div class="mt-10 grid grid-cols-2 gap-4">
+      <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+        <p class="text-2xl font-bold text-emerald-400">Rooms</p>
+        <p class="mt-1 text-sm text-slate-400">Easy room management</p>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+        <p class="text-2xl font-bold text-emerald-400">Billing</p>
+        <p class="mt-1 text-sm text-slate-400">Track payments</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     RIGHT LOGIN AREA
+     ========================================================= -->
+<section class="flex items-center justify-center p-5 sm:p-8">
+
+  <div class="w-full max-w-md">
+
+    <!-- MOBILE BRAND -->
+    <div class="lg:hidden text-center mb-8">
+      <div class="mx-auto w-20 h-20 rounded-2xl bg-slate-950 flex items-center justify-center shadow-lg">
+        <div class="ch-logo-small" aria-label="CasaHome logo">
+          <span class="c">C</span>
+          <span class="h">H</span>
+        </div>
+      </div>
+      <h1 class="mt-4 text-2xl font-bold">CasaHome</h1>
+      <p class="text-sm text-slate-500">Management System</p>
+    </div>
+
+
+    <!-- =====================================================
+         ROLE SELECTION
+         ===================================================== -->
+    <div id="roleScreen" class="glass rounded-3xl border border-slate-200 p-6 sm:p-8 fade-in">
+
+      <div class="text-center">
+        <p class="text-sm font-semibold uppercase tracking-wider text-emerald-600">Welcome</p>
+        <h2 class="mt-2 text-3xl font-bold tracking-tight">Sign in to CasaHome</h2>
+        <p class="mt-2 text-sm leading-6 text-slate-500">Select how you want to access the system.</p>
+      </div>
+
+      <div class="mt-8 space-y-4">
+
+        <!-- ADMIN LOGIN BUTTON -->
+        <button
+          type="button"
+          onclick="showLogin('admin')"
+          class="w-full rounded-2xl border border-slate-200 bg-white p-5 text-left transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+        >
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 shrink-0 rounded-xl bg-slate-950 text-white flex items-center justify-center">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-bold text-slate-900">Admin Login</h3>
+              <p class="mt-1 text-sm text-slate-500">Manage rooms, customers, and billing.</p>
+            </div>
+            <span class="text-slate-300 text-xl">›</span>
+          </div>
+        </button>
+
+        <!-- USER LOGIN BUTTON -->
+        <button
+          type="button"
+          onclick="showLogin('user')"
+          class="w-full rounded-2xl border border-slate-200 bg-white p-5 text-left transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+        >
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 shrink-0 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="8" r="3.2"/>
+                <path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-bold text-slate-900">User Login</h3>
+              <p class="mt-1 text-sm text-slate-500">View your room and payment information.</p>
+            </div>
+            <span class="text-slate-300 text-xl">›</span>
+          </div>
+        </button>
+
+      </div>
+
+      <p class="mt-8 text-center text-xs text-slate-400">CasaHome Web-Based Boarding House Management System</p>
+
+    </div>
+
+
+    <!-- =====================================================
+         LOGIN FORM
+         ===================================================== -->
+    <div id="loginScreen" class="hidden glass rounded-3xl border border-slate-200 p-6 sm:p-8 fade-in">
+
+      <!-- BACK BUTTON -->
+      <button type="button" onclick="showRoles()" class="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900">
+        <span>←</span>
+        Back
+      </button>
+
+      <!-- LOGIN HEADER -->
+      <div class="mt-7">
+        <div id="loginIcon" class="w-12 h-12 rounded-xl bg-slate-950 text-white flex items-center justify-center">
+          <span id="loginIconText" class="font-bold">A</span>
+        </div>
+        <p id="loginTypeLabel" class="mt-6 text-sm font-semibold text-emerald-600">ADMIN ACCESS</p>
+        <h2 id="loginTitle" class="mt-1 text-3xl font-bold tracking-tight">Admin Login</h2>
+        <p id="loginDescription" class="mt-2 text-sm leading-6 text-slate-500">Sign in with your administrator account.</p>
+      </div>
+
+      <!-- FORM -->
+      <form id="loginForm" class="mt-8 space-y-5">
+
+        <!-- EMAIL -->
+        <div>
+          <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">Email address</label>
+          <input
+            id="email"
+            type="email"
+            autocomplete="email"
+            required
+            placeholder="you@example.com"
+            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+          >
+        </div>
+
+        <!-- PASSWORD -->
+        <div>
+          <label for="password" class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
+          <div class="relative">
+            <input
+              id="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              placeholder="Enter your password"
+              class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 pr-12 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+            >
+            <button
+              type="button"
+              onclick="togglePassword()"
+              class="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-400 hover:text-slate-700"
+              aria-label="Show or hide password"
+            >
+              <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/>
+                <circle cx="12" cy="12" r="2.5"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- ERROR -->
+        <div id="errorBox" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"></div>
+
+        <!-- SUBMIT -->
+        <button
+          id="loginButton"
+          type="submit"
+          class="w-full rounded-xl bg-emerald-500 px-4 py-3.5 font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-600 focus:outline-none focus:ring-4 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          <span id="loginButtonContent" class="flex items-center justify-center gap-2">Sign in</span>
+        </button>
+
+      </form>
+
+      <!-- HINT -->
+      <p id="loginHint" class="mt-6 text-center text-xs leading-5 text-slate-400">
+        Admin accounts must have <b>role = admin</b> in the profiles table.
+      </p>
+
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- =========================================================
+     SUPABASE
+     ========================================================= -->
+<script src="assets/js/supabase.js"></script>
+
+<!-- =========================================================
+     LOGIN JAVASCRIPT
+     ========================================================= -->
+<script>
+
+  let selectedRole = null;
+
+
+  /* ---------------------------------------------------------
+     SHOW LOGIN SCREEN
+     --------------------------------------------------------- */
+  function showLogin(role) {
+
+    selectedRole = role;
+
+    document.getElementById("roleScreen").classList.add("hidden");
+    document.getElementById("loginScreen").classList.remove("hidden");
+
+    const admin = role === "admin";
+
+    document.getElementById("loginTypeLabel").textContent =
+      admin ? "ADMIN ACCESS" : "TENANT ACCESS";
+
+    document.getElementById("loginTitle").textContent =
+      admin ? "Admin Login" : "User Login";
+
+    document.getElementById("loginDescription").textContent =
+      admin
+        ? "Sign in with your administrator account."
+        : "Sign in with your CasaHome user account.";
+
+    document.getElementById("loginIcon").className =
+      admin
+        ? "w-12 h-12 rounded-xl bg-slate-950 text-white flex items-center justify-center"
+        : "w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center";
+
+    document.getElementById("loginIconText").textContent =
+      admin ? "A" : "U";
+
+    document.getElementById("loginHint").innerHTML =
+      admin
+        ? 'Admin accounts must have <b>role = admin</b> in the profiles table.'
+        : 'User accounts must have <b>role = user</b> and a linked <b>tenant_id</b> in the profiles table.';
+
+    clearError();
+
+    document.getElementById("email").focus();
+
+  }
+
+
+  /* ---------------------------------------------------------
+     BACK TO ROLE SELECTION
+     --------------------------------------------------------- */
+  function showRoles() {
+
+    selectedRole = null;
+
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("roleScreen").classList.remove("hidden");
+
+    document.getElementById("loginForm").reset();
+
+    clearError();
+
+  }
+
+
+  /* ---------------------------------------------------------
+     ERROR
+     --------------------------------------------------------- */
+  function clearError() {
+
+    const box = document.getElementById("errorBox");
+
+    box.textContent = "";
+
+    box.classList.add("hidden");
+
+  }
+
+
+  function showError(message) {
+
+    const box = document.getElementById("errorBox");
+
+    box.textContent = message;
+
+    box.classList.remove("hidden");
+
+  }
+
+
+  /* ---------------------------------------------------------
+     PASSWORD VISIBILITY
+     --------------------------------------------------------- */
+  function togglePassword() {
+
+    const input = document.getElementById("password");
+
+    input.type =
+      input.type === "password"
+        ? "text"
+        : "password";
+
+  }
+
+
+  /* ---------------------------------------------------------
+     LOADING STATE
+     --------------------------------------------------------- */
+  function setLoading(loading) {
+
+    const button = document.getElementById("loginButton");
+    const content = document.getElementById("loginButtonContent");
+
+    button.disabled = loading;
+
+    if (loading) {
+
+      content.innerHTML =
+        '<span class="spinner"></span><span>Signing in...</span>';
+
+    } else {
+
+      content.textContent = "Sign in";
+
+    }
+
+  }
+
+
+  /* ---------------------------------------------------------
+     CHECK EXISTING SESSION
+     --------------------------------------------------------- */
+  async function redirectIfAlreadyLoggedIn() {
+
+    try {
+
+      const client = await getClient();
+
+      const {
+        data: { user }
+      } = await client.auth.getUser();
+
+      if (!user) {
+        return;
+      }
+
+      const {
+        data: profile
+      } = await client
+        .from("profiles")
+        .select("role,tenant_id")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (profile?.role === "admin") {
+
+        window.location.replace("admin-index.html");
+
+      } else if (profile?.role === "user") {
+
+        window.location.replace("user-dashboard.html");
+
+      }
+
+    } catch (error) {
+
+      console.warn("Session check skipped:", error);
+
+    }
+
+  }
+
+
+  /* ---------------------------------------------------------
+     LOGIN
+     --------------------------------------------------------- */
+  async function handleLogin(event) {
+
+    event.preventDefault();
+
+    clearError();
+
+    if (!selectedRole) {
+
+      showError("Please select a login type first.");
+
+      return;
+
+    }
+
+    const email = document.getElementById("email").value.trim();
+
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+
+      showError("Please enter your email and password.");
+
+      return;
+
+    }
+
+    setLoading(true);
+
+    try {
+
+      const client = await getClient();
+
+      /* SIGN IN */
+      const {
+        data,
+        error
+      } = await client.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      const user = data.user;
+
+      /* GET PROFILE */
+      const {
+        data: profile,
+        error: profileError
+      } = await client
+        .from("profiles")
+        .select("role,tenant_id")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (profileError) {
+        throw profileError;
+      }
+
+      /* PROFILE DOES NOT EXIST */
+      if (!profile) {
+
+        await client.auth.signOut();
+
+        throw new Error("Your account does not have a profile record yet.");
+
+      }
+
+      /* ADMIN CHECK */
+      if (
+        selectedRole === "admin" &&
+        profile.role !== "admin"
+      ) {
+
+        await client.auth.signOut();
+
+        throw new Error("This account is not registered as an administrator.");
+
+      }
+
+      /* USER CHECK */
+      if (
+        selectedRole === "user" &&
+        profile.role !== "user"
+      ) {
+
+        await client.auth.signOut();
+
+        throw new Error("This account is not registered as a user.");
+
+      }
+
+      /* USER TENANT CHECK */
+      if (
+        selectedRole === "user" &&
+        !profile.tenant_id
+      ) {
+
+        await client.auth.signOut();
+
+        throw new Error("Your account is not linked to a tenant record yet.");
+
+      }
+
+      /* REDIRECT */
+      if (selectedRole === "admin") {
+
+        window.location.replace("admin-index.html");
+
+      } else {
+
+        window.location.replace("user-dashboard.html");
+
+      }
+
+    } catch (error) {
+
+      console.error("Login error:", error);
+
+      showError(
+        error?.message ||
+        "Login failed. Please check your credentials."
+      );
+
+      setLoading(false);
+
+    }
+
+  }
+
+
+  /* ---------------------------------------------------------
+     FORM EVENT
+     --------------------------------------------------------- */
+  document
+    .getElementById("loginForm")
+    .addEventListener("submit", handleLogin);
+
+
+  /* ---------------------------------------------------------
+     INITIAL SESSION CHECK
+     --------------------------------------------------------- */
+  redirectIfAlreadyLoggedIn();
+
+</script>
+
+</body>
+</html>
