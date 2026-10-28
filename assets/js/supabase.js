@@ -1,31 +1,14 @@
-/* =========================================================
-   CasaHome / RentEase Shared Supabase Module
-
-   IMPORTANT:
-   - Use only your Supabase publishable/anon key here.
-   - NEVER put a service_role/secret key in browser code.
-========================================================= */
-
-
 const SUPABASE_URL =
   "https://uqobghmfkhdyfuivxyqw.supabase.co";
 
-
 const SUPABASE_ANON_KEY =
   "sb_publishable_KnMLuq1iF2zMjJGi_psJHw_CKMYfjnP";
-
-
-
-/* =========================================================
-   LOAD SUPABASE JS CLIENT
-========================================================= */
 
 const supabaseScript =
   document.createElement("script");
 
 supabaseScript.src =
   "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
-
 
 supabaseScript.onload = () => {
 
@@ -35,16 +18,9 @@ supabaseScript.onload = () => {
 
 };
 
-
 document.head.appendChild(
   supabaseScript
 );
-
-
-
-/* =========================================================
-   GET SUPABASE CLIENT
-========================================================= */
 
 async function getClient() {
 
@@ -64,7 +40,6 @@ async function getClient() {
 
   }
 
-
   if (
     !SUPABASE_URL.startsWith("http") ||
     SUPABASE_ANON_KEY.includes("YOUR_")
@@ -76,7 +51,6 @@ async function getClient() {
 
   }
 
-
   if (!window.__renteaseClient) {
 
     window.__renteaseClient =
@@ -87,19 +61,9 @@ async function getClient() {
 
   }
 
-
   return window.__renteaseClient;
 
 }
-
-
-
-/* =========================================================
-   ROOMS
-========================================================= */
-
-
-/* READ ROOMS */
 
 async function fetchRooms() {
 
@@ -113,19 +77,13 @@ async function fetchRooms() {
     .select("*")
     .order("room_number");
 
-
   if (error) {
     throw error;
   }
 
-
   return data || [];
 
 }
-
-
-
-/* UPDATE ROOM STATUS */
 
 async function updateRoomStatus(
   roomId,
@@ -146,24 +104,13 @@ async function updateRoomStatus(
     .select()
     .single();
 
-
   if (error) {
     throw error;
   }
 
-
   return data;
 
 }
-
-
-
-/* =========================================================
-   TENANTS / CUSTOMERS
-========================================================= */
-
-
-/* READ ALL TENANTS */
 
 async function fetchTenants() {
 
@@ -179,25 +126,18 @@ async function fetchTenants() {
     )
     .order("full_name");
 
-
   if (error) {
     throw error;
   }
-
 
   return data || [];
 
 }
 
-
-
-/* READ ACTIVE TENANTS */
-
 async function fetchActiveTenants() {
 
   const tenants =
     await fetchTenants();
-
 
   return tenants.filter(
     tenant =>
@@ -205,17 +145,6 @@ async function fetchActiveTenants() {
   );
 
 }
-
-
-
-/* =========================================================
-   PAYMENTS
-========================================================= */
-
-
-/* =========================================================
-   READ — FETCH PAYMENTS
-========================================================= */
 
 async function fetchPayments() {
 
@@ -236,21 +165,13 @@ async function fetchPayments() {
       }
     );
 
-
   if (error) {
     throw error;
   }
 
-
   return data || [];
 
 }
-
-
-
-/* =========================================================
-   CREATE — RECORD PAYMENT
-========================================================= */
 
 async function recordPayment(
   payload
@@ -281,21 +202,13 @@ async function recordPayment(
     .select()
     .single();
 
-
   if (error) {
     throw error;
   }
 
-
   return data;
 
 }
-
-
-
-/* =========================================================
-   UPDATE — UPDATE PAYMENT
-========================================================= */
 
 async function updatePayment(
   id,
@@ -331,21 +244,13 @@ async function updatePayment(
     .select()
     .single();
 
-
   if (error) {
     throw error;
   }
 
-
   return data;
 
 }
-
-
-
-/* =========================================================
-   DELETE — DELETE PAYMENT
-========================================================= */
 
 async function deletePaymentRecord(
   id
@@ -363,21 +268,13 @@ async function deletePaymentRecord(
       id
     );
 
-
   if (error) {
     throw error;
   }
 
-
   return true;
 
 }
-
-
-
-/* =========================================================
-   DASHBOARD
-========================================================= */
 
 async function fetchDashboardData() {
 
@@ -395,13 +292,11 @@ async function fetchDashboardData() {
 
   ]);
 
-
   const occupied =
     rooms.filter(
       room =>
         room.status === "Occupied"
     ).length;
-
 
   return {
 
@@ -460,12 +355,6 @@ async function fetchDashboardData() {
 
 }
 
-
-
-/* =========================================================
-   REALTIME SUBSCRIPTIONS
-========================================================= */
-
 function subscribe(
   table,
   callback
@@ -493,20 +382,12 @@ function subscribe(
 
 }
 
-
-
-/* ROOMS REALTIME */
-
 const subscribeToRooms =
   callback =>
     subscribe(
       "rooms",
       callback
     );
-
-
-
-/* TENANTS REALTIME */
 
 const subscribeToTenants =
   callback =>
@@ -515,25 +396,12 @@ const subscribeToTenants =
       callback
     );
 
-
-
-/* PAYMENTS REALTIME */
-
 const subscribeToPayments =
   callback =>
     subscribe(
       "payments",
       callback
     );
-
-
-
-/* =========================================================
-   HELPER FUNCTIONS
-========================================================= */
-
-
-/* MONEY FORMAT */
 
 const money =
   value =>
@@ -547,10 +415,6 @@ const money =
         maximumFractionDigits: 2
       }
     )}`;
-
-
-
-/* DATE FORMAT */
 
 const date =
   value =>
@@ -571,10 +435,6 @@ const date =
           }
         )
       : "—";
-
-
-
-/* HTML ESCAPE */
 
 const esc =
   value =>
@@ -601,10 +461,6 @@ const esc =
 
         }[character])
     );
-
-
-
-/* STATUS BADGES */
 
 const statusClass =
   status => ({
