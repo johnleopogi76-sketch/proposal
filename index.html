@@ -587,17 +587,18 @@
       }
 
     } catch (error) {
+  console.error("Login error:", error);
 
-      console.error("Login error:", error);
+  const msg = error?.message || "";
 
-      showError(
-        error?.message ||
-        "Login failed. Please check your credentials."
-      );
+  if (msg.toLowerCase().includes("invalid login credentials")) {
+    showError("Wrong email or password. Please try again.");
+  } else {
+    showError(msg || "Login failed. Please check your credentials.");
+  }
 
-      setLoading(false);
-
-    }
+  setLoading(false);
+}
 
   }
 
